@@ -1,7 +1,7 @@
 # Licencia Pública General de GNU Versión 3.0-or-later
 
 
-GNU GENERAL PUBLIC LICENSE
+                     GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
@@ -386,7 +386,7 @@ that material) supplement the terms of this License with terms:
     material by anyone who conveys the material (or modified versions of
     it) with contractual assumptions of liability to the recipient, for
     any liability that these contractual assumptions directly impose on
-  
 
 
-[2024] [Èrik Calvo Lledó]
+
+Copyright © [2024] [Èrik Calvo Lledó]
