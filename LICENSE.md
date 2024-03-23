@@ -1,7 +1,7 @@
-# Licencia Pública General de GNU Versión 3.0
+# Licencia Pública General de GNU Versión 3.0-or-later
 
 
-                    GNU GENERAL PUBLIC LICENSE
+GNU GENERAL PUBLIC LICENSE
                        Version 3, 29 June 2007
 
  Copyright (C) 2007 Free Software Foundation, Inc. <https://fsf.org/>
