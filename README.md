@@ -1,4 +1,4 @@
-#Horacat: Android App to Display Catalan Time
+**Horacat: Android App to Display Catalan Time**
 
 **Description:**
 Horacat is a simple Android app that displays the current time in Catalan. This app is primarily intended for people to check the time in Catalan. I created it because traditional Catalan time is complex, and as a result, most people don't say it correctly. I hope that in this way I can help to preserve the language.
