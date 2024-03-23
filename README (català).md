@@ -21,16 +21,11 @@ De moment, pots descarregar l'arxiu APK manualment:
 · Selecciona "Instal·lar".
 · Un cop instal·lada l'aplicació, la podràs obrir i començar a utilitzar-la.
 
-Si tens algun problema per instal·lar l'aplicació, consulta la guia d'instal·lació d'APK a F-Droid: https://f-droid.org/en/docs/Get_F-Droid/
-
 **Codi font:**
 El codi font de l'aplicació està disponible a GitHub: https://github.com/sonwerik/horacat
 
 **Llicència:**
 Aquest projecte està llicenciat sota la llicència GPL 3.0 o superior.
-
-**Contribuir:**
-Si voleu contribuir a Horacat, consulteu la guia de contribució: https://support.cyberghostvpn.com/hc/en-us/articles/213440329-How-come-my-activation-key-is-called-invalid
 
 **Agraïments:**
 Aquest projecte ha estat possible gràcies a la contribució de Gabriel Mizrahi Mejias.
