@@ -1,4 +1,4 @@
-#Horacat: App Android per mostrar l'hora en català
+**Horacat: App Android per mostrar l'hora en català**
 
 **Descripció:**
 Horacat és una aplicació senzilla per a Android que mostra l'hora actual en català. Aquesta aplicació està pensada principalment perquè les persones puguin consultar l'hora en català. L'he creada perquè l'hora tradicional en català és complexa i, per aquest motiu, la majoria de la gent no la diu correctament. Espero que d'aquesta manera ajudi a preservar la llengua.
