@@ -13,7 +13,7 @@ En un futur, l'aplicació Horacat estarà disponible a la botiga d'aplicacions F
 De moment, pots descarregar l'arxiu APK manualment:
 
 · Obre un navegador web al teu dispositiu Android.
-· Ves a https://github.com/sonwerik/horacat/blob/main/app/release/horacat.apk.
+· Ves a https://github.com/sonwerik/horacat/blob/main/app/release.
 · Descarrega l'arxiu horacat.apk.
 · Obre l'aplicació Gestor d'arxius al teu dispositiu Android.
 · Navega fins a la carpeta on has descarregat l'arxiu APK.
