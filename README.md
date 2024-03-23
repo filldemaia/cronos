@@ -12,7 +12,7 @@ In the future, the Horacat app will be available in the F-Droid app store.
 
 For now, you can download the APK file manually:
 · Open a web browser on your Android device.
-· Go to https://github.com/sonwerik/horacat/blob/main/app/release/horacat.apk.
+· Go to https://github.com/sonwerik/horacat/blob/main/app/release.
 · Download the file horacat.apk.
 · Open the File Manager app on your Android device.
 · Navigate to the folder where you downloaded the APK file.
