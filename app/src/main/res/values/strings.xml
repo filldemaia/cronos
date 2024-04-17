@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">horacat</string>
+    <string name="_00">00</string>
 </resources>
