@@ -35,5 +35,5 @@
             android:textStyle="bold"
             android:textColor="#FFFFFF"
             android:format24Hour="HH:mm:ss"
-            android:format12Hour="hh:mm:ss" />
+            android:format12Hour="hh:mm:ss"/>
 </LinearLayout>
