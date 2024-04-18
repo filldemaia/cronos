@@ -51,16 +51,16 @@ class MainActivity : ComponentActivity() {
         return when {
             minute == 0 -> "$hourStartString $secondString $timeOfDayString"
             minute > 0 && minute <= 7  -> "$hourStartString i $minuteString $secondString $timeOfDayString"
-            minute >= 8 && minute < 15 -> "$minuteString per un quart $secondString $hourString"
+            minute >= 8 && minute < 15 -> "$minuteString $secondString per un quart $hourString"
             minute == 15 -> "És un quart $secondString $hourString"
             minute > 15 && minute <= 22 -> "És un quart i $minuteString $secondString $hourString"
-            minute >= 23 && minute < 30 -> "$minuteString per dos quarts $secondString $hourString"
+            minute >= 23 && minute < 30 -> "$minuteString $secondString per dos quarts $hourString"
             minute == 30 -> "Són dos quarts $secondString $hourString"
             minute > 30 && minute <= 37 -> "Són dos quarts i $minuteString $secondString $hourString"
-            minute >= 38 && minute < 45 -> "$minuteString per tres quarts $secondString $hourString"
+            minute >= 38 && minute < 45 -> "$minuteString $secondString per tres quarts $hourString"
             minute == 45 -> "Són tres quarts $secondString $hourString"
             minute >= 45 && minute < 52 -> "Són tres quarts i $minuteString $secondString $hourString"
-            minute >= 53 && minute < 60 -> "$minuteString per $timeOclock $secondString $timeOfDayForNextHour"
+            minute >= 53 && minute < 60 -> "$minuteString $secondString per $timeOclock $timeOfDayForNextHour"
             else -> ""
         }
     }
