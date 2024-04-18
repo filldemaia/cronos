@@ -36,7 +36,6 @@ class MainActivity : ComponentActivity() {
         val calendar = Calendar.getInstance()
         val hour = calendar.get(Calendar.HOUR_OF_DAY)
         val minute = calendar.get(Calendar.MINUTE)
-        val second = calendar.get(Calendar.SECOND)
 
         val hourStartString = getHourStartString(hour)
         val hourString = getHourString(hour)
@@ -46,7 +45,7 @@ class MainActivity : ComponentActivity() {
         val timeOfDayForNextHour = getTimeOfDayForNextHourString(hour)
 
         return when {
-            minute == 0 && second == 0 -> "$hourStartString $timeOfDayString"
+            minute == 0 -> "$hourStartString $timeOfDayString"
             minute > 0 && minute <= 7 -> "$hourStartString i $minuteString $timeOfDayString"
             minute >= 8 && minute < 15 -> "$minuteString per un quart $hourString"
             minute == 15 -> "És un quart $hourString"
