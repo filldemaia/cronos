@@ -5,8 +5,6 @@ import android.os.Handler
 import android.os.Looper
 import android.widget.TextView
 import androidx.activity.ComponentActivity
-import androidx.activity.compose.setContent
-import androidx.compose.material3.minimumInteractiveComponentSize
 import java.util.*
 
 class MainActivity : ComponentActivity() {
@@ -46,21 +44,20 @@ class MainActivity : ComponentActivity() {
         val minuteString = getMinuteString(minute)
         val timeOclock = getTimeOclockString(hour)
         val timeOfDayForNextHour = getTimeOfDayForNextHourString(hour)
-        val secondString = getSecondString(second)
 
         return when {
-            minute == 0 -> "$hourStartString $secondString $timeOfDayString"
-            minute > 0 && minute <= 7  -> "$hourStartString i $minuteString $secondString $timeOfDayString"
-            minute >= 8 && minute < 15 -> "$minuteString $secondString per un quart $hourString"
-            minute == 15 -> "És un quart $secondString $hourString"
-            minute > 15 && minute <= 22 -> "És un quart i $minuteString $secondString $hourString"
-            minute >= 23 && minute < 30 -> "$minuteString $secondString per dos quarts $hourString"
-            minute == 30 -> "Són dos quarts $secondString $hourString"
-            minute > 30 && minute <= 37 -> "Són dos quarts i $minuteString $secondString $hourString"
-            minute >= 38 && minute < 45 -> "$minuteString $secondString per tres quarts $hourString"
-            minute == 45 -> "Són tres quarts $secondString $hourString"
-            minute >= 45 && minute < 52 -> "Són tres quarts i $minuteString $secondString $hourString"
-            minute >= 53 && minute < 60 -> "$minuteString $secondString per $timeOclock $timeOfDayForNextHour"
+            minute == 0 && second == 0 -> "$hourStartString $timeOfDayString"
+            minute > 0 && minute <= 7 -> "$hourStartString i $minuteString $timeOfDayString"
+            minute >= 8 && minute < 15 -> "$minuteString per un quart $hourString"
+            minute == 15 -> "És un quart $hourString"
+            minute > 15 && minute <= 22 -> "És un quart i $minuteString $hourString"
+            minute >= 23 && minute < 30 -> "$minuteString per dos quarts $hourString"
+            minute == 30 -> "Són dos quarts $hourString"
+            minute > 30 && minute <= 37 -> "Són dos quarts i $minuteString $hourString"
+            minute >= 38 && minute < 45 -> "$minuteString per tres quarts $hourString"
+            minute == 45 -> "Són tres quarts $hourString"
+            minute >= 45 && minute < 52 -> "Són tres quarts i $minuteString $hourString"
+            minute >= 53 && minute < 60 -> "$minuteString per $timeOclock $timeOfDayForNextHour"
             else -> ""
         }
     }
@@ -276,71 +273,6 @@ class MainActivity : ComponentActivity() {
             21 -> "de la nit"
             22 -> "de la nit"
             23 -> "de la nit"
-            else -> ""
-        }
-    }
-
-    private fun getSecondString(second: Int): String {
-        return when (second) {
-            1 -> "i un segon"
-            2 -> "i dos segons"
-            3 -> "i tres segons"
-            4 -> "i quatre segons"
-            5 -> "i cinc segons"
-            6 -> "i sis segons"
-            7 -> "i set segons"
-            8 -> "i vuit segons"
-            9 -> "i nou segons"
-            10 -> "i deu segons"
-            11 -> "i onze segons"
-            12 -> "i dotze segons"
-            13 -> "i tretze segons"
-            14 -> "i catorze segons"
-            15 -> "i quinze segons"
-            16 -> "i setze segons"
-            17 -> "i disset segons"
-            18 -> "i divuit segons"
-            19 -> "i dinou segons"
-            20 -> "i vint segons"
-            21 -> "i vint-i-un segons"
-            22 -> "i vinti-dos segons"
-            23 -> "i vint-i-tres segons"
-            24 -> "i vint-i-quatre segons"
-            25 -> "i vint-i-cinc segons"
-            26 -> "i vint-i-sis segons"
-            27 -> "i vint-i-set segons"
-            28 -> "i vint-i-vuit segons"
-            29 -> "i vint-i-nou segons"
-            30 -> "i trenta segons"
-            31 -> "i trenta-un segons"
-            32 -> "i trenta-dos segons"
-            33 -> "i trenta-tres segons"
-            34 -> "i trenta-quatre segons"
-            35 -> "i trenta-cinc segons"
-            36 -> "i trenta-sis segons"
-            37 -> "i trenta-set segons"
-            38 -> "i trenta-vuit segons"
-            39 -> "i trenta-nou segons"
-            40 -> "i quaranta segons"
-            41 -> "i quaranta-un segons"
-            42 -> "i quaranta-dos segons"
-            43 -> "i quaranta-tres segons"
-            44 -> "i quaranta-quatre segons"
-            45 -> "i quaranta-cinc segons"
-            46 -> "i quaranta-sis segons"
-            47 -> "i quaranta-set segons"
-            48 -> "i quaranta-vuit segons"
-            49 -> "i quaranta-nou segons"
-            50 -> "i cinquanta segons"
-            51 -> "i cinquanta-un segons"
-            52 -> "i cinquanta-dos segons"
-            53 -> "i cinquanta-tres segons"
-            54 -> "i cinquanta-quatre segons"
-            55 -> "i cinquanta-cinc segons"
-            56 -> "i cinquanta-sis segons"
-            57 -> "i cinquanta-set segons"
-            58 -> "i cinquanta-vuit segons"
-            59 -> "i cinquanta-nou segons"
             else -> ""
         }
     }
