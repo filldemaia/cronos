@@ -44,19 +44,19 @@ class MainActivity : ComponentActivity() {
         val timeOclock = getTimeOclockString(hour)
         val timeOfDayForNextHour = getTimeOfDayForNextHourString(hour)
 
-        return when {
-            minute == 0 -> "$hourStartString $timeOfDayString"
-            minute > 0 && minute <= 7 -> "$hourStartString i $minuteString $timeOfDayString"
-            minute >= 8 && minute < 15 -> "$minuteString per un quart $hourString"
-            minute == 15 -> "És un quart $hourString"
-            minute > 15 && minute <= 22 -> "És un quart i $minuteString $hourString"
-            minute >= 23 && minute < 30 -> "$minuteString per dos quarts $hourString"
-            minute == 30 -> "Són dos quarts $hourString"
-            minute > 30 && minute <= 37 -> "Són dos quarts i $minuteString $hourString"
-            minute >= 38 && minute < 45 -> "$minuteString per tres quarts $hourString"
-            minute == 45 -> "Són tres quarts $hourString"
-            minute >= 45 && minute < 52 -> "Són tres quarts i $minuteString $hourString"
-            minute >= 53 && minute < 60 -> "$minuteString per $timeOclock $timeOfDayForNextHour"
+        return when (minute) {
+            0 -> "$hourStartString $timeOfDayString"
+            in 1..7 -> "$hourStartString i $minuteString $timeOfDayString"
+            in 8..14 -> "$minuteString per un quart $hourString"
+            15 -> "És un quart $hourString"
+            in 16..22 -> "És un quart i $minuteString $hourString"
+            in 23..29 -> "$minuteString per dos quarts $hourString"
+            30 -> "Són dos quarts $hourString"
+            in 31..37 -> "Són dos quarts i $minuteString $hourString"
+            in 38..44 -> "$minuteString per tres quarts $hourString"
+            45 -> "Són tres quarts $hourString"
+            in 45..51 -> "Són tres quarts i $minuteString $hourString"
+            in 53..59 -> "$minuteString per $timeOclock $timeOfDayForNextHour"
             else -> ""
         }
     }
