@@ -13,7 +13,7 @@ En un futur, l'aplicació Horacat estarà disponible a la botiga d'aplicacions F
 De moment, pots descarregar l'arxiu APK manualment:
 
 · Obre un navegador web al teu dispositiu Android.
-· Ves a https://github.com/sonwerik/horacat/blob/main/app/release.
+· Ves a https://github.com/eriklledo/horacat/blob/main/app/release.
 · Descarrega l'arxiu horacat.apk.
 · Obre l'aplicació Gestor d'arxius al teu dispositiu Android.
 · Navega fins a la carpeta on has descarregat l'arxiu APK.
@@ -22,7 +22,7 @@ De moment, pots descarregar l'arxiu APK manualment:
 · Un cop instal·lada l'aplicació, la podràs obrir i començar a utilitzar-la.
 
 **Codi font:**
-El codi font de l'aplicació està disponible a GitHub: https://github.com/sonwerik/horacat
+El codi font de l'aplicació està disponible a GitHub: https://github.com/eriklledo/horacat
 
 **Llicència:**
 Aquest projecte està llicenciat sota la llicència GPL 3.0 o superior.
