@@ -7,43 +7,108 @@ import android.appwidget.AppWidgetProvider
 import android.content.ComponentName
 import android.content.Context
 import android.content.Intent
-import android.os.Handler
-import android.os.Looper
 import android.widget.RemoteViews
+import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Timer
-import java.util.TimerTask
+import java.util.Locale
 
 class HoracatWidget : AppWidgetProvider() {
+    
     override fun onUpdate(
         context: Context,
         appWidgetManager: AppWidgetManager,
         appWidgetIds: IntArray
     ) {
-        val handler = Handler(Looper.getMainLooper())
-        val runnable = object : Runnable {
-            override fun run() {
-                for (appWidgetId in appWidgetIds) {
-                    updateAppWidget(context, appWidgetManager, appWidgetId)
-                }
-                handler.postDelayed(this, 1000)
+        // Actualitzar tots els widgets
+        for (appWidgetId in appWidgetIds) {
+            updateAppWidget(context, appWidgetManager, appWidgetId)
+        }
+        
+        // Programar actualitzacions cada minut
+        startUpdateTimer(context)
+    }
+    
+    override fun onEnabled(context: Context) {
+        super.onEnabled(context)
+        startUpdateTimer(context)
+    }
+    
+    override fun onDisabled(context: Context) {
+        super.onDisabled(context)
+        stopUpdateTimer(context)
+    }
+    
+    override fun onReceive(context: Context, intent: Intent) {
+        super.onReceive(context, intent)
+        
+        if (intent.action == ACTION_AUTO_UPDATE) {
+            // Actualitzar tots els widgets
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val thisWidget = ComponentName(context, HoracatWidget::class.java)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
+            
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId)
             }
         }
-        handler.post(runnable)
+    }
+    
+    private fun startUpdateTimer(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, HoracatWidget::class.java).apply {
+            action = ACTION_AUTO_UPDATE
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, 
+            0, 
+            intent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        // Programar per actualitzar cada minut
+        val calendar = Calendar.getInstance().apply {
+            add(Calendar.MINUTE, 1)
+            set(Calendar.SECOND, 0)
+            set(Calendar.MILLISECOND, 0)
+        }
+        
+        alarmManager.setRepeating(
+            AlarmManager.RTC,
+            calendar.timeInMillis,
+            60000, // Cada minut
+            pendingIntent
+        )
+    }
+    
+    private fun stopUpdateTimer(context: Context) {
+        val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
+        val intent = Intent(context, HoracatWidget::class.java).apply {
+            action = ACTION_AUTO_UPDATE
+        }
+        val pendingIntent = PendingIntent.getBroadcast(
+            context, 
+            0, 
+            intent, 
+            PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+        )
+        
+        alarmManager.cancel(pendingIntent)
     }
 
     companion object {
+        private const val ACTION_AUTO_UPDATE = "com.example.horacat.AUTO_UPDATE_WIDGET"
+        
         internal fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
             appWidgetId: Int
         ) {
             val views = RemoteViews(context.packageName, R.layout.widget_layout)
-
-            views.setTextViewText(
-                R.id.widgetTextView,
-                getCurrentTimeInCatalan()
-            )
+            
+            val timeInCatalan = getCurrentTimeInCatalan()
+                .format(Calendar.getInstance().time)
+            
+            views.setTextViewText(R.id.widgetTimeTextView, timeInCatalan)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
@@ -56,28 +121,28 @@ class HoracatWidget : AppWidgetProvider() {
             val hourStartString = getHourStartString(hour)
             val hourString = getHourString(hour)
             val timeOfDayString = getTimeOfDayString(hour)
-            val minuteToString = getMinuteToString(minute)
+            val minuteString = getMinuteString(minute)
             val timeOclock = getTimeOclockString(hour)
             val timeOfDayForNextHour = getTimeOfDayForNextHourString(hour)
 
-            return when {
-                minute == 0 -> "$hourStartString $timeOfDayString"
-                minute > 0 && minute <= 7  -> "$hourStartString i $minuteToString $timeOfDayString"
-                minute >= 8 && minute < 15 -> "$minuteToString per un quart $hourString"
-                minute == 15 -> "És un quart $hourString"
-                minute > 15 && minute <= 22 -> "És un quart i $minuteToString $hourString"
-                minute >= 23 && minute < 30 -> "$minuteToString per dos quart $hourString"
-                minute == 30 -> "Són dos quarts $hourString"
-                minute > 30 && minute <= 37 -> "Són dos quarts i $minuteToString $hourString"
-                minute >= 38 && minute < 45 -> "$minuteToString per tres quarts $hourString"
-                minute == 45 -> "Són tres quarts $hourString"
-                minute >= 45 && minute < 52 -> "Són tres quarts i $minuteToString $hourString"
-                minute >= 53 && minute < 60 -> "$minuteToString per $timeOclock ${timeOfDayForNextHour}"
+            return when (minute) {
+                0 -> "$hourStartString $timeOfDayString"
+                in 1..7 -> "$hourStartString i $minuteString $timeOfDayString"
+                in 8..14 -> "$minuteString per un quart $hourString"
+                15 -> "És un quart $hourString"
+                in 16..22 -> "És un quart i $minuteString $hourString"
+                in 23..29 -> "$minuteString per dos quarts $hourString"
+                30 -> "Són dos quarts $hourString"
+                in 31..37 -> "Són dos quarts i $minuteString $hourString"
+                in 38..44 -> "$minuteString per tres quarts $hourString"
+                45 -> "Són tres quarts $hourString"
+                in 46..52 -> "Són tres quarts i $minuteString $hourString"
+                in 53..59 -> "$minuteString per $timeOclock $timeOfDayForNextHour"
                 else -> ""
             }
         }
 
-        private fun getMinuteToString(minute: Int): String {
+        private fun getMinuteString(minute: Int): String {
             return when (minute) {
                 1 -> "un minut"
                 2 -> "dos minuts"
@@ -93,7 +158,7 @@ class HoracatWidget : AppWidgetProvider() {
                 12 -> "Falten tres minuts"
                 13 -> "Falten dos minuts"
                 14 -> "Falta un minut"
-
+                
                 16 -> "un minut"
                 17 -> "dos minuts"
                 18 -> "tres minuts"
@@ -108,7 +173,7 @@ class HoracatWidget : AppWidgetProvider() {
                 27 -> "Falten tres minuts"
                 28 -> "Falten dos minuts"
                 29 -> "Falta un minut"
-
+                
                 31 -> "un minut"
                 32 -> "dos minuts"
                 33 -> "tres minuts"
@@ -123,7 +188,7 @@ class HoracatWidget : AppWidgetProvider() {
                 42 -> "Falten tres minuts"
                 43 -> "Falten dos minuts"
                 44 -> "Falta un minut"
-
+                
                 46 -> "un minut"
                 47 -> "dos minuts"
                 48 -> "tres minuts"
@@ -235,59 +300,24 @@ class HoracatWidget : AppWidgetProvider() {
         private fun getTimeOfDayString(hour: Int): String {
             return when (hour) {
                 0 -> "de la nit"
-                1 -> "de la matinada"
-                2 -> "de la matinada"
-                3 -> "de la matinada"
-                4 -> "de la matinada"
-                5 -> "de la matinada"
-                6 -> "del matí"
-                7 -> "del matí"
-                8 -> "del matí"
-                9 -> "del matí"
-                10 -> "del matí"
-                11 -> "del matí"
-                12 -> "del migdia"
-                13 -> "del migdia"
-                14 -> "del migdia"
-                15 -> "de la tarda"
-                16 -> "de la tarda"
-                17 -> "de la tarda"
-                18 -> "de la tarda"
-                19 -> "del vespre"
-                20 -> "del vespre"
-                21 -> "de la nit"
-                22 -> "de la nit"
-                23 -> "de la nit"
+                in 1..5 -> "de la matinada"
+                in 6..11 -> "del matí"
+                in 12..14 -> "del migdia"
+                in 15..18 -> "de la tarda"
+                in 19..20 -> "del vespre"
+                in 21..23 -> "de la nit"
                 else -> ""
             }
         }
 
         private fun getTimeOfDayForNextHourString(hour: Int): String {
             return when (hour) {
-                0 -> "de la matinada"
-                1 -> "de la matinada"
-                2 -> "de la matinada"
-                3 -> "de la matinada"
-                4 -> "de la matinada"
-                5 -> "del matí"
-                6 -> "del matí"
-                7 -> "del matí"
-                8 -> "del matí"
-                9 -> "del matí"
-                10 -> "del matí"
-                11 -> "del migdia"
-                12 -> "del migdia"
-                13 -> "del migdia"
-                14 -> "de la tarda"
-                15 -> "de la tarda"
-                16 -> "de la tarda"
-                17 -> "de la tarda"
-                18 -> "del vespre"
-                19 -> "del vespre"
-                20 -> "de la nit"
-                21 -> "de la nit"
-                22 -> "de la nit"
-                23 -> "de la nit"
+                in 0..4 -> "de la matinada"
+                in 5..10 -> "del matí"
+                in 11..13 -> "del migdia"
+                in 14..17 -> "de la tarda"
+                in 18..19 -> "del vespre"
+                in 20..23 -> "de la nit"
                 else -> ""
             }
         }

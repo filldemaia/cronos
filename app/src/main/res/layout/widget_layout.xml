@@ -1,8 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<TextView xmlns:android="http://schemas.android.com/apk/res/android"
-android:id="@+id/widgetTextView"
-android:layout_width="match_parent"
-android:layout_height="wrap_content"
-android:textSize="32sp"
-android:textColor="@android:color/white"
-/>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical"
+    android:padding="16dp">
+
+<!--    android:background="@drawable/widget_background"-->
+
+    <TextView
+        android:id="@+id/widgetTimeTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:textSize="32sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-light"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"
+        android:lineSpacingMultiplier="1.1"/>
+    
+    <TextView
+        android:id="@+id/widgetClockTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="4dp"
+        android:textSize="24sp"
+        android:textColor="#FFFFFF"
+        android:fontFamily="sans-serif-thin"
+        android:shadowColor="#000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="2"/>
+</LinearLayout>
