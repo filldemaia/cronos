@@ -1,4 +1,4 @@
-# Public General Licence - GNU Version 3.0
+# General Public Licence - GNU Version 3.0
 
 
                     GNU GENERAL PUBLIC LICENSE
