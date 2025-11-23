@@ -2,6 +2,7 @@ package com.example.horacat
 
 import java.util.Calendar
 
+
 /**
  * Classe utilitària per formatar l'hora en català tradicional
  * Centralitza tota la lògica per evitar duplicació de codi

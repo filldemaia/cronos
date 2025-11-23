@@ -3,9 +3,7 @@ package com.example.horacat
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.animation.core.*
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.snapping.SnapPosition
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
@@ -41,7 +39,7 @@ fun HoracatApp() {
     var currentTime by remember { mutableStateOf(CatalanTimeFormatter.getCurrentTimeInCatalan()) }
     var digitalTime by remember { mutableStateOf("") }
     var currentDate by remember { mutableStateOf("") }
-    
+
     // Actualitzar l'hora cada segon
     LaunchedEffect(true) {
         while (true) {
@@ -52,10 +50,12 @@ fun HoracatApp() {
             delay(1000)
         }
     }
-    
+
     // Gradient de fons que canvia segons l'hora del dia
     val backgroundGradient = getTimeBasedGradient()
-    
+    // Colors per a les cards que també canvien
+    val cardColors = getTimeBasedCardColors()
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -95,7 +95,7 @@ fun HoracatApp() {
                         .shadow(8.dp, RoundedCornerShape(16.dp)),
                     shape = RoundedCornerShape(16.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
+                        containerColor = cardColors.dateCard
                     )
                 ) {
                     Text(
@@ -106,10 +106,10 @@ fun HoracatApp() {
                         textAlign = TextAlign.Center,
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Medium,
-                        color = Color.White
+                        color = cardColors.textColor
                     )
                 }
-                
+
                 Spacer(modifier = Modifier.height(32.dp))
 
                 // Hora en català
@@ -120,7 +120,7 @@ fun HoracatApp() {
                         .shadow(12.dp, RoundedCornerShape(20.dp)),
                     shape = RoundedCornerShape(20.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = cardColors.mainCard
                     )
                 ) {
                     Column(
@@ -129,7 +129,6 @@ fun HoracatApp() {
                             .padding(24.dp),
                         horizontalAlignment = Alignment.CenterHorizontally
                     ) {
-                        
                         Text(
                             text = currentTime,
                             modifier = Modifier
@@ -138,14 +137,14 @@ fun HoracatApp() {
                             textAlign = TextAlign.Center,
                             fontSize = 24.sp,
                             fontWeight = FontWeight.Bold,
-                            color = Color.White,
+                            color = cardColors.textColor,
                             lineHeight = 32.sp
                         )
                     }
                 }
-                
+
                 Spacer(modifier = Modifier.height(32.dp))
-                
+
                 // Hora digital
                 Card(
                     modifier = Modifier
@@ -153,7 +152,7 @@ fun HoracatApp() {
                         .shadow(8.dp, RoundedCornerShape(12.dp)),
                     shape = RoundedCornerShape(12.dp),
                     colors = CardDefaults.cardColors(
-                        containerColor = MaterialTheme.colorScheme.primary
+                        containerColor = cardColors.digitalCard
                     )
                 ) {
                     Text(
@@ -161,11 +160,68 @@ fun HoracatApp() {
                         modifier = Modifier.padding(horizontal = 32.dp, vertical = 16.dp),
                         fontSize = 36.sp,
                         fontWeight = FontWeight.Bold,
-                        color = Color.White
+                        color = cardColors.textColor
                     )
                 }
+
                 Spacer(modifier = Modifier.height(48.dp))
             }
+        }
+    }
+}
+
+data class TimeBasedColors(
+    val dateCard: Color,
+    val mainCard: Color,
+    val digitalCard: Color,
+    val textColor: Color
+)
+
+@Composable
+fun getTimeBasedCardColors(): TimeBasedColors {
+    val calendar = Calendar.getInstance()
+    val hour = calendar.get(Calendar.HOUR_OF_DAY)
+
+    return when (hour) {
+        in 5..7 -> { // Alba - tonalitats clares i càlides
+            TimeBasedColors(
+                dateCard = Color(0xFFFFF3E0),     // Taronja molt clar
+                mainCard = Color(0xFFFFE0B2),     // Taronja clar
+                digitalCard = Color(0xFFFFCC80),  // Taronja suau
+                textColor = Color(0xFF5D4037)     // Marró fosc per contrast
+            )
+        }
+        in 8..11 -> { // Matí - tonalitats fresques i blaves
+            TimeBasedColors(
+                dateCard = Color(0xFFE3F2FD),     // Blau molt clar
+                mainCard = Color(0xFFBBDEFB),     // Blau clar
+                digitalCard = Color(0xFF90CAF9),  // Blau suau
+                textColor = Color(0xFF01579B)     // Blau fosc per contrast
+            )
+        }
+        in 12..16 -> { // Migdia/Tarda - tonalitats brillants
+            TimeBasedColors(
+                dateCard = Color(0xFFFFF9C4),     // Groc clar
+                mainCard = Color(0xFFFFF59D),     // Groc
+                digitalCard = Color(0xFFFFF176),  // Groc més fort
+                textColor = Color(0xFF4E342E)     // Marró fosc per contrast
+            )
+        }
+        in 17..19 -> { // Vespre - tonalitats càlides (taronja/rosa)
+            TimeBasedColors(
+                dateCard = Color(0xFFFFEBEE),     // Rosa molt clar
+                mainCard = Color(0xFFFFCDD2),     // Rosa clar
+                digitalCard = Color(0xFFEF9A9A),  // Rosa suau
+                textColor = Color(0xFFB71C1C)     // Vermell fosc per contrast
+            )
+        }
+        else -> { // Nit - tonalitats fosques però amb text blanc
+            TimeBasedColors(
+                dateCard = Color(0xFF3F51B5),     // Blau nit
+                mainCard = Color(0xFF303F9F),     // Blau nit fosc
+                digitalCard = Color(0xFF1A237E),  // Blau molt fosc
+                textColor = Color.White           // Blanc per contrast
+            )
         }
     }
 }
@@ -174,7 +230,7 @@ fun HoracatApp() {
 fun getTimeBasedGradient(): Brush {
     val calendar = Calendar.getInstance()
     val hour = calendar.get(Calendar.HOUR_OF_DAY)
-    
+
     return when (hour) {
         in 5..7 -> { // Alba
             Brush.verticalGradient(

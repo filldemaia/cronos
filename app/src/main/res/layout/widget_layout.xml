@@ -5,8 +5,6 @@
     android:gravity="left"
     android:orientation="vertical">
 
-<!--    android:background="@drawable/widget_background"-->
-
     <TextView
         android:id="@+id/widgetTimeTextView"
         android:layout_width="wrap_content"
@@ -19,17 +17,5 @@
         android:shadowDy="1"
         android:shadowRadius="2"
         android:lineSpacingMultiplier="1.1"/>
-    
-    <TextView
-        android:id="@+id/widgetClockTextView"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="4dp"
-        android:textSize="24sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-thin"
-        android:shadowColor="#000000"
-        android:shadowDx="1"
-        android:shadowDy="1"
-        android:shadowRadius="2"/>
+
 </LinearLayout>

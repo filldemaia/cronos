@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Horacat</string>
-    <string name="widget_name">Horacat - Hora Catalana</string>
+    <string name="app_name">Cronos</string>
+    <string name="widget_name">Cronos - Hora Catalana</string>
     <string name="widget_description">Mostra l\'hora actual en format català tradicional</string>
     <string name="hour_label">Hora Catalana</string>
     <string name="digital_time_label">Hora Digital</string>
     <string name="widget_tip">💡 Consell: Afegeix el widget a la pantalla d\'inici per veure l\'hora catalana sempre</string>
-    <string name="about_text">Horacat ajuda a preservar la manera tradicional catalana de dir l\'hora</string>
+    <string name="about_text">Cronos ajuda a preservar la manera tradicional catalana de dir l\'hora</string>
     <string name="loading">Carregant...</string>
 </resources>
