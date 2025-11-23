@@ -19,5 +19,5 @@ dependencyResolutionManagement {
     }
 }
 
-rootProject.name = "horacat"
+rootProject.name = "cronos"
 include(":app")

@@ -1,13 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.horacat">
+    package="com.example.cronos">
 
     <!-- Permisos necessaris per al widget -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
+            tools:ignore="ExactAlarmPolicy" />
 
     <application
         android:allowBackup="true"
@@ -17,15 +18,15 @@
         android:label="@string/app_name"
         android:roundIcon="@drawable/favicon"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Horacat"
+        android:theme="@style/Theme.Cronos"
         tools:targetApi="31">
 
         <!-- Activitat principal -->
         <activity
-            android:name=".MainActivity"
+            android:name="com.example.cronos.MainActivity"
             android:exported="true"
             android:label="@string/app_name"
-            android:theme="@style/Theme.Horacat"
+            android:theme="@style/Theme.Cronos"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -35,7 +36,7 @@
 
         <!-- Widget Provider -->
         <receiver
-            android:name=".HoracatWidget"
+            android:name="com.example.cronos.CronosWidget"
             android:label="@string/widget_name"
             android:exported="true">
             <intent-filter>
@@ -49,7 +50,7 @@
 
         <!-- Receiver per reiniciar el widget després d'un reinici del dispositiu -->
         <receiver
-            android:name=".BootReceiver"
+            android:name="com.example.cronos.BootReceiver"
             android:enabled="true"
             android:exported="true">
             <intent-filter>

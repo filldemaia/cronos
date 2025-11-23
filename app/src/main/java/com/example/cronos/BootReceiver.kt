@@ -1,4 +1,4 @@
-package com.example.horacat
+package com.example.cronos
 
 import android.appwidget.AppWidgetManager
 import android.content.BroadcastReceiver
@@ -22,14 +22,14 @@ class BootReceiver : BroadcastReceiver() {
             
             // Obtenir tots els widgets actius
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val thisWidget = ComponentName(context, HoracatWidget::class.java)
+            val thisWidget = ComponentName(context, CronosWidget::class.java)
             val appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
             
             if (appWidgetIds.isNotEmpty()) {
                 Log.d(TAG, "Trobats ${appWidgetIds.size} widgets actius")
                 
                 // Enviar intent per actualitzar els widgets
-                val updateIntent = Intent(context, HoracatWidget::class.java).apply {
+                val updateIntent = Intent(context, CronosWidget::class.java).apply {
                     action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
                     putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
                 }

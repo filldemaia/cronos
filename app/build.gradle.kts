@@ -5,11 +5,11 @@ plugins {
 }
 
 android {
-    namespace = "com.example.horacat"
+    namespace = "com.example.cronos"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.horacat"
+        applicationId = "com.example.cronos"
         minSdk = 24
         targetSdk = 34
         versionCode = 2

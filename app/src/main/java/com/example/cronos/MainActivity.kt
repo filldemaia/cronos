@@ -1,4 +1,4 @@
-package com.example.horacat
+package com.example.cronos
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity

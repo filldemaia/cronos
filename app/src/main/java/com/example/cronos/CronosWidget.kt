@@ -1,4 +1,4 @@
-package com.example.horacat
+package com.example.cronos
 
 import android.app.AlarmManager
 import android.app.PendingIntent
@@ -10,12 +10,13 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
+import com.example.cronos.R
 
 /**
  * Widget per mostrar l'hora catalana a la pantalla d'inici
  * S'actualitza automàticament cada minut
  */
-class HoracatWidget : AppWidgetProvider() {
+class CronosWidget : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -56,7 +57,7 @@ class HoracatWidget : AppWidgetProvider() {
                 
                 // Obtenir tots els widgets i actualitzar-los
                 val appWidgetManager = AppWidgetManager.getInstance(context)
-                val componentName = ComponentName(context, HoracatWidget::class.java)
+                val componentName = ComponentName(context, CronosWidget::class.java)
                 val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
                 
                 Log.d(TAG, "Actualitzant ${appWidgetIds.size} widgets")
@@ -78,7 +79,7 @@ class HoracatWidget : AppWidgetProvider() {
             return
         }
 
-        val intent = Intent(context, HoracatWidget::class.java).apply {
+        val intent = Intent(context, CronosWidget::class.java).apply {
             action = ACTION_UPDATE_WIDGET
         }
         
@@ -147,7 +148,7 @@ class HoracatWidget : AppWidgetProvider() {
 
     private fun cancelUpdates(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val intent = Intent(context, HoracatWidget::class.java).apply {
+        val intent = Intent(context, CronosWidget::class.java).apply {
             action = ACTION_UPDATE_WIDGET
         }
         val pendingIntent = PendingIntent.getBroadcast(
