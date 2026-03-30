@@ -1,4 +1,4 @@
-# Horacat - Hora Catalana per Android
+# Cronos - Hora Catalana per Android
 
 Una aplicació Android elegant i moderna per mostrar l'hora en català tradicional, ajudant a preservar aquesta bella tradició lingüística.
 
