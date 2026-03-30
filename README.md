@@ -2,9 +2,9 @@
 
 Una aplicació Android elegant i moderna per mostrar l'hora en català tradicional, ajudant a preservar aquesta bella tradició lingüística.
 
-## 🌟 Característiques Principals
+## Característiques Principals
 
-### ✨ Noves Millores (v2.0)
+### Noves Millores (v2.0)
 - **Interfície Completament Renovada**: Disseny modern amb Jetpack Compose
 - **Gradient Dinàmic**: El fons canvia segons l'hora del dia (alba, matí, tarda, vespre, nit)
 - **Widget Millorat**: Actualització automàtica cada minut amb disseny elegant
@@ -12,14 +12,14 @@ Una aplicació Android elegant i moderna per mostrar l'hora en català tradicion
 - **Suport per Temes**: Compatible amb mode clar i fosc del sistema
 - **Animacions Fluides**: Transicions suaus en els canvis d'hora
 
-### 📱 Funcionalitats
+### Funcionalitats
 - **Hora Catalana Tradicional**: Mostra l'hora amb el format complet tradicional (quarts, minuts, moment del dia)
 - **Hora Digital**: Visualització complementària en format 24h
 - **Data en Català**: Mostra el dia de la setmana i la data completa
 - **Widget per Pantalla d'Inici**: Accés ràpid a l'hora catalana sense obrir l'app
 - **Actualització en Temps Real**: L'hora s'actualitza automàticament cada segon
 
-## 📋 Exemples del Format d'Hora Catalana
+## Exemples del Format d'Hora Catalana
 
 - **12:00** → "Són les dotze del migdia"
 - **15:15** → "És un quart de quatre de la tarda"
@@ -28,7 +28,7 @@ Una aplicació Android elegant i moderna per mostrar l'hora en català tradicion
 - **08:07** → "Són les vuit i set minuts del matí"
 - **14:53** → "Falten set minuts per les tres de la tarda"
 
-## 🏗️ Arquitectura Millorada
+## Arquitectura Millorada
 
 ### Estructura del Projecte
 ```
@@ -49,7 +49,7 @@ com.example.horacat/
 4. **Suport per Diferents Versions d'Android**: Compatible des d'Android 7.0 (API 24)
 5. **Optimització de Bateria**: El widget s'actualitza només quan és necessari
 
-## 🛠️ Instal·lació
+## Instal·lació
 
 ### Requisits
 - Android 7.0 (API 24) o superior
@@ -71,7 +71,7 @@ git clone https://github.com/eriklledo/horacat.git
 # Compila i executa l'aplicació
 ```
 
-## 🎯 Com Utilitzar l'Aplicació
+## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
 1. Obre **Horacat** des del calaix d'aplicacions
@@ -85,7 +85,7 @@ git clone https://github.com/eriklledo/horacat.git
 4. Arrossega el widget a la pantalla d'inici
 5. Redimensiona'l segons les teves preferències
 
-## 🔧 Per a Desenvolupadors
+## Per a Desenvolupadors
 
 ### Tecnologies Utilitzades
 - **Kotlin**: Llenguatge principal
@@ -101,20 +101,20 @@ git clone https://github.com/eriklledo/horacat.git
 4. Push a la branca (`git push origin feature/NovaFuncionalitat`)
 5. Obre un Pull Request
 
-## 📝 Llicència
+## Llicència
 
 Aquest projecte està llicenciat sota la **GPL 3.0** o posterior - veure [LICENSE.md](LICENSE.md) per més detalls.
 
-## 🙏 Agraïments
+## Agraïments
 
 - **Gabriel Mizrahi Mejias** - Contribucions inicials
 - La comunitat catalana per mantenir vives aquestes tradicions
-- Tots els usuaris que ajuden a preservar la llengua
+- Els catalans i les catales que ajuden a preservar la llengua
 
-## 📧 Contacte
+## Contacte
 
 Èrik Calvo Lledó - [GitHub](https://github.com/eriklledo)
 
 ---
 
-**Fet amb ❤️ per ajudar a preservar la llengua i cultura catalanes**
+**Fet amb amor per ajudar a preservar la llengua i cultura catalanes**
