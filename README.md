@@ -13,7 +13,7 @@ Una aplicació Android elegant i moderna per mostrar l'hora en català tradicion
 - **Animacions Fluides**: Transicions suaus en els canvis d'hora
 
 ### Funcionalitats
-- **Hora Catalana Tradicional**: Mostra l'hora amb el format complet tradicional (quarts, minuts, moment del dia)
+- **Hora Catalana Tradicional**: Mostra l'hora amb el format complet tradicional
 - **Hora Digital**: Visualització complementària en format 24h
 - **Data en Català**: Mostra el dia de la setmana i la data completa
 - **Widget per Pantalla d'Inici**: Accés ràpid a l'hora catalana sense obrir l'app
@@ -25,7 +25,7 @@ Una aplicació Android elegant i moderna per mostrar l'hora en català tradicion
 - **15:15** → "És un quart de quatre de la tarda"
 - **20:30** → "Són dos quarts de nou del vespre"
 - **22:45** → "Són tres quarts d'onze de la nit"
-- **08:07** → "Són les vuit i set minuts del matí"
+- **08:06** → "Són les vuit i sis minuts del matí"
 - **14:53** → "Falten set minuts per les tres de la tarda"
 
 ## Arquitectura Millorada
@@ -43,7 +43,7 @@ com.example.horacat/
 
 ### Millores Tècniques Implementades
 
-1. **Eliminació de Codi Duplicat**: Tota la lògica de formatació està centralitzada a `CatalanTimeFormatter`
+1. **Optimització del codi**: Tota la lògica de formatació està centralitzada a `CatalanTimeFormatter`
 2. **Jetpack Compose**: UI moderna i declarativa més fàcil de mantenir
 3. **Gestió Eficient del Widget**: Actualitzacions programades intel·ligentment
 4. **Suport per Diferents Versions d'Android**: Compatible des d'Android 7.0 (API 24)
@@ -58,25 +58,23 @@ com.example.horacat/
 ### Opcions d'Instal·lació
 
 #### Opció 1: APK Directe
-1. Descarrega el fitxer `horacat-v2.0.apk` des de la secció [Releases](https://github.com/eriklledo/horacat/releases)
+1. Descarrega el fitxer `horacat.apk` des de la secció [Releases](https://github.com/eriklledo/horacat/releases)
 2. Activa "Fonts desconegudes" als ajustos del teu dispositiu
 3. Obre l'APK descarregat i instal·la l'aplicació
 
 #### Opció 2: Compilar des del Codi Font
 ```bash
-# Clona el repositori
-git clone https://github.com/eriklledo/horacat.git
-
-# Obre el projecte amb Android Studio
+# Clona el repositori amb git clone
+# Obre el projecte amb Android Studio o similars
 # Compila i executa l'aplicació
 ```
 
 ## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
-1. Obre **Horacat** des del calaix d'aplicacions
-2. Veuràs l'hora catalana destacada al centre
-3. El fons canviarà de color segons el moment del dia
+- Obre **Horacat** des del calaix d'aplicacions
+- Veuràs l'hora catalana destacada al centre
+- El fons canviarà de color segons el moment del dia
 
 ### Afegir el Widget
 1. Mantén premuda la pantalla d'inici
@@ -96,9 +94,9 @@ git clone https://github.com/eriklledo/horacat.git
 
 ### Com Contribuir
 1. Fes un fork del projecte
-2. Crea una branca per la teva funcionalitat (`git checkout -b feature/NovaFuncionalitat`)
-3. Commit els teus canvis (`git commit -m 'Afegeix nova funcionalitat'`)
-4. Push a la branca (`git push origin feature/NovaFuncionalitat`)
+2. Crea una branca per la teva funcionalitat
+3. Commit dels teus canvis
+4. Push a la branca
 5. Obre un Pull Request
 
 ## Llicència
