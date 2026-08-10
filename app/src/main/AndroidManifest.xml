@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:tools="http://schemas.android.com/tools"
-    package="com.example.cronos">
+        xmlns:tools="http://schemas.android.com/tools"
+        package="com.example.cronos">
 
     <!-- Permisos necessaris per al widget -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
@@ -11,23 +11,23 @@
             tools:ignore="ExactAlarmPolicy" />
 
     <application
-        android:allowBackup="true"
-        android:dataExtractionRules="@xml/data_extraction_rules"
-        android:fullBackupContent="@xml/backup_rules"
-        android:icon="@drawable/favicon"
-        android:label="@string/app_name"
-        android:roundIcon="@drawable/favicon"
-        android:supportsRtl="true"
-        android:theme="@style/Theme.Cronos"
-        tools:targetApi="31">
+            android:allowBackup="true"
+            android:dataExtractionRules="@xml/data_extraction_rules"
+            android:fullBackupContent="@xml/backup_rules"
+            android:icon="@mipmap/ic_launcher"
+            android:label="@string/app_name"
+            android:roundIcon="@mipmap/ic_launcher_round"
+            android:supportsRtl="true"
+            android:theme="@style/Theme.Cronos"
+            tools:targetApi="31">
 
         <!-- Activitat principal -->
         <activity
-            android:name="com.example.cronos.MainActivity"
-            android:exported="true"
-            android:label="@string/app_name"
-            android:theme="@style/Theme.Cronos"
-            android:screenOrientation="portrait">
+                android:name="com.example.cronos.MainActivity"
+                android:exported="true"
+                android:label="@string/app_name"
+                android:theme="@style/Theme.Cronos"
+                android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
@@ -36,23 +36,51 @@
 
         <!-- Widget Provider -->
         <receiver
-            android:name="com.example.cronos.CronosWidget"
-            android:label="@string/widget_name"
-            android:exported="true">
+                android:name="com.example.cronos.CronosWidget"
+                android:label="@string/widget_name"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
                 <action android:name="com.example.horacat.ACTION_UPDATE_WIDGET" />
             </intent-filter>
             <meta-data
-                android:name="android.appwidget.provider"
-                android:resource="@xml/widget_info" />
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_info" />
+        </receiver>
+
+        <!-- Widget gran -->
+        <receiver
+                android:name="com.example.cronos.CronosWidgetLarge"
+                android:label="@string/widget_name_large"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.cronos.ACTION_UPDATE_WIDGET_LARGE" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_info_large" />
+        </receiver>
+
+        <!-- Widget estil Apple (canvia de color segons l'hora) -->
+        <receiver
+                android:name="com.example.cronos.CronosWidgetApple"
+                android:label="@string/widget_name_apple"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+                <action android:name="com.example.cronos.ACTION_UPDATE_WIDGET_APPLE" />
+            </intent-filter>
+            <meta-data
+                    android:name="android.appwidget.provider"
+                    android:resource="@xml/widget_info_apple" />
         </receiver>
 
         <!-- Receiver per reiniciar el widget després d'un reinici del dispositiu -->
         <receiver
-            android:name="com.example.cronos.BootReceiver"
-            android:enabled="true"
-            android:exported="true">
+                android:name="com.example.cronos.BootReceiver"
+                android:enabled="true"
+                android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />

@@ -10,13 +10,12 @@ import android.content.Intent
 import android.os.Build
 import android.util.Log
 import android.widget.RemoteViews
-import com.example.cronos.R
 
 /**
- * Widget per mostrar l'hora catalana a la pantalla d'inici
- * S'actualitza automàticament cada minut
+ * Widget "estil Apple": una targeta arrodonida que canvia de color
+ * segons el moment del dia, igual que la pantalla principal de l'app.
  */
-class CronosWidget : AppWidgetProvider() {
+class CronosWidgetApple : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -24,51 +23,32 @@ class CronosWidget : AppWidgetProvider() {
         appWidgetIds: IntArray
     ) {
         Log.d(TAG, "onUpdate cridat per ${appWidgetIds.size} widgets")
-        
-        // Actualitzar tots els widgets
         for (appWidgetId in appWidgetIds) {
             updateAppWidget(context, appWidgetManager, appWidgetId)
         }
-        
-        // Programar la propera actualització
         scheduleNextUpdate(context)
     }
 
     override fun onEnabled(context: Context) {
         super.onEnabled(context)
-        Log.d(TAG, "Widget activat - programant actualitzacions")
         scheduleNextUpdate(context)
     }
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        Log.d(TAG, "Widget desactivat - cancel·lant actualitzacions")
         cancelUpdates(context)
     }
 
     override fun onReceive(context: Context, intent: Intent) {
         super.onReceive(context, intent)
-        
-        Log.d(TAG, "onReceive: ${intent.action}")
-        
-        when (intent.action) {
-            ACTION_UPDATE_WIDGET -> {
-                Log.d(TAG, "Actualitzant widget per alarma")
-                
-                // Obtenir tots els widgets i actualitzar-los
-                val appWidgetManager = AppWidgetManager.getInstance(context)
-                val componentName = ComponentName(context, CronosWidget::class.java)
-                val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
-                
-                Log.d(TAG, "Actualitzant ${appWidgetIds.size} widgets")
-                
-                for (appWidgetId in appWidgetIds) {
-                    updateAppWidget(context, appWidgetManager, appWidgetId)
-                }
-                
-                // Programar la propera actualització
-                scheduleNextUpdate(context)
+        if (intent.action == ACTION_UPDATE_WIDGET) {
+            val appWidgetManager = AppWidgetManager.getInstance(context)
+            val componentName = ComponentName(context, CronosWidgetApple::class.java)
+            val appWidgetIds = appWidgetManager.getAppWidgetIds(componentName)
+            for (appWidgetId in appWidgetIds) {
+                updateAppWidget(context, appWidgetManager, appWidgetId)
             }
+            scheduleNextUpdate(context)
         }
     }
 
@@ -79,10 +59,9 @@ class CronosWidget : AppWidgetProvider() {
             return
         }
 
-        val intent = Intent(context, CronosWidget::class.java).apply {
+        val intent = Intent(context, CronosWidgetApple::class.java).apply {
             action = ACTION_UPDATE_WIDGET
         }
-        
         val pendingIntent = PendingIntent.getBroadcast(
             context,
             REQUEST_CODE,
@@ -90,65 +69,42 @@ class CronosWidget : AppWidgetProvider() {
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
 
-        // Cancel·lar qualsevol alarma prèvia
         alarmManager.cancel(pendingIntent)
 
-        // Calcular el temps fins al proper minut
         val now = System.currentTimeMillis()
         val nextMinute = ((now / 60000) + 1) * 60000
-        
-        Log.d(TAG, "Programant alarma per: ${java.util.Date(nextMinute)}")
 
-        // Programar l'alarma segons la versió d'Android
         try {
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-                // Android 12+ - necessita permís especial
                 if (alarmManager.canScheduleExactAlarms()) {
                     alarmManager.setExactAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
                         nextMinute,
                         pendingIntent
                     )
-                    Log.d(TAG, "Alarma exacta programada (Android 12+)")
                 } else {
-                    Log.w(TAG, "No es pot programar alarma exacta - cal permís manual")
                     alarmManager.setAndAllowWhileIdle(
                         AlarmManager.RTC_WAKEUP,
                         nextMinute,
                         pendingIntent
                     )
                 }
-            } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-                // Android 6+
+            } else {
                 alarmManager.setExactAndAllowWhileIdle(
                     AlarmManager.RTC_WAKEUP,
                     nextMinute,
                     pendingIntent
                 )
-                Log.d(TAG, "Alarma exacta programada (Android 6+)")
-            } else {
-                // Android 5 i anteriors
-                alarmManager.setExact(
-                    AlarmManager.RTC_WAKEUP,
-                    nextMinute,
-                    pendingIntent
-                )
-                Log.d(TAG, "Alarma exacta programada")
             }
         } catch (e: SecurityException) {
             Log.e(TAG, "Error programant alarma: ${e.message}")
-            // Intentar amb alarma no exacta com a fallback
-            alarmManager.set(
-                AlarmManager.RTC_WAKEUP,
-                nextMinute,
-                pendingIntent
-            )
+            alarmManager.set(AlarmManager.RTC_WAKEUP, nextMinute, pendingIntent)
         }
     }
 
     private fun cancelUpdates(context: Context) {
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
-        val intent = Intent(context, CronosWidget::class.java).apply {
+        val intent = Intent(context, CronosWidgetApple::class.java).apply {
             action = ACTION_UPDATE_WIDGET
         }
         val pendingIntent = PendingIntent.getBroadcast(
@@ -157,28 +113,27 @@ class CronosWidget : AppWidgetProvider() {
             intent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        
         alarmManager?.cancel(pendingIntent)
-        Log.d(TAG, "Actualitzacions cancel·lades")
     }
 
     companion object {
-        private const val TAG = "HoracatWidget"
-        private const val ACTION_UPDATE_WIDGET = "com.example.horacat.ACTION_UPDATE_WIDGET"
-        private const val REQUEST_CODE = 12345
+        private const val TAG = "CronosWidgetApple"
+        private const val ACTION_UPDATE_WIDGET = "com.example.cronos.ACTION_UPDATE_WIDGET_APPLE"
+        private const val REQUEST_CODE = 22345
 
         internal fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
             appWidgetId: Int
         ) {
-            val views = RemoteViews(context.packageName, R.layout.widget_layout)
+            val views = RemoteViews(context.packageName, R.layout.widget_layout_apple)
 
-            // Utilitzar CatalanTimeFormatter per obtenir l'hora en català
             val timeInCatalan = CatalanTimeFormatter.getCurrentTimeInCatalan()
-            views.setTextViewText(R.id.widgetTimeTextView, timeInCatalan)
-            
-            Log.d(TAG, "Widget actualitzat: $timeInCatalan")
+            val palette = WidgetColors.getPaletteForCurrentHour()
+
+            views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
+            views.setTextColor(R.id.appleWidgetTime, palette.textColor)
+            views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.backgroundDrawableRes)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }

@@ -11,35 +11,42 @@ import android.util.Log
  * Receiver per reiniciar el widget després d'un reinici del dispositiu
  */
 class BootReceiver : BroadcastReceiver() {
-    
+
     override fun onReceive(context: Context, intent: Intent) {
         Log.d(TAG, "BootReceiver: ${intent.action}")
-        
+
         if (intent.action == Intent.ACTION_BOOT_COMPLETED ||
             intent.action == "android.intent.action.QUICKBOOT_POWERON") {
-            
+
             Log.d(TAG, "Dispositiu reiniciat - reprogramant widgets")
-            
-            // Obtenir tots els widgets actius
+
             val appWidgetManager = AppWidgetManager.getInstance(context)
-            val thisWidget = ComponentName(context, CronosWidget::class.java)
-            val appWidgetIds = appWidgetManager.getAppWidgetIds(thisWidget)
-            
-            if (appWidgetIds.isNotEmpty()) {
-                Log.d(TAG, "Trobats ${appWidgetIds.size} widgets actius")
-                
-                // Enviar intent per actualitzar els widgets
-                val updateIntent = Intent(context, CronosWidget::class.java).apply {
-                    action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
-                    putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
-                }
-                context.sendBroadcast(updateIntent)
-            } else {
-                Log.d(TAG, "No hi ha widgets actius")
-            }
+
+            // Reprogramar els tres tipus de widget: petit, gran i estil Apple
+            reprogramarWidget(context, appWidgetManager, CronosWidgetApple::class.java)
+            reprogramarWidget(context, appWidgetManager, CronosWidgetLarge::class.java)
+            reprogramarWidget(context, appWidgetManager, CronosWidgetApple::class.java)
         }
     }
-    
+
+    private fun reprogramarWidget(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        widgetClass: Class<*>
+    ) {
+        val component = ComponentName(context, widgetClass)
+        val appWidgetIds = appWidgetManager.getAppWidgetIds(component)
+
+        if (appWidgetIds.isNotEmpty()) {
+            Log.d(TAG, "Trobats ${appWidgetIds.size} widgets actius de ${widgetClass.simpleName}")
+            val updateIntent = Intent(context, widgetClass).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, appWidgetIds)
+            }
+            context.sendBroadcast(updateIntent)
+        }
+    }
+
     companion object {
         private const val TAG = "BootReceiver"
     }
