@@ -1,21 +1,24 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/smallWidgetRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:gravity="left"
-    android:orientation="vertical">
+    android:orientation="vertical"
+    android:gravity="center"
+    android:padding="6dp">
 
     <TextView
-        android:id="@+id/widgetTimeTextView"
+        android:id="@+id/smallWidgetTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="25sp"
+        android:textSize="18sp"
         android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-light"
-        android:shadowColor="#000000"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:shadowColor="#80000000"
         android:shadowDx="1"
         android:shadowDy="1"
-        android:shadowRadius="2"
-        android:lineSpacingMultiplier="1.1"/>
+        android:shadowRadius="3"
+        android:lineSpacingMultiplier="1.15"/>
 
 </LinearLayout>

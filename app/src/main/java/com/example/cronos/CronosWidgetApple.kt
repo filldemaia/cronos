@@ -3,16 +3,16 @@ package com.example.cronos
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
-import android.graphics.Color
 import android.util.Log
 import android.widget.RemoteViews
+import com.example.cronos.ui.theme.paletteForHour
+import java.util.Calendar
 
 /**
- * Widget petit (2x2, transparent): mostra l'hora catalana en text blanc
- * amb ombra, perquè es llegeixi sobre qualsevol fons de pantalla sense
- * tapar-lo amb una targeta.
+ * Widget "estil Apple": una targeta arrodonida que canvia de color
+ * segons el moment del dia, igual que la pantalla principal de l'app.
  */
-class CronosWidget : AppWidgetProvider() {
+class CronosWidgetApple : AppWidgetProvider() {
 
     override fun onUpdate(
         context: Context,
@@ -37,19 +37,21 @@ class CronosWidget : AppWidgetProvider() {
     }
 
     companion object {
-        private const val TAG = "CronosWidget"
+        private const val TAG = "CronosWidgetApple"
 
         internal fun updateAppWidget(
             context: Context,
             appWidgetManager: AppWidgetManager,
             appWidgetId: Int
         ) {
-            val views = RemoteViews(context.packageName, R.layout.widget_layout)
+            val views = RemoteViews(context.packageName, R.layout.widget_layout_apple)
 
             val timeInCatalan = CatalanTimeFormatter.getCurrentTimeInCatalan()
+            val palette = paletteForHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
 
-            views.setTextViewText(R.id.smallWidgetTime, timeInCatalan)
-            views.setTextColor(R.id.smallWidgetTime, Color.WHITE)
+            views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
+            views.setTextColor(R.id.appleWidgetTime, palette.widgetTextColor)
+            views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.widgetBackgroundRes)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }

@@ -9,8 +9,10 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import kotlin.math.roundToInt
 
 /**
  * Pantalla de configuració. Sense bombolles — línies clares
@@ -24,7 +26,9 @@ fun SettingsScreen(
     onBack: () -> Unit,
 ) {
     var showSeconds by remember(settings) { mutableStateOf(settings.showSeconds) }
-    var compactExact by remember(settings) { mutableStateOf(settings.useCompactExactHour) }
+    var showSecondsWritten by remember(settings) { mutableStateOf(settings.showSecondsWritten) }
+    var showDigital by remember(settings) { mutableStateOf(settings.showDigital) }
+    var hourSize by remember(settings) { mutableStateOf(settings.hourSize) }
 
     Scaffold(
         topBar = {
@@ -49,25 +53,65 @@ fun SettingsScreen(
         ) {
             SectionHeader(stringResource(R.string.settings_section_display))
             SettingSwitchRow(
+                title = stringResource(R.string.settings_show_digital),
+                description = stringResource(R.string.settings_show_digital_desc),
+                checked = showDigital,
+                onCheckedChange = {
+                    showDigital = it
+                    settings.showDigital = it
+                },
+            )
+            HorizontalDividerLegacy()
+            SettingSwitchRow(
                 title = stringResource(R.string.settings_show_seconds),
                 description = stringResource(R.string.settings_show_seconds_desc),
-                checked = showSeconds,
+                checked = showSeconds && showDigital,
                 onCheckedChange = {
                     showSeconds = it
                     settings.showSeconds = it
                 },
+                enabled = showDigital,
+            )
+            HorizontalDividerLegacy()
+            SettingSwitchRow(
+                title = stringResource(R.string.settings_show_seconds_written),
+                description = stringResource(R.string.settings_show_seconds_written_desc),
+                checked = showSecondsWritten,
+                onCheckedChange = {
+                    showSecondsWritten = it
+                    settings.showSecondsWritten = it
+                },
             )
             HorizontalDividerLegacy()
 
-            SectionHeader(stringResource(R.string.settings_section_time))
-            SettingSwitchRow(
-                title = stringResource(R.string.settings_compact_exact),
-                description = stringResource(R.string.settings_compact_exact_desc),
-                checked = compactExact,
-                onCheckedChange = {
-                    compactExact = it
-                    settings.useCompactExactHour = it
+            // Mida de l'hora catalana amb control lliscant
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp, top = 12.dp, bottom = 4.dp),
+                verticalAlignment = Alignment.CenterVertically,
+            ) {
+                Text(
+                    text = stringResource(R.string.settings_hour_size),
+                    style = MaterialTheme.typography.bodyLarge,
+                    modifier = Modifier.weight(1f),
+                )
+                Text(
+                    text = "${hourSize.roundToInt()}",
+                    style = MaterialTheme.typography.bodyLarge,
+                    color = MaterialTheme.colorScheme.primary,
+                )
+            }
+            Slider(
+                value = hourSize,
+                onValueChange = {
+                    hourSize = it
+                    settings.hourSize = it
                 },
+                valueRange = 18f..48f,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(start = 20.dp, end = 20.dp),
             )
             HorizontalDividerLegacy()
 
@@ -81,6 +125,24 @@ fun SettingsScreen(
             ListItem(
                 headlineContent = { Text(stringResource(R.string.settings_version)) },
             )
+
+            HorizontalDividerLegacy()
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp, vertical = 16.dp),
+                horizontalArrangement = Arrangement.Center,
+            ) {
+                OutlinedButton(
+                    onClick = {
+                        settings.reset()
+                        onBack()
+                    },
+                ) {
+                    Text(stringResource(R.string.settings_reset))
+                }
+            }
         }
     }
 }
@@ -112,14 +174,17 @@ private fun SettingSwitchRow(
     description: String,
     checked: Boolean,
     onCheckedChange: (Boolean) -> Unit,
+    enabled: Boolean = true,
 ) {
     ListItem(
+        modifier = Modifier.alpha(if (enabled) 1f else 0.4f),
         headlineContent = { Text(title) },
         supportingContent = { Text(description) },
         trailingContent = {
             Switch(
                 checked = checked,
                 onCheckedChange = onCheckedChange,
+                enabled = enabled,
             )
         },
     )

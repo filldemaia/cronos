@@ -1,8 +1,24 @@
+import java.io.FileInputStream
+import java.util.Properties
+
 plugins {
     alias(libs.plugins.androidApplication)
     alias(libs.plugins.jetbrainsKotlinAndroid)
 
 }
+
+// Signatura opcional del release. Llegeix "keystore.properties" (fitxer
+// local, fora de git). Si no hi és o les contrasenyes estan buides, el
+// release es genera sense signar, com fins ara.
+val keystorePropertiesFile = rootProject.file("keystore.properties")
+val keystoreProperties = Properties()
+if (keystorePropertiesFile.exists()) {
+    FileInputStream(keystorePropertiesFile).use { keystoreProperties.load(it) }
+}
+val hasReleaseSigning = keystoreProperties.getProperty("storeFile") != null &&
+    !keystoreProperties.getProperty("storePassword").orEmpty().isBlank() &&
+    !keystoreProperties.getProperty("keyAlias").orEmpty().isBlank() &&
+    !keystoreProperties.getProperty("keyPassword").orEmpty().isBlank()
 
 android {
     namespace = "com.example.cronos"
@@ -11,13 +27,24 @@ android {
     defaultConfig {
         applicationId = "com.example.cronos"
         minSdk = 24
-        targetSdk = 34
+        targetSdk = 36
         versionCode = 2
         versionName = "2.0"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
             useSupportLibrary = true
+        }
+    }
+
+    signingConfigs {
+        create("release") {
+            if (hasReleaseSigning) {
+                storeFile = file(keystoreProperties.getProperty("storeFile")!!)
+                storePassword = keystoreProperties.getProperty("storePassword")
+                keyAlias = keystoreProperties.getProperty("keyAlias")
+                keyPassword = keystoreProperties.getProperty("keyPassword")
+            }
         }
     }
 
@@ -29,6 +56,9 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            if (hasReleaseSigning) {
+                signingConfig = signingConfigs.getByName("release")
+            }
         }
         debug {
             isMinifyEnabled = false
@@ -74,10 +104,6 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    
-    // Compose animations
-    implementation("androidx.compose.animation:animation:1.9.5")
-    implementation("androidx.compose.animation:animation-core:1.5.4")
     
     // Widget support
     implementation("androidx.glance:glance-appwidget:1.1.1")

@@ -1,0 +1,20 @@
+# Gradle i Android Studio
+.gradle/
+.idea/
+*.iml
+local.properties
+captures/
+
+# Sortides de build
+build/
+app/build/
+
+# Signatura i secrets — MAI al repositori
+keystore.properties
+*.jks
+*.keystore
+
+# Altres
+*.apk
+*.aab
+.DS_Store

@@ -22,10 +22,10 @@ class BootReceiver : BroadcastReceiver() {
 
             val appWidgetManager = AppWidgetManager.getInstance(context)
 
-            // Reprogramar els tres tipus de widget: petit, gran i estil Apple
+            // Reprogramar els tres tipus de widget: petit, estil Apple i gran
+            reprogramarWidget(context, appWidgetManager, CronosWidget::class.java)
             reprogramarWidget(context, appWidgetManager, CronosWidgetApple::class.java)
             reprogramarWidget(context, appWidgetManager, CronosWidgetLarge::class.java)
-            reprogramarWidget(context, appWidgetManager, CronosWidgetApple::class.java)
         }
     }
 

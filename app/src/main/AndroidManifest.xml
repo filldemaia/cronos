@@ -1,14 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        package="com.example.cronos">
+        xmlns:tools="http://schemas.android.com/tools">
 
     <!-- Permisos necessaris per al widget -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
-    <uses-permission android:name="android.permission.USE_EXACT_ALARM"
-            tools:ignore="ExactAlarmPolicy" />
 
     <application
             android:allowBackup="true"
@@ -34,14 +30,13 @@
             </intent-filter>
         </activity>
 
-        <!-- Widget Provider -->
+        <!-- Widget petit -->
         <receiver
                 android:name="com.example.cronos.CronosWidget"
                 android:label="@string/widget_name"
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.horacat.ACTION_UPDATE_WIDGET" />
             </intent-filter>
             <meta-data
                     android:name="android.appwidget.provider"
@@ -55,7 +50,6 @@
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.cronos.ACTION_UPDATE_WIDGET_LARGE" />
             </intent-filter>
             <meta-data
                     android:name="android.appwidget.provider"
@@ -69,11 +63,19 @@
                 android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
-                <action android:name="com.example.cronos.ACTION_UPDATE_WIDGET_APPLE" />
             </intent-filter>
             <meta-data
                     android:name="android.appwidget.provider"
                     android:resource="@xml/widget_info_apple" />
+        </receiver>
+
+        <!-- Tick per minut: una sola alarma que actualitza tots els widgets -->
+        <receiver
+                android:name="com.example.cronos.CronosWidgetTickReceiver"
+                android:exported="true">
+            <intent-filter>
+                <action android:name="com.example.cronos.ACTION_WIDGET_TICK" />
+            </intent-filter>
         </receiver>
 
         <!-- Receiver per reiniciar el widget després d'un reinici del dispositiu -->

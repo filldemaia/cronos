@@ -5,16 +5,19 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="16dp"
+    android:padding="12dp"
     android:background="@drawable/widget_bg_mati">
 
     <TextView
         android:id="@+id/appleWidgetTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="18sp"
+        android:textSize="32sp"
         android:fontFamily="sans-serif-medium"
         android:gravity="center"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="24sp"
+        android:autoSizeMaxTextSize="32sp"
         android:lineSpacingMultiplier="1.15"/>
 
 </LinearLayout>

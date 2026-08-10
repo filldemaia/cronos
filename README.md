@@ -1,87 +1,65 @@
 # Cronos et diu l'Hora en català
 
-Una aplicació Android elegant i moderna per mostrar l'hora en català tradicional, ajudant a preservar aquesta bella tradició lingüística.
+> L'hora en català tradicional, bonica i llegible, amb un fons que canvia de color amb el moment del dia.
 
-## Característiques Principals
+Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per les tres de la tarda") amb una interfície moderna, tres widgets per a la pantalla d'inici i un consum de bateria mínim.
 
-### Millores
-- **Interfície Completament Renovada**: Disseny modern amb Jetpack Compose
-- **Gradient Dinàmic**: El fons canvia segons l'hora del dia (alba, matí, tarda, vespre, nit)
-- **Widget Millorat**: Actualització automàtica cada minut amb disseny elegant
-- **Millor Rendiment**: Codi optimitzat i eliminació de duplicacions
-- **Suport per Temes**: Compatible amb mode clar i fosc del sistema
-- **Animacions Fluides**: Transicions suaus en els canvis d'hora
+## Característiques
 
-### Funcionalitats
-- **Hora Catalana Tradicional**: Mostra l'hora amb el format complet tradicional
-- **Hora Digital**: Visualització complementària en format 24h
-- **Data en Català**: Mostra el dia de la setmana i la data completa
-- **Widget per Pantalla d'Inici**: Accés ràpid a l'hora catalana sense obrir l'app
-- **Actualització en Temps Real**: L'hora s'actualitza automàticament cada segon
+- **Interfície renovada**: disseny modern amb Jetpack Compose.
+- **Gradient dinàmic en temps real**: el fons passa pel matí, migdia, tarda, vespre i nit amb una transició suau (els colors no s'han tocat: són els que fan la gràcia del projecte 😄).
+- **Hora catalana tradicional** amb el format complet: quarts, minuts i moment del dia.
+- **Data completa**: "Avui és dilluns, 10 d'agost del 2026", amb dia de la setmana en minúscules i article davant de l'any.
+- **Salutació** segons el moment del dia ("Bon dia, Catalunya!", "Bona tarda!"...) i bloc de salutació + data a l'esquerra, ben amunt de la pantalla.
+- **Tres widgets** per a la pantalla d'inici, amb previsualització real en afegir-los.
+- **Segons opcionals**: a l'hora digital i per escrit a la frase tradicional ("Falten sis minuts i tres segons per tres quarts de deu de la nit").
+- **Eficient en bateria**: una sola alarma inexacta per minut per a tots els widgets; la pantalla només refà la feina que canvia.
+- **Suport per temes**: compatible amb mode clar i fosc del sistema.
+- Compatible amb Android 7.0+ (API 24).
 
-## Exemples del Format d'Hora Catalana
+## Exemples del format
 
-- **12:00** → "Són les dotze del migdia"
-- **15:15** → "És un quart de quatre de la tarda"
-- **20:30** → "Són dos quarts de nou del vespre"
-- **22:45** → "Són tres quarts d'onze de la nit"
-- **08:06** → "Són les vuit i sis minuts del matí"
-- **14:53** → "Falten set minuts per les tres de la tarda"
+| Hora | Es mostra |
+| --- | --- |
+| 12:00 | Són les dotze del migdia |
+| 15:15 | És un quart de quatre de la tarda |
+| 20:30 | Són dos quarts de nou de la nit |
+| 22:45 | Són tres quarts d'onze de la nit |
+| 08:06 | Són les vuit i sis minuts del matí |
+| 14:53 | Falten set minuts per les tres de la tarda |
+| 21:39:03 (amb segons) | Falten sis minuts i tres segons per tres quarts de deu de la nit |
 
-## Arquitectura Millorada
+## Widgets
 
-### Estructura del Projecte
-```
-com.example.horacat/
-├── CatalanTimeFormatter.kt    # Lògica centralitzada per formatar l'hora
-├── MainActivity.kt             # UI principal amb Jetpack Compose
-├── HoracatWidget.kt           # Widget optimitzat
-├── BootReceiver.kt            # Gestió del reinici del dispositiu
-└── ui/
-    └── theme/                 # Temes i estils de l'aplicació
-```
+| Widget | Mida | Fons | Contingut |
+| --- | --- | --- | --- |
+| **Cronos - Hora Catalana** | 4×1 | transparent (text blanc amb ombra) | l'hora tradicional |
+| **Cronos - Targeta de colors** | 3×2 | **sí**, el color del moment del dia — l'únic amb fons | l'hora tradicional |
+| **Cronos - Widget gran** | 4×2 | transparent | data + hora tradicional (sense hora digital) |
 
-### Millores Tècniques Implementades
+Els widgets transparents es llegeixen sobre qualsevol fons de pantalla, i el de color es pinta segons la mateixa franja horària que el fons de l'app.
 
-1. **Optimització del codi**: Tota la lògica de formatació està centralitzada a `CatalanTimeFormatter`
-2. **Jetpack Compose**: UI moderna i declarativa més fàcil de mantenir
-3. **Gestió Eficient del Widget**: Actualitzacions programades intel·ligentment
-4. **Suport per Diferents Versions d'Android**: Compatible des d'Android 7.0 (API 24)
-5. **Optimització de Bateria**: El widget s'actualitza només quan és necessari
+## Configuració
 
-## Instal·lació
+Obre la roda dentada de la pantalla principal:
 
-### Requisits
-- Android 7.0 (API 24) o superior
-- Android Studio Arctic Fox o superior (per desenvolupadors)
-
-### Opcions d'Instal·lació
-
-#### Opció 1: APK Directe
-1. Descarrega el fitxer `horacat.apk` des de la secció [Releases](https://github.com/eriklledo/horacat/releases)
-2. Activa "Fonts desconegudes" als ajustos del teu dispositiu
-3. Obre l'APK descarregat i instal·la l'aplicació
-
-#### Opció 2: Compilar des del Codi Font
-```bash
-# Clona el repositori amb git clone
-# Obre el projecte amb Android Studio o similars
-# Compila i executa l'aplicació
-```
-
-#### Proximament disponible a Google Play Store i a F-Droid 
+- **Mostrar l'hora digital**: mostra l'hora digital sota la tradicional (desactivada per defecte).
+- **Segons a l'hora digital**: inclou els segons (HH:mm:ss). Bloquejat mentre l'hora digital estigui amagada.
+- **Segons a l'hora tradicional**: afegeix els segons per escrit a la frase ("… i N segons").
+- **Mida de l'hora**: regulable amb un control lliscant (18–48; per defecte 28).
+- **Restableixer la configuració**: torna tots els paràmetres als valors per defecte.
 
 ## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
 - Obre **Cronos** des del calaix d'aplicacions
-- Veuràs l'hora catalana destacada al centre
+- Veuràs l'hora catalana destacada al centre, amb la data i la salutació a dalt
 - El fons canviarà de color segons el moment del dia
 
 ### Afegir el Widget
 1. Mantén premuda la pantalla d'inici
 2. Selecciona "Widgets"
-3. Busca "Cronos"
+3. Busca "Cronos": hi ha tres mides/estils per triar
 4. Arrossega el widget a la pantalla d'inici
 5. Redimensiona'l segons les teves preferències
 
@@ -101,9 +79,42 @@ com.example.horacat/
 4. Push a la branca
 5. Obre un Pull Request
 
+## Arquitectura (resum)
+
+```
+com.example.cronos/
+├── CatalanTimeFormatter.kt     # Lògica de l'hora (minuts i segons per escrit)
+├── MainActivity.kt             # UI en Jetpack Compose
+├── SettingsRepository.kt       # Preferències (SharedPreferences)
+├── SettingsScreen.kt           # Pantalla d'ajustaments
+├── CronosWidget.kt / CronosWidgetApple.kt / CronosWidgetLarge.kt
+├── WidgetUpdateScheduler.kt    # Una sola alarma inexacta per minut
+├── CronosWidgetTickReceiver.kt # Tick que actualitza tots els widgets
+├── BootReceiver.kt             # Reprograma el tick després d'un reinici
+└── ui/theme/                   # Paleta unificada app + widgets
+```
+
+Decisions tècniques destacades: paleta unificada (`TimePalette.paletteForHour()`), una única alarma inexacta per tota l'app, i mida d'hora estable regulable per l'usuari.
+
+## Instal·lació
+
+- **Requisits**: Android 7.0 (API 24) o superior.
+- **APK directe**: descarrega la darrera `app-release.aab` / APK des de la secció [Releases](https://github.com/lledoerik/cronos/releases) i instal·la'l amb "Fonts desconegudes" activat.
+- **Des del codi**: clona el repositori, obre'l amb Android Studio i executa.
+- **Futurament estarà disponible a Google Play i a F-Droid.**
+
+## Bateria
+
+- Els widgets es refresquen amb **una sola alarma inexacta per minut** (`setAndAllowWhileIdle`), independentment del nombre de widgets — cap alarma exacta, cap permís especial.
+- La pantalla només recalcula el que canvia: l'hora tradicional al canvi de minut, la data al canvi de dia, i els segons només quan els tens activats.
+
+## Privadesa
+
+Cronos **no recull cap dada**. No hi ha publicitat, no hi ha analítica, no hi ha comptes ni permisos d'accés a xarxa: tot funciona localment al dispositiu.
+
 ## Llicència
 
-Aquest projecte està llicenciat sota la **GPL 3.0** o posterior - veure [LICENSE.md](LICENSE.md) per més detalls.
+Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENSE.md).
 
 ## Agraïments
 
@@ -115,7 +126,32 @@ Aquest projecte està llicenciat sota la **GPL 3.0** o posterior - veure [LICENS
 
 ## Contacte
 
-Èrik Calvo Lledó - [GitHub](https://github.com/eriklledo)
+Èrik Calvo Lledó — [GitHub](https://github.com/lledoerik)
+
+---
+
+## 📋 Apèndix: text per a la fitxa de Google Play
+
+**Títol:** Cronos — Hora Catalana
+
+**Resum (80 caràcters):**
+> L'hora en català tradicional, amb el fons que canvia amb el moment del dia.
+
+**Descripció completa (ja en català, pots afegir alguna en llengua que vulguis):**
+> Descobreix com es diu l'hora en català tradicional amb una app elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb lletra gran i un degradat de fons que canvia pel matí, el migdia, la tarda, el vespre i la nit.
+>
+> · Hora catalana completa amb quarts, minuts i moment del dia
+> · Data completa amb dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
+> · Tres widgets per a la pantalla d'inici (transparents i un amb color del moment del dia)
+> · Segons opcionals, per escrit a la frase tradicional
+> · Mida de l'hora ajustable i configuració restableixible
+> · Molt eficient: una sola alarma per minut, sense permisos especials
+>
+> Cronos no recull cap dada i funciona 100% sense connexió.
+
+**Privadesa:** Dades que es comparteixen amb tercers: **Cap**. Dades recollides: **Cap**. (No cal URL de política de privacitat amb aquesta combinació.)
+
+**Categoria:** Ajuts / Personalització. **Temàtiques de contingut:** Sense restriccions.
 
 ---
 

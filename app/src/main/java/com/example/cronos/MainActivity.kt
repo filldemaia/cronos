@@ -17,12 +17,15 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.example.cronos.ui.theme.CronosTheme
 import com.example.cronos.ui.theme.LocalTimePalette
+import com.example.cronos.ui.theme.paletteForHour
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,17 +44,6 @@ class MainActivity : ComponentActivity() {
 
 /** Destinacions de l'app. Sense navegar a llocs externs. */
 private enum class Screen { Clock, Settings }
-
-/**
- * Estil únic per a tots els textos de la pantalla principal.
- * Mateixa mida, mateix pes, mateix `lineHeight` — l'únic que
- * varia entre textos és el color (alpha) i el contingut.
- */
-private val UnifiedTextStyle = TextStyle(
-    fontSize = 22.sp,
-    lineHeight = 30.sp,
-    fontWeight = FontWeight.SemiBold,
-)
 
 /** Punt d'entrada de la UI. Decideix quina pantalla mostrar. */
 @Composable
@@ -79,23 +71,68 @@ fun HoracatApp(
     var digitalTime by remember { mutableStateOf("") }
     var currentDate by remember { mutableStateOf("") }
 
-    // Patró que reconnecta quan canvia la preferència showSeconds:
-    // llegim el valor actual cada segon dins del loop, de manera
-    // que un canvi a Configuració es reflecteix a l'instant.
+    // Paleta del moment del dia com a estat: quan es creua una franja
+    // horària es canvia sola i el gradient ho anima amb transició suau
+    // (abans es calculava una sola vegada i no seguia l'hora en temps real).
+    val initialPalette = LocalTimePalette.current
+    var timePalette by remember { mutableStateOf(initialPalette) }
+
+    // Loop de segon a segon. Només es refà la feina que ha canviat:
+    // hora catalana quan canvia el minut, data quan canvia el dia,
+    // paleta quan canvia l'hora, i formatter digital quan canvia el
+    // patró (showSeconds). Així el cost per segon és mínim.
     LaunchedEffect(Unit) {
+        val dateFormatter = SimpleDateFormat("EEEE, d MMMM 'del 'yyyy", Locale("ca", "ES"))
+        var lastPattern: String? = null
+        var digitalFormatter: SimpleDateFormat? = null
+        var lastMinute = -1L
+        var lastDayKey = -1
+        var lastHour = -1
         while (true) {
-            currentTime = CatalanTimeFormatter.getCurrentTimeInCatalan()
             val now = Date()
-            val pattern = if (settings.showSeconds) "HH:mm:ss" else "HH:mm"
-            digitalTime = SimpleDateFormat(pattern, Locale.getDefault()).format(now)
-            currentDate = SimpleDateFormat("EEEE, d MMMM yyyy", Locale("ca", "ES")).format(now)
+            val calendar = Calendar.getInstance()
+            val hour = calendar.get(Calendar.HOUR_OF_DAY)
+            val minute = calendar.get(Calendar.MINUTE)
+            val seconds = calendar.get(Calendar.SECOND)
+            val minuteKey = now.time / 60_000
+            val dayKey = calendar.get(Calendar.DAY_OF_YEAR) +
+                calendar.get(Calendar.YEAR) * 1000
+
+            if (hour != lastHour) {
+                timePalette = paletteForHour(hour)
+                lastHour = hour
+            }
+
+            // Els segons per escrit a l'hora tradicional i els de l'hora
+            // digital són opcions independents. Amb els escrits, la frase
+            // tradicional canvia cada segon; sense, només al minut.
+            val writtenSeconds = settings.showSecondsWritten
+            if (writtenSeconds || minuteKey != lastMinute) {
+                currentTime = CatalanTimeFormatter.formatTime(
+                    hour, minute, if (writtenSeconds) seconds else 0
+                )
+                lastMinute = minuteKey
+            }
+            if (dayKey != lastDayKey) {
+                currentDate = dateFormatter.format(now)
+                lastDayKey = dayKey
+            }
+
+            // L'hora digital només es formateja quan és visible.
+            if (settings.showDigital) {
+                val pattern = if (settings.showSeconds) "HH:mm:ss" else "HH:mm"
+                if (pattern != lastPattern) {
+                    digitalFormatter = SimpleDateFormat(pattern, Locale.getDefault())
+                    lastPattern = pattern
+                }
+                digitalTime = digitalFormatter!!.format(now)
+            }
             delay(1000)
         }
     }
 
     // Gradient de fons que canvia segons l'hora del dia, amb
     // transició suau quan es creua una franja horària.
-    val timePalette = LocalTimePalette.current
     val animatedTop by animateColorAsState(
         targetValue = timePalette.gradientTop,
         animationSpec = tween(durationMillis = 1500),
@@ -144,81 +181,118 @@ fun HoracatApp(
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = 20.dp, vertical = 32.dp),
+                    .padding(horizontal = 28.dp, vertical = 24.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(20.dp),
             ) {
-                Spacer(modifier = Modifier.weight(1f))
-
-                // Capçalera "HORA CATALANA" — text a la part superior
-                Text(
-                    text = stringResource(R.string.hour_label).uppercase(),
-                    style = UnifiedTextStyle,
-                    color = Color.White.copy(alpha = 0.75f),
-                    textAlign = TextAlign.Center,
-                )
-
-                // Salutació segons l'hora del dia
+                // Bloc superior: salutació i data, alineades a l'esquerra i ben amunt
+                // de la pantalla (primer terç). El text ocupa tota l'amplada
+                // (fillMaxWidth) perquè l'alineació tingui efecte.
+                Spacer(modifier = Modifier.weight(0.15f))
                 Text(
                     text = getGreeting(),
-                    style = UnifiedTextStyle,
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
+                    style = GreetingStyle,
+                    color = Color.White.copy(alpha = 0.9f),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth(),
                 )
-
-                // Data — text directe sobre el gradient, sense bombolla
+                Spacer(modifier = Modifier.weight(0.1f))
                 Text(
-                    text = currentDate.replaceFirstChar { it.uppercase() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 4.dp),
-                    textAlign = TextAlign.Center,
-                    style = UnifiedTextStyle,
-                    color = Color.White.copy(alpha = 0.92f),
+                    text = buildAnnotatedString {
+                        withStyle(GreetingStyle.toSpanStyle()) {
+                            // L'espai es posa explícitament aquí: Android retalla
+                            // els espais finals de les strings en compilar.
+                            append(stringResource(R.string.before_date).trim())
+                            append(" ")
+                        }
+
+                        withStyle(DateStyle.toSpanStyle()) {
+                            append(currentDate)
+                        }
+                    },
+                    color = Color.White.copy(alpha = 0.9f),
+                    textAlign = TextAlign.Start,
+                    modifier = Modifier.fillMaxWidth(),
                 )
 
-                // Hora catalana — text directe sobre el gradient, sense bombolla
+
+                // Hero: l'hora catalana, mida regulable des de Configuració
+                Spacer(modifier = Modifier.weight(1f))
+                val hourFontSize = settings.hourSize.sp
                 Text(
                     text = currentTime,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 24.dp),
-                    style = UnifiedTextStyle,
+                    style = TextStyle(
+                        fontSize = hourFontSize,
+                        lineHeight = hourFontSize * 1.18f,
+                        fontWeight = FontWeight.SemiBold,
+                    ),
                     color = Color.White,
                     textAlign = TextAlign.Center,
-                )
-
-                // Hora digital — text directe sobre el gradient, sense bombolla
-                Text(
-                    text = digitalTime,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = 24.dp, vertical = 4.dp),
-                    textAlign = TextAlign.Center,
-                    style = UnifiedTextStyle,
-                    color = Color.White.copy(alpha = 0.92f),
+                        .padding(horizontal = 8.dp),
                 )
 
-                Spacer(modifier = Modifier.weight(1.2f))
+                // Hora digital, complementària (opcional a Configuració)
+                if (settings.showDigital) {
+                    Spacer(modifier = Modifier.weight(0.7f))
+                    Text(
+                        text = digitalTime,
+                        style = DigitalStyle,
+                        color = Color.White.copy(alpha = 0.92f),
+                        textAlign = TextAlign.Center,
+                    )
+                }
 
-                // Peu de pàgina — text directe, sense bombolla
+                // Peu de pàgina
+                Spacer(modifier = Modifier.weight(1.4f))
                 Text(
                     text = stringResource(R.string.about_text),
-                    style = UnifiedTextStyle,
-                    color = Color.White.copy(alpha = 0.85f),
+                    style = FooterStyle,
+                    color = Color.White.copy(alpha = 0.6f),
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
+                Spacer(modifier = Modifier.height(48.dp))
             }
         }
     }
 }
 
+/** Data: petita i clara, per sobre de tot. */
+private val DateStyle = TextStyle(
+    fontSize = 18.sp,
+    fontWeight = FontWeight.Medium,
+)
+
+/** Salutació: suau, just a sota de la data. */
+private val GreetingStyle = TextStyle(
+    fontSize = 20.sp,
+    fontWeight = FontWeight.Medium,
+)
+
+/** Hora digital: prima, per no robar protagonisme a l'hora catalana. */
+private val DigitalStyle = TextStyle(
+    fontSize = 26.sp,
+    fontWeight = FontWeight.Thin,
+    letterSpacing = 1.sp,
+)
+
+/** Peu de pàgina: discretíssim. */
+private val FooterStyle = TextStyle(
+    fontSize = 14.sp,
+    fontWeight = FontWeight.Medium,
+)
+
 /**
- * Salutació segons el moment del dia — manté el format original
- * (inclòs "Bon dia, Catalunya!").
+ * Salutació segons el moment del dia.
  */
 fun getGreeting(): String {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    return "Benvolgut, benvolguda..."
+    return when (hour) {
+        in 5..11 -> "Bon dia, Catalunya!"
+        in 12..14 -> "Bon migdia!"
+        in 15..18 -> "Bona tarda!"
+        in 19..20 -> "Bon vespre!"
+        else -> "Bona nit!"
+    }
 }

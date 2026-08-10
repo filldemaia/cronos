@@ -2,9 +2,13 @@
 <appwidget-provider xmlns:android="http://schemas.android.com/apk/res/android"
     android:minWidth="180dp"
     android:minHeight="110dp"
+    android:targetCellWidth="3"
+    android:targetCellHeight="2"
     android:updatePeriodMillis="0"
     android:initialLayout="@layout/widget_layout_apple"
     android:resizeMode="horizontal|vertical"
     android:previewImage="@drawable/ic_launcher_foreground"
+    android:previewLayout="@layout/widget_layout_apple"
+    android:description="@string/widget_description"
     android:widgetCategory="home_screen">
 </appwidget-provider>

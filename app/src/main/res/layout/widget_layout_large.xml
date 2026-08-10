@@ -5,36 +5,40 @@
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="20dp"
-    android:background="#CC000000">
+    android:padding="10dp">
 
     <TextView
         android:id="@+id/largeWidgetDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="14sp"
+        android:textSize="22sp"
         android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:layout_marginBottom="10dp"/>
+        android:shadowColor="#80000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="22sp"
+        android:layout_marginBottom="14dp"/>
 
     <TextView
         android:id="@+id/largeWidgetCatalanTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:textSize="22sp"
+        android:textSize="32sp"
         android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-light"
+        android:fontFamily="sans-serif-medium"
         android:gravity="center"
-        android:lineSpacingMultiplier="1.15"
-        android:layout_marginBottom="14dp"/>
-
-    <TextView
-        android:id="@+id/largeWidgetDigitalTime"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="34sp"
-        android:textColor="#FFFFFF"
-        android:fontFamily="sans-serif-thin"/>
+        android:shadowColor="#80000000"
+        android:shadowDx="1"
+        android:shadowDy="1"
+        android:shadowRadius="3"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="14sp"
+        android:autoSizeMaxTextSize="32sp"
+        android:lineSpacingMultiplier="1.15"/>
 
 </LinearLayout>

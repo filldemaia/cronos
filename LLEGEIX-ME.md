@@ -5,7 +5,8 @@ Horacat és una aplicació senzilla per a Android que mostra l'hora actual en ca
 
 **Funcionalitats:**
 Es mostra l'hora actual en català, amb un format complet que inclou l'hora, els quarts o minuts i el moment del dia (matinada, matí, migdia, tarda, vespre i nit).
-Giny: Pots afegir un giny (widget en anglès) a la pantalla d'inici per veure l'hora actual en català sense haver d'obrir l'aplicació.
+El fons de l'app i la targeta dels widgets canvien de color segons el moment del dia.
+Widgets: hi ha tres ginys diferents (petit, gran i "targeta de colors") que pots afegir a la pantalla d'inici per veure l'hora actual en català sense haver d'obrir l'aplicació.
 
 **Instal·lació:**
 En un futur, l'aplicació Horacat estarà disponible a la botiga d'aplicacions F-Droid.
