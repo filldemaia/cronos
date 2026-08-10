@@ -69,6 +69,8 @@ com.example.horacat/
 # Compila i executa l'aplicació
 ```
 
+### Futurament estarà disponible a PlayStore i a l'F-Droid 
+
 ## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
