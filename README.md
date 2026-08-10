@@ -81,7 +81,7 @@ com.example.horacat/
 ### Afegir el Widget
 1. Mantén premuda la pantalla d'inici
 2. Selecciona "Widgets"
-3. Busca "Horacat"
+3. Busca "Cronos"
 4. Arrossega el widget a la pantalla d'inici
 5. Redimensiona'l segons les teves preferències
 
@@ -107,9 +107,11 @@ Aquest projecte està llicenciat sota la **GPL 3.0** o posterior - veure [LICENS
 
 ## Agraïments
 
-- **Gabriel Mizrahi Mejias** - Contribucions inicials
-- La comunitat catalana per mantenir vives aquestes tradicions
-- Els catalans i les catales que ajuden a preservar la llengua
+- A **Gabriel Mizrahi Mejias**, per les seves contribucions inicials.
+- A la **catalanitat**, per la seva bellesa, la seva història i la seva mera existència.
+- A **Catalunya**, terra de tradicions, cultura i llengua, que ens ha ensenyat que fins i tot el pas de les hores pot convertir-se en una expressió de la nostra identitat.
+- Als **catalans i catalanes** que, malgrat els contratemps, mantenen viva la nostra llengua fent-la servir cada dia.
+- I a la **tradició de dir les hores en català**, una petita part del nostre patrimoni lingüístic que mereix ser conservada i transmesa.
 
 ## Contacte
 
@@ -117,4 +119,4 @@ Aquest projecte està llicenciat sota la **GPL 3.0** o posterior - veure [LICENS
 
 ---
 
-**Fet amb amor per ajudar a preservar la llengua i cultura catalanes**
+**Fet amb amor per ajudar a preservar la llengua i la cultura catalana.**
