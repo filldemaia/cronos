@@ -133,7 +133,7 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 **Títol:** Cronos
 
 **Resum (80 caràcters):**
-> L'hora en català tradicional, amb el fons que canvia amb el moment del dia.
+> Consulta fàcilment les hores en català.
 
 **Descripció completa (ja en català, pots afegir alguna en llengua que vulguis):**
 > Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb claredad i un degradat de fons que canvia segons el moment del dia.
