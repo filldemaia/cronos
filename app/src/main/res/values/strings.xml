@@ -20,6 +20,6 @@
     <string name="settings_show_seconds_written_desc">Afegeix els segons per escrit a la frase de l\'hora tradicional</string>
     <string name="settings_hour_size">Mida de l\'hora</string>
     <string name="settings_section_about">Sobre Cronos</string>
-    <string name="settings_version">Versió 2.0</string>
+    <string name="settings_version">Versió 1.0</string>
     <string name="settings_reset">Restableixer la configuració</string>
 </resources>
