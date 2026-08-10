@@ -4,7 +4,7 @@ Una aplicació Android elegant i moderna per mostrar l'hora en català tradicion
 
 ## Característiques Principals
 
-### Noves Millores (v2.0)
+### Millores
 - **Interfície Completament Renovada**: Disseny modern amb Jetpack Compose
 - **Gradient Dinàmic**: El fons canvia segons l'hora del dia (alba, matí, tarda, vespre, nit)
 - **Widget Millorat**: Actualització automàtica cada minut amb disseny elegant
