@@ -69,12 +69,12 @@ com.example.horacat/
 # Compila i executa l'aplicació
 ```
 
-### Futurament estarà disponible a PlayStore i a l'F-Droid 
+#### Proximament disponible a Google Play Store i a F-Droid 
 
 ## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
-- Obre **Horacat** des del calaix d'aplicacions
+- Obre **Cronos** des del calaix d'aplicacions
 - Veuràs l'hora catalana destacada al centre
 - El fons canviarà de color segons el moment del dia
 
