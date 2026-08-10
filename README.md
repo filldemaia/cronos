@@ -1,4 +1,4 @@
-# Cronos et diu l'Hora en català
+# Cronos et diu l'hora en català
 
 > L'hora en català tradicional, bonica i llegible, amb un fons que canvia de color amb el moment del dia.
 
