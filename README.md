@@ -35,7 +35,7 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 | --- | --- | --- | --- |
 | **Cronos - Hora Catalana** | 4×1 | transparent (text blanc amb ombra) | l'hora tradicional |
 | **Cronos - Targeta de colors** | 3×2 | **sí**, el color del moment del dia — l'únic amb fons | l'hora tradicional |
-| **Cronos - Widget gran** | 4×2 | transparent | data + hora tradicional (sense hora digital) |
+| **Cronos - Widget gran** | 4×2 | transparent | data + hora tradicional |
 
 Els widgets transparents es llegeixen sobre qualsevol fons de pantalla, i el de color es pinta segons la mateixa franja horària que el fons de l'app.
 
