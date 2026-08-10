@@ -8,12 +8,11 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 
 - **Interfície renovada**: disseny modern amb Jetpack Compose.
 - **Gradient dinàmic en temps real**: el fons passa pel matí, migdia, tarda, vespre i nit amb una transició suau.
-- **Hora catalana tradicional** amb el format complet: quarts, minuts i moment del dia.
-- **Data completa**: "Avui és dilluns, 10 d'agost del 2026", amb dia de la setmana en minúscules i article davant de l'any.
-- **Salutació** segons el moment del dia ("Bon dia, Catalunya!", "Bona tarda!"...) i bloc de salutació + data a l'esquerra, ben amunt de la pantalla.
-- **Tres widgets** per a la pantalla d'inici, amb previsualització real en afegir-los.
-- **Segons opcionals**: a l'hora digital i per escrit a la frase tradicional ("Falten sis minuts i tres segons per tres quarts de deu de la nit").
-- **Eficient en bateria**: una sola alarma inexacta per minut per a tots els widgets; la pantalla només refà la feina que canvia.
+- **Hora catalana tradicional** amb el format complet: quarts, minuts, segons i moment del dia.
+- **Data completa**: "Avui és dilluns, 10 d'agost del 2026".
+- **Salutació** segons el moment del dia ("Bona tarda!", "Bon vespre", ...).
+- **Tres widgets** de diferentes mides per a la pantalla d'inici.
+- **Segons opcionals**: es poden activar i desactivar a gust els segons ("Falten sis minuts i tres segons per tres quarts de deu de la nit").
 - **Suport per temes**: compatible amb mode clar i fosc del sistema.
 - Compatible amb Android 7.0+ (API 24).
 
@@ -37,14 +36,12 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 | **Cronos - Targeta de colors** | 3×2 | el color del moment del dia | l'hora tradicional |
 | **Cronos - Widget gran** | 4×2 | transparent | data + hora tradicional |
 
-Els widgets transparents es llegeixen sobre qualsevol fons de pantalla, i el de color es pinta segons la mateixa franja horària que el fons de l'app.
-
 ## Configuració
 
 Obre la roda dentada de la pantalla principal:
 
 - **Mostrar l'hora digital**: mostra l'hora digital sota la tradicional (desactivada per defecte).
-- **Segons a l'hora digital**: inclou els segons (HH:mm:ss). Bloquejat mentre l'hora digital estigui amagada.
+- **Segons a l'hora digital**: inclou els segons (HH:mm:ss) només si l'hora digital és activa.
 - **Segons a l'hora tradicional**: afegeix els segons per escrit a la frase ("… i N segons").
 - **Mida de l'hora**: regulable amb un control lliscant (18–48; per defecte 28).
 - **Restableixer la configuració**: torna tots els paràmetres als valors per defecte.
@@ -53,8 +50,9 @@ Obre la roda dentada de la pantalla principal:
 
 ### Aplicació Principal
 - Obre **Cronos** des del calaix d'aplicacions
-- Veuràs l'hora catalana destacada al centre, amb la data i la salutació a dalt
+- Veuràs l'hora catalana destacada al centre, amb la data a sobre.
 - El fons canviarà de color segons el moment del dia
+- Per canviar els parametres hi ha una roda de configuració amunt a la dreta.
 
 ### Afegir el Widget
 1. Mantén premuda la pantalla d'inici
@@ -100,7 +98,7 @@ Decisions tècniques destacades: paleta unificada (`TimePalette.paletteForHour()
 
 - **Requisits**: Android 7.0 (API 24) o superior.
 - **APK directe**: descarrega la darrera `app-release.aab` / APK des de la secció [Releases](https://github.com/lledoerik/cronos/releases) i instal·la'l amb "Fonts desconegudes" activat.
-- **Des del codi**: clona el repositori, obre'l amb Android Studio i executa.
+- **Des del codi**: clona el repositori, obre'l amb Android Studio o similars i executa.
 - **Futurament estarà disponible a Google Play i a F-Droid.**
 
 ## Bateria
@@ -132,13 +130,13 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 
 ## 📋 Apèndix: text per a la fitxa de Google Play
 
-**Títol:** Cronos — Hora Catalana
+**Títol:** Cronos
 
 **Resum (80 caràcters):**
 > L'hora en català tradicional, amb el fons que canvia amb el moment del dia.
 
 **Descripció completa (ja en català, pots afegir alguna en llengua que vulguis):**
-> Descobreix com es diu l'hora en català tradicional amb una app elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb lletra gran i un degradat de fons que canvia pel matí, el migdia, la tarda, el vespre i la nit.
+> Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb claredad i un degradat de fons que canvia segons el moment del dia.
 >
 > · Hora catalana completa amb quarts, minuts i moment del dia
 > · Data completa amb dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
@@ -155,4 +153,4 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 
 ---
 
-**Fet amb amor per ajudar a preservar la llengua i la cultura catalana.**
+**Fet amb amor per ajudar a preservar la llengua, la cultura i la identitat catalana.**
