@@ -138,7 +138,7 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 **Descripció completa (ja en català, pots afegir alguna en llengua que vulguis):**
 > Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb claredad i un degradat de fons que canvia segons el moment del dia.
 >
-> · Hora catalana completa amb quarts, minuts i moment del dia
+> · Hora catalana completa amb quarts, minuts, segons i moment del dia
 > · Data completa amb dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
 > · Tres widgets per a la pantalla d'inici (transparents i un amb color del moment del dia)
 > · Segons opcionals, per escrit a la frase tradicional
