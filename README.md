@@ -2,7 +2,7 @@
 
 > L'hora en català tradicional, bonica i llegible, amb un fons que canvia de color segons el moment del dia.
 
-Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per les tres de la tarda") amb una interfície moderna, tres widgets per a la pantalla d'inici i un consum de bateria mínim.
+Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per les tres de la tarda") amb una interfície moderna.
 
 ## Característiques
 
