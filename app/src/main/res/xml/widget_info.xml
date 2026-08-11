@@ -6,7 +6,7 @@
     android:targetCellHeight="1"
     android:maxResizeWidth="432dp"
     android:maxResizeHeight="432dp"
-    android:updatePeriodMillis="0"
+    android:updatePeriodMillis="1800000"
     android:initialLayout="@layout/widget_layout"
     android:resizeMode="horizontal|vertical"
     android:previewImage="@drawable/ic_launcher_foreground"
