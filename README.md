@@ -128,7 +128,7 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 
 ---
 
-## 📋 Apèndix: text per a la fitxa de Google Play
+## Apèndix: text per a la fitxa de Google Play
 
 **Títol:** Cronos
 
