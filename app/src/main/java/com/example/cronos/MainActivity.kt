@@ -4,6 +4,7 @@ import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.*
 import androidx.compose.ui.draw.drawBehind
@@ -158,10 +159,24 @@ fun HoracatApp(
     // Ombra només quan la paleta és fosca (nit); de dia, res.
     val currentTextShadow = if (timePalette.textShadow) TextShadow else NoShadow
 
-    // El grau de presència de la senyera depèn del moment del dia:
-    // al matí es pinta més present i al migdia encara més, perquè el
-    // text blanc es llegeixi bé fins i tot sobre el fons més clar.
-    val nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    // El grau de presència de la senyera i el vel del migdia es calculen
+    // per hora però s'animen amb transició suau (com els colors del
+    // gradient), perquè cap canvi de franja es noti de cop.
+    val hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    val barAlpha by animateFloatAsState(
+        targetValue = when (hourNow) {
+            in 6..11 -> SENYERA_MORNING_ALPHA
+            in 12..16 -> SENYERA_MIDDAY_ALPHA
+            else -> SENYERA_ALPHA
+        },
+        animationSpec = tween(durationMillis = 1500),
+        label = "barAlpha",
+    )
+    val scrimAlpha by animateFloatAsState(
+        targetValue = if (hourNow in 12..16) MIDDAY_SCRIM_ALPHA else 0f,
+        animationSpec = tween(durationMillis = 1500),
+        label = "scrimAlpha",
+    )
 
     Scaffold(
         topBar = {
@@ -191,12 +206,7 @@ fun HoracatApp(
                     drawRect(brush = backgroundGradient)
                     // Senyera translúcida per sobre: 5 barres daurades i
                     // 4 de vermelles, sense tapar els colors del degradat.
-                    // Al matí, més opaca per donar contrast al text.
-                    val barAlpha = when (nowHour) {
-                        in 6..11 -> SENYERA_MORNING_ALPHA
-                        in 12..16 -> SENYERA_MIDDAY_ALPHA
-                        else -> SENYERA_ALPHA
-                    }
+                    // L'opacitat es calcula per franja i s'anima (barAlpha).
                     val barWidth = size.width / SENYERA_BARS
                     for (i in 0 until SENYERA_BARS) {
                         val isGold = i % 2 == 0
@@ -215,13 +225,13 @@ fun HoracatApp(
                     }
                     // Al migdia, un vel fosc molt subtil i amb degradat
                     // (transparent a dalt, fosc suau a baix) perquè el text
-                    // blanc guanyi contrast sense retocar els colors.
-                    if (nowHour in 12..16) {
+                    // blanc guanyi contrast. També entra i surt animat.
+                    if (scrimAlpha > 0f) {
                         drawRect(
                             brush = Brush.verticalGradient(
                                 colors = listOf(
                                     Color.Transparent,
-                                    Color.Black.copy(alpha = MIDDAY_SCRIM_ALPHA),
+                                    Color.Black.copy(alpha = scrimAlpha),
                                 )
                             )
                         )
