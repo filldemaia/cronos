@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.graphics.Color
 import android.util.Log
 import android.widget.RemoteViews
 import com.example.cronos.ui.theme.paletteForHour
@@ -56,9 +57,8 @@ class CronosWidgetApple : AppWidgetProvider() {
             val palette = paletteForHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
 
             views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
-            views.setTextColor(R.id.appleWidgetTime, palette.widgetTextColor)
+            views.setTextColor(R.id.appleWidgetTime, Color.WHITE)
             views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.widgetBackgroundRes)
-            views.setImageViewResource(R.id.appleWidgetSenyera, R.drawable.senyera_widget)
 
             val refreshIntent = Intent(context, CronosWidgetApple::class.java).apply {
                 action = AppWidgetManager.ACTION_APPWIDGET_UPDATE

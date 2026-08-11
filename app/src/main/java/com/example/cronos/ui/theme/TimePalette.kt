@@ -30,39 +30,39 @@ val MorningPalette = TimePalette(
     gradientTop = Color(0xFFFFE5B4),
     gradientMiddle = Color(0xFFFFB6C1),
     gradientBottom = Color(0xFF87CEEB),
-    widgetBackgroundRes = R.drawable.widget_bg_mati,
-    widgetTextColor = 0xFF01579B.toInt(),
+    widgetBackgroundRes = R.drawable.widget_bg_mati_senyera,
+    widgetTextColor = 0xFFFFFFFF.toInt(),
 )
 
 val MiddayPalette = TimePalette(
     gradientTop = Color(0xFFFFE5B4),
     gradientMiddle = Color(0xFFFFB6C1),
     gradientBottom = Color(0xFF87CEEB),
-    widgetBackgroundRes = R.drawable.widget_bg_migdia,
-    widgetTextColor = 0xFF4E342E.toInt(),
+    widgetBackgroundRes = R.drawable.widget_bg_migdia_senyera,
+    widgetTextColor = 0xFFFFFFFF.toInt(),
 )
 
 val AfternoonPalette = TimePalette(
     gradientTop = Color(0xFFFFA500),
     gradientMiddle = Color(0xFFFF6347),
     gradientBottom = Color(0xFFFF69B4),
-    widgetBackgroundRes = R.drawable.widget_bg_vespre,
-    widgetTextColor = 0xFFB71C1C.toInt(),
+    widgetBackgroundRes = R.drawable.widget_bg_vespre_senyera,
+    widgetTextColor = 0xFFFFFFFF.toInt(),
 )
 
 val EveningPalette = TimePalette(
     gradientTop = Color(0xFFFFA500),
     gradientMiddle = Color(0xFFFF6347),
     gradientBottom = Color(0xFFFF69B4),
-    widgetBackgroundRes = R.drawable.widget_bg_vespre,
-    widgetTextColor = 0xFFB71C1C.toInt(),
+    widgetBackgroundRes = R.drawable.widget_bg_vespre_senyera,
+    widgetTextColor = 0xFFFFFFFF.toInt(),
 )
 
 val NightPalette = TimePalette(
     gradientTop = Color(0xFF191970),
     gradientMiddle = Color(0xFF2F4F8F),
     gradientBottom = Color(0xFF483D8B),
-    widgetBackgroundRes = R.drawable.widget_bg_nit,
+    widgetBackgroundRes = R.drawable.widget_bg_nit_senyera,
     widgetTextColor = 0xFFFFFFFF.toInt(),
     textShadow = true,
 )
