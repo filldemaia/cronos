@@ -217,15 +217,10 @@ fun HoracatApp(
                             // (on hi ha el text) i es degrada a transparent cap
                             // al mig, perquè no hi hagi cap abrupta.
                             brush = Brush.verticalGradient(
-                                // Només es veu mig terç (1/6) a dalt i el
-                                // mateix a sota; al mig, fons real.
-                                0f to light.copy(alpha = barAlpha), // dalt, plena
-                                0.12f to dark.copy(alpha = barAlpha), // final banda superior
-                                0.18f to Color.Transparent, // es difumina
-                                0.50f to Color.Transparent, // mig: fons real
-                                0.82f to Color.Transparent,
-                                0.88f to light.copy(alpha = barAlpha), // torna a aparèixer
-                                1f to dark.copy(alpha = barAlpha), // baix, plena
+                                // Senyera a tota la pantalla, amb llum a
+                                // dalt i ombra a baix (profunditat).
+                                light.copy(alpha = barAlpha),
+                                dark.copy(alpha = barAlpha),
                             ),
                             topLeft = Offset(i * barWidth, 0f),
                             size = Size(barWidth, size.height),
