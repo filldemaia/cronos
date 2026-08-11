@@ -351,8 +351,8 @@ private const val SENYERA_ALPHA = 0.28f
 private const val SENYERA_MORNING_ALPHA = 0.5f
 private const val SENYERA_MIDDAY_ALPHA = 0.7f
 private const val MIDDAY_SCRIM_ALPHA = 0.12f
-private val SenyeraGold = Color(0xFFFCD116)
-private val SenyeraRed = Color(0xFFDA121A)
+private val SenyeraGold = Color(0xFFFFD700)   // or pur, viu
+private val SenyeraRed = Color(0xFFDC143C)    // carmesí sagnant, com un rubí
 
 /**
  * Salutació segons el moment del dia.
