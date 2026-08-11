@@ -1,8 +1,10 @@
 package com.example.cronos
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.widget.RemoteViews
@@ -35,7 +37,11 @@ class CronosWidgetLarge : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        WidgetUpdateScheduler.cancelUpdates(context)
+        if (WidgetUpdateScheduler.anyWidgetsRemain(context)) {
+            WidgetUpdateScheduler.scheduleNextUpdate(context)
+        } else {
+            WidgetUpdateScheduler.cancelUpdates(context)
+        }
     }
 
     companion object {
@@ -56,6 +62,18 @@ class CronosWidgetLarge : AppWidgetProvider() {
             views.setTextViewText(R.id.largeWidgetCatalanTime, timeInCatalan)
             views.setTextColor(R.id.largeWidgetDate, Color.WHITE)
             views.setTextColor(R.id.largeWidgetCatalanTime, Color.WHITE)
+
+            val refreshIntent = Intent(context, CronosWidgetLarge::class.java).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+            }
+            val refreshPendingIntent = PendingIntent.getBroadcast(
+                context,
+                appWidgetId,
+                refreshIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.largeWidgetRoot, refreshPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }

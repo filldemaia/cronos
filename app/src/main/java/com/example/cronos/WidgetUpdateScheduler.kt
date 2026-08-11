@@ -85,6 +85,18 @@ object WidgetUpdateScheduler {
         updateAllOf(context, appWidgetManager, CronosWidgetLarge::class.java)
     }
 
+    /** Cert si encara queda algun widget actiu de qualsevol dels tres tipus. */
+    fun anyWidgetsRemain(context: Context): Boolean {
+        val appWidgetManager = AppWidgetManager.getInstance(context)
+        return listOf(
+            CronosWidget::class.java,
+            CronosWidgetApple::class.java,
+            CronosWidgetLarge::class.java,
+        ).any { widgetClass ->
+            appWidgetManager.getAppWidgetIds(ComponentName(context, widgetClass)).isNotEmpty()
+        }
+    }
+
     private fun updateAllOf(
         context: Context,
         appWidgetManager: AppWidgetManager,

@@ -213,11 +213,17 @@ fun HoracatApp(
                         val light = if (isGold) SenyeraGoldLight else SenyeraRedLight
                         val dark = if (isGold) SenyeraGoldDark else SenyeraRedDark
                         drawRect(
+                            // La senyera es pinta a dalt i a vall de la pantalla
+                            // (on hi ha el text) i es degrada a transparent cap
+                            // al mig, perquè no hi hagi cap abrupta.
                             brush = Brush.verticalGradient(
-                                listOf(
-                                    light.copy(alpha = barAlpha),
-                                    dark.copy(alpha = barAlpha),
-                                )
+                                0f to light.copy(alpha = barAlpha), // dalt, plena
+                                0.30f to dark.copy(alpha = barAlpha), // final banda superior
+                                0.42f to Color.Transparent, // es difumina
+                                0.50f to Color.Transparent, // mig: fons real
+                                0.58f to Color.Transparent,
+                                0.70f to light.copy(alpha = barAlpha), // torna a aparèixer
+                                1f to dark.copy(alpha = barAlpha), // baix, plena
                             ),
                             topLeft = Offset(i * barWidth, 0f),
                             size = Size(barWidth, size.height),

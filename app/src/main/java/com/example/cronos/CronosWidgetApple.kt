@@ -1,8 +1,10 @@
 package com.example.cronos
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.util.Log
 import android.widget.RemoteViews
 import com.example.cronos.ui.theme.paletteForHour
@@ -33,7 +35,11 @@ class CronosWidgetApple : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        WidgetUpdateScheduler.cancelUpdates(context)
+        if (WidgetUpdateScheduler.anyWidgetsRemain(context)) {
+            WidgetUpdateScheduler.scheduleNextUpdate(context)
+        } else {
+            WidgetUpdateScheduler.cancelUpdates(context)
+        }
     }
 
     companion object {
@@ -52,6 +58,18 @@ class CronosWidgetApple : AppWidgetProvider() {
             views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
             views.setTextColor(R.id.appleWidgetTime, palette.widgetTextColor)
             views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.widgetBackgroundRes)
+
+            val refreshIntent = Intent(context, CronosWidgetApple::class.java).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+            }
+            val refreshPendingIntent = PendingIntent.getBroadcast(
+                context,
+                appWidgetId,
+                refreshIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.appleWidgetRoot, refreshPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }

@@ -1,8 +1,10 @@
 package com.example.cronos
 
+import android.app.PendingIntent
 import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
+import android.content.Intent
 import android.graphics.Color
 import android.util.Log
 import android.widget.RemoteViews
@@ -33,7 +35,13 @@ class CronosWidget : AppWidgetProvider() {
 
     override fun onDisabled(context: Context) {
         super.onDisabled(context)
-        WidgetUpdateScheduler.cancelUpdates(context)
+        // Si encara queden widgets d'altres tipus, l'actualització ha de
+        // continuar: només es cancel·la quan no en queda cap.
+        if (WidgetUpdateScheduler.anyWidgetsRemain(context)) {
+            WidgetUpdateScheduler.scheduleNextUpdate(context)
+        } else {
+            WidgetUpdateScheduler.cancelUpdates(context)
+        }
     }
 
     companion object {
@@ -50,6 +58,20 @@ class CronosWidget : AppWidgetProvider() {
 
             views.setTextViewText(R.id.smallWidgetTime, timeInCatalan)
             views.setTextColor(R.id.smallWidgetTime, Color.WHITE)
+
+            // Tocant el widget es refresca immediatament, per si l'alarma
+            // s'ha endarrerit (bateria / estalvi).
+            val refreshIntent = Intent(context, CronosWidget::class.java).apply {
+                action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
+                putExtra(AppWidgetManager.EXTRA_APPWIDGET_IDS, intArrayOf(appWidgetId))
+            }
+            val refreshPendingIntent = PendingIntent.getBroadcast(
+                context,
+                appWidgetId,
+                refreshIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+            views.setOnClickPendingIntent(R.id.smallWidgetRoot, refreshPendingIntent)
 
             appWidgetManager.updateAppWidget(appWidgetId, views)
         }
