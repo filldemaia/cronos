@@ -219,8 +219,10 @@ fun HoracatApp(
                             brush = Brush.verticalGradient(
                                 // Senyera a tota la pantalla, amb llum a
                                 // dalt i ombra a baix (profunditat).
-                                light.copy(alpha = barAlpha),
-                                dark.copy(alpha = barAlpha),
+                                listOf(
+                                    light.copy(alpha = barAlpha),
+                                    dark.copy(alpha = barAlpha),
+                                )
                             ),
                             topLeft = Offset(i * barWidth, 0f),
                             size = Size(barWidth, size.height),
