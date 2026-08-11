@@ -199,9 +199,16 @@ fun HoracatApp(
                     }
                     val barWidth = size.width / SENYERA_BARS
                     for (i in 0 until SENYERA_BARS) {
+                        val isGold = i % 2 == 0
+                        val light = if (isGold) SenyeraGoldLight else SenyeraRedLight
+                        val dark = if (isGold) SenyeraGoldDark else SenyeraRedDark
                         drawRect(
-                            color = (if (i % 2 == 0) SenyeraGold else SenyeraRed)
-                                .copy(alpha = barAlpha),
+                            brush = Brush.verticalGradient(
+                                listOf(
+                                    light.copy(alpha = barAlpha),
+                                    dark.copy(alpha = barAlpha),
+                                )
+                            ),
                             topLeft = Offset(i * barWidth, 0f),
                             size = Size(barWidth, size.height),
                         )
@@ -351,8 +358,12 @@ private const val SENYERA_ALPHA = 0.28f
 private const val SENYERA_MORNING_ALPHA = 0.5f
 private const val SENYERA_MIDDAY_ALPHA = 0.7f
 private const val MIDDAY_SCRIM_ALPHA = 0.12f
-private val SenyeraGold = Color(0xFFFFD700)   // or pur, viu
-private val SenyeraRed = Color(0xFFFF2400)    // vermell escarlata, viu
+// Tons de la senyera amb llum a dalt i ombra a baix, per donar
+// profunditat a les barres sense perdre la vivesa del color.
+private val SenyeraGoldLight = Color(0xFFFFE27A)
+private val SenyeraGoldDark = Color(0xFFC99600)
+private val SenyeraRedLight = Color(0xFFFF7A5C)
+private val SenyeraRedDark = Color(0xFFC40000)
 
 /**
  * Salutació segons el moment del dia.
