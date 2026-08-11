@@ -22,6 +22,8 @@ data class TimePalette(
     // Widgets: fons arrodonit i color de text per franja
     val widgetBackgroundRes: Int,
     val widgetTextColor: Int,
+    // Si el fons és fosc, els textos porten ombra per llegir-se
+    val textShadow: Boolean = false,
 )
 
 val MorningPalette = TimePalette(
@@ -62,6 +64,7 @@ val NightPalette = TimePalette(
     gradientBottom = Color(0xFF483D8B),
     widgetBackgroundRes = R.drawable.widget_bg_nit,
     widgetTextColor = 0xFFFFFFFF.toInt(),
+    textShadow = true,
 )
 
 /** CompositionLocal que exposa la paleta del moment del dia actual. */
@@ -69,11 +72,11 @@ val LocalTimePalette = staticCompositionLocalOf { MorningPalette }
 
 /**
  * Paleta per una hora concreta. Franges disjuntes i senceres:
- * 0-4 i 21-23 → nit, 5-11 → matí, 12-16 → migdia, 17-18 → tarda,
+ * 0-5 i 21-23 → nit, 6-11 → matí, 12-16 → migdia, 17-18 → tarda,
  * 19-20 → vespre.
  */
 fun paletteForHour(hour: Int): TimePalette = when (hour) {
-    in 5..11 -> MorningPalette
+    in 6..11 -> MorningPalette
     in 12..16 -> MiddayPalette
     in 17..18 -> AfternoonPalette
     in 19..20 -> EveningPalette
@@ -85,3 +88,4 @@ fun currentTimePalette(): TimePalette {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     return paletteForHour(hour)
 }
+

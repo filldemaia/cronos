@@ -5,16 +5,19 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
+import androidx.compose.ui.draw.drawBehind
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
@@ -152,6 +155,14 @@ fun HoracatApp(
         colors = listOf(animatedTop, animatedMiddle, animatedBottom)
     )
 
+    // Ombra només quan la paleta és fosca (nit); de dia, res.
+    val currentTextShadow = if (timePalette.textShadow) TextShadow else NoShadow
+
+    // El grau de presència de la senyera depèn del moment del dia:
+    // al matí es pinta més present i al migdia encara més, perquè el
+    // text blanc es llegeixi bé fins i tot sobre el fons més clar.
+    val nowHour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+
     Scaffold(
         topBar = {
             TopAppBar(
@@ -175,7 +186,40 @@ fun HoracatApp(
         Box(
             modifier = Modifier
                 .fillMaxSize()
-                .background(brush = backgroundGradient)
+                .drawBehind {
+                    // Degradat de fons (el de sempre, sense tocar-lo)
+                    drawRect(brush = backgroundGradient)
+                    // Senyera translúcida per sobre: 5 barres daurades i
+                    // 4 de vermelles, sense tapar els colors del degradat.
+                    // Al matí, més opaca per donar contrast al text.
+                    val barAlpha = when (nowHour) {
+                        in 6..11 -> SENYERA_MORNING_ALPHA
+                        in 12..16 -> SENYERA_MIDDAY_ALPHA
+                        else -> SENYERA_ALPHA
+                    }
+                    val barWidth = size.width / SENYERA_BARS
+                    for (i in 0 until SENYERA_BARS) {
+                        drawRect(
+                            color = (if (i % 2 == 0) SenyeraGold else SenyeraRed)
+                                .copy(alpha = barAlpha),
+                            topLeft = Offset(i * barWidth, 0f),
+                            size = Size(barWidth, size.height),
+                        )
+                    }
+                    // Al migdia, un vel fosc molt subtil i amb degradat
+                    // (transparent a dalt, fosc suau a baix) perquè el text
+                    // blanc guanyi contrast sense retocar els colors.
+                    if (nowHour in 12..16) {
+                        drawRect(
+                            brush = Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    Color.Black.copy(alpha = MIDDAY_SCRIM_ALPHA),
+                                )
+                            )
+                        )
+                    }
+                }
                 .padding(paddingValues),
         ) {
             Column(
@@ -190,26 +234,26 @@ fun HoracatApp(
                 Spacer(modifier = Modifier.weight(0.15f))
                 Text(
                     text = getGreeting(),
-                    style = GreetingStyle,
-                    color = Color.White.copy(alpha = 0.9f),
+                    style = GreetingStyle.copy(shadow = currentTextShadow),
+                    color = Color.White,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.fillMaxWidth(),
                 )
                 Spacer(modifier = Modifier.weight(0.1f))
                 Text(
                     text = buildAnnotatedString {
-                        withStyle(GreetingStyle.toSpanStyle()) {
+                        withStyle(GreetingStyle.copy(shadow = currentTextShadow).toSpanStyle()) {
                             // L'espai es posa explícitament aquí: Android retalla
                             // els espais finals de les strings en compilar.
                             append(stringResource(R.string.before_date).trim())
                             append(" ")
                         }
 
-                        withStyle(DateStyle.toSpanStyle()) {
+                        withStyle(DateStyle.copy(shadow = currentTextShadow).toSpanStyle()) {
                             append(currentDate)
                         }
                     },
-                    color = Color.White.copy(alpha = 0.9f),
+                    color = Color.White,
                     textAlign = TextAlign.Start,
                     modifier = Modifier.fillMaxWidth(),
                 )
@@ -224,6 +268,7 @@ fun HoracatApp(
                         fontSize = hourFontSize,
                         lineHeight = hourFontSize * 1.18f,
                         fontWeight = FontWeight.SemiBold,
+                        shadow = currentTextShadow,
                     ),
                     color = Color.White,
                     textAlign = TextAlign.Center,
@@ -237,8 +282,8 @@ fun HoracatApp(
                     Spacer(modifier = Modifier.weight(0.7f))
                     Text(
                         text = digitalTime,
-                        style = DigitalStyle,
-                        color = Color.White.copy(alpha = 0.92f),
+                        style = DigitalStyle.copy(shadow = currentTextShadow),
+                        color = Color.White,
                         textAlign = TextAlign.Center,
                     )
                 }
@@ -247,8 +292,8 @@ fun HoracatApp(
                 Spacer(modifier = Modifier.weight(1.4f))
                 Text(
                     text = stringResource(R.string.about_text),
-                    style = FooterStyle,
-                    color = Color.White.copy(alpha = 0.6f),
+                    style = FooterStyle.copy(shadow = currentTextShadow),
+                    color = Color.White,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.padding(horizontal = 24.dp),
                 )
@@ -257,6 +302,23 @@ fun HoracatApp(
         }
     }
 }
+
+/**
+ * Ombra fosca i suau per a tots els textos sobre el degradat i la senyera,
+ * perquè es llegeixin bé qualsevol que sigui el fons.
+ */
+/**
+ * Ombra fosca i suau: només es fa servir quan el fons és fosc (nit).
+ * De dia el text blanc va sense ombra, recolzat en els colors del fons.
+ */
+private val TextShadow = Shadow(
+    color = Color(0xCC000000),
+    offset = Offset(0f, 1f),
+    blurRadius = 5f,
+)
+
+/** Ombra buida per als períodes amb el fons clar. */
+private val NoShadow = Shadow(Color.Transparent, Offset.Zero, 0f)
 
 /** Data: petita i clara, per sobre de tot. */
 private val DateStyle = TextStyle(
@@ -282,6 +344,15 @@ private val FooterStyle = TextStyle(
     fontSize = 14.sp,
     fontWeight = FontWeight.Medium,
 )
+
+/** Barres de la senyera: 5 de daurades i 4 de vermelles. */
+private const val SENYERA_BARS = 9
+private const val SENYERA_ALPHA = 0.28f
+private const val SENYERA_MORNING_ALPHA = 0.5f
+private const val SENYERA_MIDDAY_ALPHA = 0.7f
+private const val MIDDAY_SCRIM_ALPHA = 0.12f
+private val SenyeraGold = Color(0xFFFCD116)
+private val SenyeraRed = Color(0xFFDA121A)
 
 /**
  * Salutació segons el moment del dia.

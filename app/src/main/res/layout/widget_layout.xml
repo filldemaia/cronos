@@ -11,6 +11,7 @@
         android:id="@+id/smallWidgetTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:text="Són les deu de la nit"
         android:textSize="18sp"
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium"

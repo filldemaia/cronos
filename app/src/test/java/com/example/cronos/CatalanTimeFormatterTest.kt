@@ -166,8 +166,8 @@ class CatalanTimeFormatterTest {
 class PaletteRangesTest {
 
     @Test
-    fun `franges de mati de 5 a 11`() {
-        (5..11).forEach { h -> assertEquals("hora $h", MorningPalette, paletteForHour(h)) }
+    fun `franges de mati de 6 a 11`() {
+        (6..11).forEach { h -> assertEquals("hora $h", MorningPalette, paletteForHour(h)) }
     }
 
     @Test
@@ -186,8 +186,8 @@ class PaletteRangesTest {
     }
 
     @Test
-    fun `franges de nit a 0-4 i 21-23`() {
-        (0..4).forEach { h -> assertEquals("hora $h", NightPalette, paletteForHour(h)) }
+    fun `franges de nit a 0-5 i 21-23`() {
+        (0..5).forEach { h -> assertEquals("hora $h", NightPalette, paletteForHour(h)) }
         (21..23).forEach { h -> assertEquals("hora $h", NightPalette, paletteForHour(h)) }
     }
 
