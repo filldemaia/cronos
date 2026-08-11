@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:id="@+id/appleWidgetRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
     android:gravity="center"
-    android:padding="12dp"
+    android:padding="14dp"
     android:background="@drawable/widget_bg_mati">
+
+    <!-- Senyera translúcida per sobre del color de la targeta -->
+    <ImageView
+        android:id="@+id/appleWidgetSenyera"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        android:src="@drawable/senyera_widget"
+        android:contentDescription="@null" />
 
     <TextView
         android:id="@+id/appleWidgetTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_gravity="center"
         android:text="Són les deu de la nit"
         android:textColor="#01579B"
         android:textSize="32sp"
@@ -22,4 +32,4 @@
         android:autoSizeMaxTextSize="32sp"
         android:lineSpacingMultiplier="1.15"/>
 
-</LinearLayout>
+</FrameLayout>

@@ -58,6 +58,7 @@ class CronosWidgetApple : AppWidgetProvider() {
             views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
             views.setTextColor(R.id.appleWidgetTime, palette.widgetTextColor)
             views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.widgetBackgroundRes)
+            views.setImageViewResource(R.id.appleWidgetSenyera, R.drawable.senyera_widget)
 
             val refreshIntent = Intent(context, CronosWidgetApple::class.java).apply {
                 action = AppWidgetManager.ACTION_APPWIDGET_UPDATE
