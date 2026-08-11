@@ -124,7 +124,7 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 
 ## Contacte
 
-Èrik Calvo Lledó — [GitHub](https://github.com/lledoerik)
+Èrik Lledó — lledoerik@gmail.com - [GitHub](https://github.com/filldemaia)
 
 ---
 
