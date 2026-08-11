@@ -2,4 +2,10 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@drawable/widget_bg_migdia" />
     <item android:drawable="@drawable/senyera_widget" />
+    <!-- Vel fosc al migdia -->
+    <item>
+        <shape android:shape="rectangle">
+            <solid android:color="#73000000" />
+        </shape>
+    </item>
 </layer-list>
