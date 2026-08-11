@@ -22,6 +22,7 @@ object WidgetUpdateScheduler {
     const val ACTION_TICK = "com.example.cronos.ACTION_WIDGET_TICK"
 
     private const val REQUEST_CODE = 24680
+    private const val WINDOW_MS = 10_000L
     private const val TAG = "WidgetUpdateScheduler"
 
     /** Programa el pròxim minut (o reprograma el tick pendent). */
@@ -48,11 +49,14 @@ object WidgetUpdateScheduler {
         val nextMinute = ((now / 60000) + 1) * 60000
 
         try {
-            // Inexacta amb allow-while-idle: s'aprofita per no despertar
-            // el dispositiu exactament cada minut i no cal cap permís.
-            alarmManager.setAndAllowWhileIdle(
+            // Alarma amb finestra estreta (dispara ~10s després del canvi
+            // de minut): l'hora del widget es manté tan al dia com pot, sense
+            // requerir cap permís d'alarma exacta. En estalvi/Doze pot
+            // ajornar-se a la finestra següent de manteniment.
+            alarmManager.setWindow(
                 AlarmManager.RTC_WAKEUP,
                 nextMinute,
+                WINDOW_MS,
                 pendingIntent
             )
         } catch (e: SecurityException) {
