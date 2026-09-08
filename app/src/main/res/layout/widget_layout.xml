@@ -9,7 +9,7 @@
 
     <TextView
         android:id="@+id/smallWidgetTime"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:text="Són les deu de la nit"
         android:textSize="18sp"
@@ -20,6 +20,9 @@
         android:shadowDx="1"
         android:shadowDy="1"
         android:shadowRadius="3"
+        android:autoSizeTextType="uniform"
+        android:autoSizeMinTextSize="12sp"
+        android:autoSizeMaxTextSize="18sp"
         android:lineSpacingMultiplier="1.15"/>
 
 </LinearLayout>

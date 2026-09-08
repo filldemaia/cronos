@@ -2,9 +2,18 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
         xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos necessaris per al widget -->
+    <!-- Permisos necessaris per al widget. Les alarmes RTC_WAKEUP no
+         necessiten WAKE_LOCK: el sistema el manté durant el receiver. -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-    <uses-permission android:name="android.permission.WAKE_LOCK" />
+
+    <!-- Alarma exacta per al tick per minut dels widgets. És un permís
+         auto-concedit (des d'API 33) pensat per a apps de temps/rellotge,
+         que és exactament el cas d'aquest widget. Sense ell, les alarmes
+         inexactes s'ajornen amb el Doze i l'hora queda endarrerida.
+         SCHEDULE_EXACT_ALARM és l'equivalent per a Android 12 (API 31-32),
+         on també es concedeix automàticament. -->
+    <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
     <application
             android:allowBackup="true"
@@ -19,9 +28,8 @@
 
         <!-- Activitat principal -->
         <activity
-                android:name="com.example.cronos.MainActivity"
+                android:name="com.filldemaia.cronos.MainActivity"
                 android:exported="true"
-                android:label="@string/app_name"
                 android:theme="@style/Theme.Cronos"
                 android:screenOrientation="portrait">
             <intent-filter>
@@ -32,7 +40,7 @@
 
         <!-- Widget petit -->
         <receiver
-                android:name="com.example.cronos.CronosWidget"
+                android:name="com.filldemaia.cronos.CronosWidget"
                 android:label="@string/widget_name"
                 android:exported="true">
             <intent-filter>
@@ -45,7 +53,7 @@
 
         <!-- Widget gran -->
         <receiver
-                android:name="com.example.cronos.CronosWidgetLarge"
+                android:name="com.filldemaia.cronos.CronosWidgetLarge"
                 android:label="@string/widget_name_large"
                 android:exported="true">
             <intent-filter>
@@ -58,7 +66,7 @@
 
         <!-- Widget estil Apple (canvia de color segons l'hora) -->
         <receiver
-                android:name="com.example.cronos.CronosWidgetApple"
+                android:name="com.filldemaia.cronos.CronosWidgetApple"
                 android:label="@string/widget_name_apple"
                 android:exported="true">
             <intent-filter>
@@ -69,18 +77,25 @@
                     android:resource="@xml/widget_info_apple" />
         </receiver>
 
-        <!-- Tick per minut: una sola alarma que actualitza tots els widgets -->
+        <!-- Tick per minut: una sola alarma que actualitza tots els widgets.
+             exported=false: només la nostra app i el sistema hi poden enviar
+             broadcasts; cap altra app pot forçar desperts del dispositiu.
+             També escolta canvis d'hora/zona horària del sistema: si l'usuari
+             ajusta el rellotge, els widgets es refresquen a l'instant en lloc
+             de quedar-se amb l'hora vella fins al tick següent. -->
         <receiver
-                android:name="com.example.cronos.CronosWidgetTickReceiver"
-                android:exported="true">
+                android:name="com.filldemaia.cronos.CronosWidgetTickReceiver"
+                android:exported="false">
             <intent-filter>
-                <action android:name="com.example.cronos.ACTION_WIDGET_TICK" />
+                <action android:name="com.filldemaia.cronos.ACTION_WIDGET_TICK" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
 
         <!-- Receiver per reiniciar el widget després d'un reinici del dispositiu -->
         <receiver
-                android:name="com.example.cronos.BootReceiver"
+                android:name="com.filldemaia.cronos.BootReceiver"
                 android:enabled="true"
                 android:exported="true">
             <intent-filter>

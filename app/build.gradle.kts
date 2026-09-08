@@ -21,11 +21,11 @@ val hasReleaseSigning = keystoreProperties.getProperty("storeFile") != null &&
     !keystoreProperties.getProperty("keyPassword").orEmpty().isBlank()
 
 android {
-    namespace = "com.example.cronos"
+    namespace = "com.filldemaia.cronos"
     compileSdk = 36
 
     defaultConfig {
-        applicationId = "com.example.cronos"
+        applicationId = "com.filldemaia.cronos"
         minSdk = 24
         targetSdk = 36
         versionCode = 1
@@ -105,9 +105,8 @@ dependencies {
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
     
-    // Widget support
-    implementation("androidx.glance:glance-appwidget:1.1.1")
-    
+    // Widget support (AppWidget API clàssic amb RemoteViews)
+
     // Testing dependencies
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.junit)

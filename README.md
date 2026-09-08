@@ -80,19 +80,21 @@ Obre la roda dentada de la pantalla principal:
 ## Arquitectura (resum)
 
 ```
-com.example.cronos/
+com.filldemaia.cronos/
 ├── CatalanTimeFormatter.kt     # Lògica de l'hora (minuts i segons per escrit)
+├── CatalanDateFormatter.kt     # Formatació de la data en català (app + widget gran)
 ├── MainActivity.kt             # UI en Jetpack Compose
 ├── SettingsRepository.kt       # Preferències (SharedPreferences)
 ├── SettingsScreen.kt           # Pantalla d'ajustaments
+├── CronosBaseWidget.kt         # Base comuna dels tres widgets (cicle de vida i refresc)
 ├── CronosWidget.kt / CronosWidgetApple.kt / CronosWidgetLarge.kt
-├── WidgetUpdateScheduler.kt    # Una sola alarma inexacta per minut
+├── WidgetUpdateScheduler.kt    # Una sola alarma exacta per minut (fallback inexacte)
 ├── CronosWidgetTickReceiver.kt # Tick que actualitza tots els widgets
 ├── BootReceiver.kt             # Reprograma el tick després d'un reinici
 └── ui/theme/                   # Paleta unificada app + widgets
 ```
 
-Decisions tècniques destacades: paleta unificada (`TimePalette.paletteForHour()`), una única alarma inexacta per tota l'app, i mida d'hora estable regulable per l'usuari.
+Decisions tècniques destacades: paleta unificada (`TimePalette.paletteForHour()`), una única alarma exacta per tota l'app (amb comprovació de permís i fallback), i mida d'hora estable regulable per l'usuari.
 
 ## Instal·lació
 
