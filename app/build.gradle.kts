@@ -39,7 +39,9 @@ android {
     signingConfigs {
         create("release") {
             if (hasReleaseSigning) {
-                storeFile = file(keystoreProperties.getProperty("storeFile")!!)
+                // keystore.properties viu a l'arrel del projecte; el camí
+                // del storeFile també es resol respecte a l'arrel.
+                storeFile = rootProject.file(keystoreProperties.getProperty("storeFile")!!)
                 storePassword = keystoreProperties.getProperty("storePassword")
                 keyAlias = keystoreProperties.getProperty("keyAlias")
                 keyPassword = keystoreProperties.getProperty("keyPassword")

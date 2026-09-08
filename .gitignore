@@ -13,6 +13,7 @@ app/build/
 keystore.properties
 *.jks
 *.keystore
+key.jks.backup
 
 # Altres
 *.apk
