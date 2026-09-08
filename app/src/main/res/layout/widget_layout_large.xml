@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/largeWidgetRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -11,7 +12,7 @@
         android:id="@+id/largeWidgetDate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Dilluns, 10 d'agost"
+        android:text="@string/widget_placeholder_date"
         android:textSize="22sp"
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium"
@@ -23,13 +24,14 @@
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="12sp"
         android:autoSizeMaxTextSize="22sp"
-        android:layout_marginBottom="14dp"/>
+        android:layout_marginBottom="14dp"
+        tools:targetApi="o"/>
 
     <TextView
         android:id="@+id/largeWidgetCatalanTime"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="Falten sis minuts per les nou de la nit"
+        android:text="@string/widget_placeholder_large_time"
         android:textSize="32sp"
         android:textColor="#FFFFFF"
         android:fontFamily="sans-serif-medium"
@@ -41,6 +43,7 @@
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="14sp"
         android:autoSizeMaxTextSize="32sp"
-        android:lineSpacingMultiplier="1.15"/>
+        android:lineSpacingMultiplier="1.15"
+        tools:targetApi="o"/>
 
 </LinearLayout>

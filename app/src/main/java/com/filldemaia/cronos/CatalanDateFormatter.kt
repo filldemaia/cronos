@@ -10,13 +10,13 @@ import java.util.Locale
  */
 object CatalanDateFormatter {
 
-    private val locale = Locale("ca", "ES")
+    private val locale = Locale.forLanguageTag("ca-ES")
 
-    /** "Avui: dilluns, 10 d'agost del 2026" → "dilluns, 10 d'agost del 2026". */
+    /** Data d'avui amb any: "dilluns, 10 d'agost del 2026". */
     fun todayWithYear(date: Date = Date()): String =
         SimpleDateFormat("EEEE, d MMMM 'del 'yyyy", locale).format(date)
 
-    /** "dilluns, 10 d'agost" (sense any, per al widget gran). */
+    /** Data d'avui sense any: "dilluns, 10 d'agost" (per al widget gran). */
     fun today(date: Date = Date()): String =
         SimpleDateFormat("EEEE, d MMMM", locale).format(date)
 }

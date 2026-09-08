@@ -2,7 +2,9 @@ package com.filldemaia.cronos
 
 import android.os.Bundle
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.compose.animation.animateColorAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
@@ -37,6 +39,7 @@ import java.util.*
 class MainActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        enableEdgeToEdge()
         val settings = SettingsRepository(this)
         setContent {
             CronosTheme {
@@ -53,6 +56,9 @@ private enum class Screen { Clock, Settings }
 @Composable
 private fun CronosApp(settings: SettingsRepository) {
     var screen by remember { mutableStateOf(Screen.Clock) }
+    // El botó enrere del sistema torna del Configuració al rellotge
+    // en lloc de tancar l'app.
+    BackHandler(enabled = screen == Screen.Settings) { screen = Screen.Clock }
     when (screen) {
         Screen.Clock -> HoracatApp(
             settings = settings,
@@ -378,13 +384,14 @@ private val SenyeraRedDark = Color(0xFFC40000)
 /**
  * Salutació segons el moment del dia.
  */
-fun getGreeting(): String {
+@Composable
+private fun getGreeting(): String {
     val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
     return when (hour) {
-        in 5..11 -> "Bon dia, Catalunya!"
-        in 12..14 -> "Bon migdia!"
-        in 15..18 -> "Bona tarda!"
-        in 19..20 -> "Bon vespre!"
-        else -> "Bona nit!"
+        in 5..11 -> stringResource(R.string.greeting_morning)
+        in 12..14 -> stringResource(R.string.greeting_midday)
+        in 15..18 -> stringResource(R.string.greeting_afternoon)
+        in 19..20 -> stringResource(R.string.greeting_evening)
+        else -> stringResource(R.string.greeting_night)
     }
 }

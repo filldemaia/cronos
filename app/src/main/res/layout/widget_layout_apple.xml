@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/appleWidgetRoot"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -12,7 +13,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
-        android:text="Són les deu de la nit"
+        android:text="@string/widget_placeholder_time"
         android:textColor="#FFFFFF"
         android:textSize="32sp"
         android:fontFamily="sans-serif-medium"
@@ -24,6 +25,7 @@
         android:autoSizeTextType="uniform"
         android:autoSizeMinTextSize="24sp"
         android:autoSizeMaxTextSize="32sp"
-        android:lineSpacingMultiplier="1.15"/>
+        android:lineSpacingMultiplier="1.15"
+        tools:targetApi="o"/>
 
 </FrameLayout>

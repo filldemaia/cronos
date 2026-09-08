@@ -8,11 +8,11 @@
 # Widgets i broadcast receivers: es referencien des del manifest pel nom
 # complet; els mantenim sempre sencers (AGP ja els conserva, però així
 # queda garantit fins i tot si canvien els default keep rules).
--keep class com.example.cronos.CronosWidget { *; }
--keep class com.example.cronos.CronosWidgetApple { *; }
--keep class com.example.cronos.CronosWidgetLarge { *; }
--keep class com.example.cronos.CronosWidgetTickReceiver { *; }
--keep class com.example.cronos.BootReceiver { *; }
+-keep class com.filldemaia.cronos.CronosWidget { *; }
+-keep class com.filldemaia.cronos.CronosWidgetApple { *; }
+-keep class com.filldemaia.cronos.CronosWidgetLarge { *; }
+-keep class com.filldemaia.cronos.CronosWidgetTickReceiver { *; }
+-keep class com.filldemaia.cronos.BootReceiver { *; }
 
 # If your project uses WebView with JS, uncomment the following
 # and specify the fully qualified class name to the JavaScript interface

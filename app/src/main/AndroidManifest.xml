@@ -30,8 +30,7 @@
         <activity
                 android:name="com.filldemaia.cronos.MainActivity"
                 android:exported="true"
-                android:theme="@style/Theme.Cronos"
-                android:screenOrientation="portrait">
+                android:theme="@style/Theme.Cronos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />

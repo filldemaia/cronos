@@ -92,7 +92,7 @@ object WidgetUpdateScheduler {
      * Amb USE_EXACT_ALARM declarat hauria de ser sempre cert, però certs
      * fabricants i ajustos d'estalvi el poden impedir.
      */
-    fun canScheduleExactAlarms(context: Context): Boolean {
+    private fun canScheduleExactAlarms(context: Context): Boolean {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.S) return true
         val alarmManager = context.getSystemService(Context.ALARM_SERVICE) as? AlarmManager
         return alarmManager?.canScheduleExactAlarms() ?: false

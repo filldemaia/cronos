@@ -8,6 +8,18 @@
     <string name="before_date">Avui és </string>
     <string name="about_text">Aquesta aplicació ajuda a preservar la llengua, indicant l\'hora tradicional catalana.</string>
 
+    <!-- Textos per defecte dels widgets (es sobreescriuen al primer refresc) -->
+    <string name="widget_placeholder_time">Són les deu de la nit</string>
+    <string name="widget_placeholder_large_time">Falten sis minuts per les nou de la nit</string>
+    <string name="widget_placeholder_date">Dilluns, 10 d\'agost</string>
+
+    <!-- Salutacions segons el moment del dia -->
+    <string name="greeting_morning">Bon dia, Catalunya!</string>
+    <string name="greeting_midday">Bon migdia!</string>
+    <string name="greeting_afternoon">Bona tarda!</string>
+    <string name="greeting_evening">Bon vespre!</string>
+    <string name="greeting_night">Bona nit!</string>
+
     <!-- Configuració -->
     <string name="settings_title">Configuració</string>
     <string name="settings_back">Torna</string>
@@ -21,5 +33,5 @@
     <string name="settings_hour_size">Mida de l\'hora</string>
     <string name="settings_section_about">Sobre Cronos</string>
     <string name="settings_version">Versió %1$s</string>
-    <string name="settings_reset">Restableixer la configuració</string>
+    <string name="settings_reset">Restablir la configuració</string>
 </resources>
