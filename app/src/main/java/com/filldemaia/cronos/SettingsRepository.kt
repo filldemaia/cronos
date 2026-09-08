@@ -3,7 +3,6 @@ package com.filldemaia.cronos
 import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import androidx.core.content.edit
 
 /**
  * Repositori de preferències de l'usuari. Emmagatzema en
