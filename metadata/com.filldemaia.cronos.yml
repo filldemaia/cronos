@@ -1,0 +1,46 @@
+# Recepta de F-Droid per a Cronos.
+# Aquest fitxer és la referència que cal afegir al repositori de F-Droid
+# (gitlab.com/fdroid/fdroiddata) perquè l'app es publiqui.
+# Camí allà: metadata/com.filldemaia.cronos.yml
+Categories:
+  - Time
+License: GPL-3.0-or-later
+AuthorName: Èrik Lledó
+WebSite: https://github.com/filldemaia/cronos
+SourceCode: https://github.com/filldemaia/cronos
+IssueTracker: https://github.com/filldemaia/cronos/issues
+Name: Cronos
+Summary: L'hora en català tradicional amb widgets
+Description: |
+  Cronos mostra l'hora de la manera tradicional catalana
+  ("És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"),
+  amb un degradat de fons que canvia segons el moment del dia.
+
+  * Hora catalana completa amb quarts, minuts, segons i moment del dia
+  * Data completa amb el dia de la setmana
+  * Salutació segons el moment del dia
+  * Tres widgets per a la pantalla d'inici
+  * Segons opcionals, per escrit a la frase tradicional
+  * Mida de l'hora ajustable i configuració restableixible
+  * Molt eficient: una sola alarma per minut, sense permisos especials
+
+  Cronos no recull cap dada i funciona 100% sense connexió. Codi lliure
+  sota GPL v3 o posterior.
+
+RepoType: git
+Repo: https://github.com/filldemaia/cronos.git
+
+Builds:
+  - versionName: 1.3
+    versionCode: 5
+    commit: v1.3
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
+UpdateCheckMode: Tags
+UpdateCheckData: v\d+\.\d+
+VercodeOperation:
+  - '%c'
+CurrentVersion: 1.3
+CurrentVersionCode: 5
