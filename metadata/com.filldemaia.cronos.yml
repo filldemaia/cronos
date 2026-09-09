@@ -1,13 +1,13 @@
 AuthorName: Èrik Lledó
 Builds:
-  - versionName: 1.3
+  - versionName: "1.3"
     versionCode: 5
     commit: v1.3
     gradle:
       - yes
 Categories:
   - Time
-CurrentVersion: 1.3
+CurrentVersion: "1.3"
 CurrentVersionCode: 5
 Description: |-
   Cronos mostra l'hora de la manera tradicional catalana
