@@ -1,0 +1,38 @@
+[
+  {
+    "eventType": "VIEW_CLICKED",
+    "elementDescriptors": [
+      {
+        "contentDescription": "Configuració"
+      }
+    ],
+    "optional": true
+  },
+  {
+    "eventType": "VIEW_CLICKED",
+    "elementDescriptors": [
+      {
+        "text": "Mostrar l'hora digital"
+      }
+    ],
+    "optional": true
+  },
+  {
+    "eventType": "VIEW_CLICKED",
+    "elementDescriptors": [
+      {
+        "text": "Segons a l'hora tradicional"
+      }
+    ],
+    "optional": true
+  },
+  {
+    "eventType": "VIEW_CLICKED",
+    "elementDescriptors": [
+      {
+        "contentDescription": "Torna"
+      }
+    ],
+    "optional": true
+  }
+]

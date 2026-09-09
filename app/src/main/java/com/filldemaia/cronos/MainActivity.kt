@@ -357,9 +357,9 @@ private val GreetingStyle = TextStyle(
 
 /** Hora digital: prima, per no robar protagonisme a l'hora catalana. */
 private val DigitalStyle = TextStyle(
-    fontSize = 26.sp,
-    fontWeight = FontWeight.Thin,
-    letterSpacing = 1.sp,
+    fontSize = 40.sp,
+    fontWeight = FontWeight.Bold,
+    letterSpacing = 2.sp,
 )
 
 /** Peu de pàgina: discretíssim. */
