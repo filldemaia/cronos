@@ -99,9 +99,9 @@ Decisions tècniques destacades: paleta unificada (`TimePalette.paletteForHour()
 ## Instal·lació
 
 - **Requisits**: Android 7.0 (API 24) o superior.
-- **APK directe**: descarrega la darrera `app-release.aab` / APK des de la secció [Releases](https://github.com/lledoerik/cronos/releases) i instal·la'l amb "Fonts desconegudes" activat.
+- **APK directe**: descarrega la darrera `app-release.aab` / APK des de la secció [Releases](https://github.com/filldemaia/cronos/releases) i instal·la'l amb "Fonts desconegudes" activat.
 - **Des del codi**: clona el repositori, obre'l amb Android Studio o similars i executa.
-- **Futurament estarà disponible a Google Play i a F-Droid.**
+- **A Google Play**: [Com a Cronos a Google Play](https://play.google.com/store/apps/details?id=com.filldemaia.cronos).
 
 ## Bateria
 
@@ -127,31 +127,6 @@ Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENS
 ## Contacte
 
 Èrik Lledó — lledoerik@gmail.com - [GitHub](https://github.com/filldemaia)
-
----
-
-## Apèndix: text per a la fitxa de Google Play
-
-**Títol:** Cronos
-
-**Resum (80 caràcters):**
-> Consulta fàcilment les hores en català.
-
-**Descripció completa (ja en català, pots afegir alguna en llengua que vulguis):**
-> Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb claredad i un degradat de fons que canvia segons el moment del dia.
->
-> · Hora catalana completa amb quarts, minuts, segons i moment del dia
-> · Data completa amb dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
-> · Tres widgets per a la pantalla d'inici (transparents i un amb color del moment del dia)
-> · Segons opcionals, per escrit a la frase tradicional
-> · Mida de l'hora ajustable i configuració restableixible
-> · Molt eficient: una sola alarma per minut, sense permisos especials
->
-> Cronos no recull cap dada i funciona 100% sense connexió.
-
-**Privadesa:** Dades que es comparteixen amb tercers: **Cap**. Dades recollides: **Cap**. (No cal URL de política de privacitat amb aquesta combinació.)
-
-**Categoria:** Ajuts / Personalització. **Temàtiques de contingut:** Sense restriccions.
 
 ---
 
