@@ -1,0 +1,11 @@
+Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per les tres de la tarda"... Cronos t'ho mostra amb claredat i un degradat de fons que canvia segons el moment del dia.
+
+* Hora catalana completa amb quarts, minuts, segons i moment del dia
+* Data completa amb el dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
+* Salutació segons el moment del dia
+* Tres widgets per a la pantalla d'inici
+* Segons opcionals, per escrit a la frase tradicional
+* Mida de l'hora ajustable i configuració restableixible
+* Molt eficient: una sola alarma per minut, sense permisos especials
+
+Cronos no recull cap dada i funciona 100% sense connexió. Codi lliure sota GPL v3 o posterior.
