@@ -1,4 +1,5 @@
 AuthorName: Èrik Lledó
+AutoUpdateMode: Version
 Builds:
   - versionName: "1.3"
     versionCode: 5
@@ -6,9 +7,7 @@ Builds:
     gradle:
       - yes
 Categories:
-  - Time
-CurrentVersion: "1.3"
-CurrentVersionCode: 5
+  - Clock
 Description: |-
   Cronos mostra l'hora de la manera tradicional catalana
   ("És un quart de set del matí", "Falten cinc minuts per les tres
@@ -32,4 +31,6 @@ Repo: https://github.com/filldemaia/cronos.git
 RepoType: git
 SourceCode: https://github.com/filldemaia/cronos
 Summary: L'hora en català tradicional amb widgets
+UpdateCheckData: 'app/build.gradle.kts|versionCode = (\d+)|app/build.gradle.kts|versionName = "([^"]+)"'
+UpdateCheckMode: Tags
 WebSite: https://github.com/filldemaia/cronos
