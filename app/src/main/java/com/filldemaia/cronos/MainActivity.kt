@@ -17,7 +17,6 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
@@ -164,19 +163,10 @@ fun HoracatApp(
     // Ombra només quan la paleta és fosca (nit); de dia, res.
     val currentTextShadow = if (timePalette.textShadow) TextShadow else NoShadow
 
-    // El grau de presència de la senyera i el vel del migdia es calculen
-    // per hora però s'animen amb transició suau (com els colors del
-    // gradient), perquè cap canvi de franja es noti de cop.
+    // El vel del migdia es calcula per hora però s'anima amb transició
+    // suau (com els colors del gradient), perquè el canvi de franja no
+    // es noti de cop.
     val hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    val barAlpha by animateFloatAsState(
-        targetValue = when (hourNow) {
-            in 6..11 -> SENYERA_MORNING_ALPHA
-            in 12..16 -> SENYERA_MIDDAY_ALPHA
-            else -> SENYERA_ALPHA
-        },
-        animationSpec = tween(durationMillis = 1500),
-        label = "barAlpha",
-    )
     val scrimAlpha by animateFloatAsState(
         targetValue = if (hourNow in 12..16) MIDDAY_SCRIM_ALPHA else 0f,
         animationSpec = tween(durationMillis = 1500),
@@ -207,32 +197,8 @@ fun HoracatApp(
             modifier = Modifier
                 .fillMaxSize()
                 .drawBehind {
-                    // Degradat de fons (el de sempre, sense tocar-lo)
+                    // Degradat de fons segons el moment del dia.
                     drawRect(brush = backgroundGradient)
-                    // Senyera translúcida per sobre: 5 barres daurades i
-                    // 4 de vermelles, sense tapar els colors del degradat.
-                    // L'opacitat es calcula per franja i s'anima (barAlpha).
-                    val barWidth = size.width / SENYERA_BARS
-                    for (i in 0 until SENYERA_BARS) {
-                        val isGold = i % 2 == 0
-                        val light = if (isGold) SenyeraGoldLight else SenyeraRedLight
-                        val dark = if (isGold) SenyeraGoldDark else SenyeraRedDark
-                        drawRect(
-                            // La senyera es pinta a dalt i a vall de la pantalla
-                            // (on hi ha el text) i es degrada a transparent cap
-                            // al mig, perquè no hi hagi cap abrupta.
-                            brush = Brush.verticalGradient(
-                                // Senyera a tota la pantalla, amb llum a
-                                // dalt i ombra a baix (profunditat).
-                                listOf(
-                                    light.copy(alpha = barAlpha),
-                                    dark.copy(alpha = barAlpha),
-                                )
-                            ),
-                            topLeft = Offset(i * barWidth, 0f),
-                            size = Size(barWidth, size.height),
-                        )
-                    }
                     // Al migdia, un vel fosc molt subtil i amb degradat
                     // (transparent a dalt, fosc suau a baix) perquè el text
                     // blanc guanyi contrast. També entra i surt animat.
@@ -368,18 +334,8 @@ private val FooterStyle = TextStyle(
     fontWeight = FontWeight.Medium,
 )
 
-/** Barres de la senyera: 5 de daurades i 4 de vermelles. */
-private const val SENYERA_BARS = 9
-private const val SENYERA_ALPHA = 0.28f
-private const val SENYERA_MORNING_ALPHA = 0.5f
-private const val SENYERA_MIDDAY_ALPHA = 0.7f
+/** Vel fosc subtil del migdia, per donar contrast al text blanc. */
 private const val MIDDAY_SCRIM_ALPHA = 0.12f
-// Tons de la senyera amb llum a dalt i ombra a baix, per donar
-// profunditat a les barres sense perdre la vivesa del color.
-private val SenyeraGoldLight = Color(0xFFFFE27A)
-private val SenyeraGoldDark = Color(0xFFC99600)
-private val SenyeraRedLight = Color(0xFFFF7A5C)
-private val SenyeraRedDark = Color(0xFFC40000)
 
 /**
  * Salutació segons el moment del dia.

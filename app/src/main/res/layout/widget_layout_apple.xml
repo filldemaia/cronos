@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:gravity="center"
     android:padding="10dp"
-    android:background="@drawable/widget_bg_mati_senyera">
+    android:background="@drawable/widget_bg_mati">
 
     <TextView
         android:id="@+id/appleWidgetTime"
