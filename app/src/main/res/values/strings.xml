@@ -10,7 +10,7 @@
 
     <!-- Textos per defecte dels widgets (es sobreescriuen al primer refresc) -->
     <string name="widget_placeholder_time">Són les deu de la nit</string>
-    <string name="widget_placeholder_large_time">Falten sis minuts per les nou de la nit</string>
+    <string name="widget_placeholder_large_time">Falten sis minuts per a les nou de la nit</string>
     <string name="widget_placeholder_date">Dilluns, 10 d\'agost</string>
 
     <!-- Salutacions segons el moment del dia -->
@@ -31,6 +31,13 @@
     <string name="settings_show_seconds_written">Segons a l\'hora tradicional</string>
     <string name="settings_show_seconds_written_desc">Afegeix els segons per escrit a la frase de l\'hora tradicional</string>
     <string name="settings_hour_size">Mida de l\'hora</string>
+    <string name="settings_section_location">Ubicació</string>
+    <string name="settings_location_city">Ciutat</string>
+    <string name="settings_location_desc">Es fa servir per calcular la sortida i la posta de sol i els colors del fons</string>
+    <string name="settings_location_custom">Personalitzada</string>
+    <string name="settings_location_lat">Latitud</string>
+    <string name="settings_location_lon">Longitud</string>
+    <string name="settings_location_coords_hint">Coordenades en graus decimals (ex. 41,3874 / 2,1686)</string>
     <string name="settings_section_about">Sobre Cronos</string>
     <string name="settings_version">Versió %1$s</string>
     <string name="settings_reset">Restablir la configuració</string>

@@ -3,12 +3,12 @@ package com.filldemaia.cronos
 import android.content.Context
 import android.graphics.Color
 import android.widget.RemoteViews
-import com.filldemaia.cronos.ui.theme.paletteForHour
-import java.util.Calendar
+import com.filldemaia.cronos.ui.theme.paletteForNow
 
 /**
  * Widget "estil Apple": una targeta arrodonida que canvia de color
- * segons el moment del dia, igual que la pantalla principal de l'app.
+ * segons la fase del sol (calculada amb la ubicació de l'usuari),
+ * igual que la pantalla principal de l'app.
  */
 class CronosWidgetApple : CronosBaseWidget() {
 
@@ -17,7 +17,7 @@ class CronosWidgetApple : CronosBaseWidget() {
 
     override fun fillViews(context: Context, views: RemoteViews) {
         val timeInCatalan = CatalanTimeFormatter.getCurrentTimeInCatalan()
-        val palette = paletteForHour(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+        val palette = paletteForNow(SettingsRepository(context))
 
         views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
         views.setTextColor(R.id.appleWidgetTime, Color.WHITE)

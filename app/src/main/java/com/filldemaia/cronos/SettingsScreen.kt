@@ -2,6 +2,7 @@ package com.filldemaia.cronos
 
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.automirrored.filled.ArrowBack
@@ -11,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import kotlin.math.roundToInt
 
@@ -29,6 +31,14 @@ fun SettingsScreen(
     var showSecondsWritten by remember(settings) { mutableStateOf(settings.showSecondsWritten) }
     var showDigital by remember(settings) { mutableStateOf(settings.showDigital) }
     var hourSize by remember(settings) { mutableFloatStateOf(settings.hourSize) }
+    var selectedCity by remember(settings) { mutableStateOf(settings.locationCity) }
+    var customLat by remember(settings) { mutableStateOf(settings.locationLatitude.toString()) }
+    var customLon by remember(settings) { mutableStateOf(settings.locationLongitude.toString()) }
+    var locationMenuExpanded by remember { mutableStateOf(false) }
+
+    val isCustomLocation = Cities.all.none { it.name == selectedCity }
+    val locationLabel =
+        if (isCustomLocation) stringResource(R.string.settings_location_custom) else selectedCity
 
     Scaffold(
         topBar = {
@@ -113,6 +123,91 @@ fun SettingsScreen(
                     .fillMaxWidth()
                     .padding(start = 20.dp, end = 20.dp),
             )
+            SettingsDivider()
+
+            SectionHeader(stringResource(R.string.settings_section_location))
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = 20.dp),
+            ) {
+                OutlinedButton(
+                    onClick = { locationMenuExpanded = true },
+                    modifier = Modifier.fillMaxWidth(),
+                ) {
+                    Text(locationLabel)
+                }
+                DropdownMenu(
+                    expanded = locationMenuExpanded,
+                    onDismissRequest = { locationMenuExpanded = false },
+                    modifier = Modifier.fillMaxWidth(0.85f),
+                ) {
+                    Cities.all.forEach { city ->
+                        DropdownMenuItem(
+                            text = { Text(city.name) },
+                            onClick = {
+                                settings.setLocation(city)
+                                selectedCity = city.name
+                                customLat = city.latitude.toString()
+                                customLon = city.longitude.toString()
+                                locationMenuExpanded = false
+                            },
+                        )
+                    }
+                    HorizontalDivider()
+                    DropdownMenuItem(
+                        text = { Text(stringResource(R.string.settings_location_custom)) },
+                        onClick = {
+                            settings.locationCity = ""
+                            selectedCity = ""
+                            locationMenuExpanded = false
+                        },
+                    )
+                }
+            }
+            Text(
+                text = stringResource(R.string.settings_location_desc),
+                style = MaterialTheme.typography.bodySmall,
+                color = MaterialTheme.colorScheme.onSurfaceVariant,
+                modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 6.dp),
+            )
+
+            if (isCustomLocation) {
+                Text(
+                    text = stringResource(R.string.settings_location_coords_hint),
+                    style = MaterialTheme.typography.bodySmall,
+                    color = MaterialTheme.colorScheme.onSurfaceVariant,
+                    modifier = Modifier.padding(start = 20.dp, end = 20.dp, top = 10.dp),
+                )
+                OutlinedTextField(
+                    value = customLat,
+                    onValueChange = {
+                        customLat = it
+                        it.replace(',', '.').toDoubleOrNull()
+                            ?.let { lat -> settings.locationLatitude = lat }
+                    },
+                    label = { Text(stringResource(R.string.settings_location_lat)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 8.dp),
+                )
+                OutlinedTextField(
+                    value = customLon,
+                    onValueChange = {
+                        customLon = it
+                        it.replace(',', '.').toDoubleOrNull()
+                            ?.let { lon -> settings.locationLongitude = lon }
+                    },
+                    label = { Text(stringResource(R.string.settings_location_lon)) },
+                    singleLine = true,
+                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 20.dp, end = 20.dp, top = 8.dp),
+                )
+            }
             SettingsDivider()
 
             SectionHeader(stringResource(R.string.settings_section_about))

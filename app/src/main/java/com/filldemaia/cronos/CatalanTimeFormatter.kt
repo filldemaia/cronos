@@ -9,7 +9,7 @@ import java.util.Calendar
  *
  * [formatTime] accepta uns segons opcionals: quan es mostren, la frase
  * afegeix "i N segons" al lloc corresponent (ex. "Falten sis minuts i
- * tres segons per tres quarts de deu de la nit") i canvia cada segon.
+ * tres segons per a tres quarts de deu de la nit") i canvia cada segon.
  */
 object CatalanTimeFormatter {
 
@@ -68,7 +68,7 @@ object CatalanTimeFormatter {
         val minutesLeft = 15 - minute
         val minuteStr = getMinutesLeftString(minutesLeft)
         val hourStr = getNextHourString(hour)
-        return "$minuteStr${secondsFragment(seconds)} per un quart $hourStr"
+        return "$minuteStr${secondsFragment(seconds)} per a un quart $hourStr"
     }
 
     private fun formatQuarter(hour: Int, seconds: Int): String {
@@ -87,7 +87,7 @@ object CatalanTimeFormatter {
         val minutesLeft = 30 - minute
         val minuteStr = getMinutesLeftString(minutesLeft)
         val hourStr = getNextHourString(hour)
-        return "$minuteStr${secondsFragment(seconds)} per dos quarts $hourStr"
+        return "$minuteStr${secondsFragment(seconds)} per a dos quarts $hourStr"
     }
 
     private fun formatHalf(hour: Int, seconds: Int): String {
@@ -106,7 +106,7 @@ object CatalanTimeFormatter {
         val minutesLeft = 45 - minute
         val minuteStr = getMinutesLeftString(minutesLeft)
         val hourStr = getNextHourString(hour)
-        return "$minuteStr${secondsFragment(seconds)} per tres quarts $hourStr"
+        return "$minuteStr${secondsFragment(seconds)} per a tres quarts $hourStr"
     }
 
     private fun formatThreeQuarters(hour: Int, seconds: Int): String {
@@ -127,7 +127,7 @@ object CatalanTimeFormatter {
         val nextHour = (hour + 1) % 24
         val timeStr = getTimeOclockString(nextHour)
         val timeOfDay = getTimeOfDayString(nextHour)
-        return "$minuteStr${secondsFragment(seconds)} per $timeStr $timeOfDay"
+        return "$minuteStr${secondsFragment(seconds)} per a $timeStr $timeOfDay"
     }
 
     private fun getMinuteString(minutes: Int): String {

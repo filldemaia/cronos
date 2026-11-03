@@ -29,8 +29,11 @@ import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.filldemaia.cronos.ui.theme.CronosTheme
+import com.filldemaia.cronos.ui.theme.DayPhase
 import com.filldemaia.cronos.ui.theme.LocalTimePalette
-import com.filldemaia.cronos.ui.theme.paletteForHour
+import com.filldemaia.cronos.ui.theme.MiddayPalette
+import com.filldemaia.cronos.ui.theme.paletteForPhase
+import com.filldemaia.cronos.ui.theme.phaseFor
 import kotlinx.coroutines.delay
 import java.text.SimpleDateFormat
 import java.util.*
@@ -41,7 +44,7 @@ class MainActivity : ComponentActivity() {
         enableEdgeToEdge()
         val settings = SettingsRepository(this)
         setContent {
-            CronosTheme {
+            CronosTheme(settings) {
                 CronosApp(settings)
             }
         }
@@ -80,22 +83,24 @@ fun HoracatApp(
     var digitalTime by remember { mutableStateOf("") }
     var currentDate by remember { mutableStateOf("") }
 
-    // Paleta del moment del dia com a estat: quan es creua una franja
-    // horària es canvia sola i el gradient ho anima amb transició suau
-    // (abans es calculava una sola vegada i no seguia l'hora en temps real).
+    // Paleta del moment del dia com a estat: quan es creua una franja de
+    // llum solar es canvia sola i el gradient ho anima amb transició suau.
     val initialPalette = LocalTimePalette.current
     var timePalette by remember { mutableStateOf(initialPalette) }
 
     // Loop de segon a segon. Només es refà la feina que ha canviat:
     // hora catalana quan canvia el minut, data quan canvia el dia,
-    // paleta quan canvia l'hora, i formatter digital quan canvia el
-    // patró (showSeconds). Així el cost per segon és mínim.
+    // paleta quan canvia la fase del sol, i formatter digital quan canvia
+    // el patró (showSeconds). Així el cost per segon és mínim.
     LaunchedEffect(Unit) {
         var lastPattern: String? = null
         var digitalFormatter: SimpleDateFormat? = null
         var lastMinute = -1L
         var lastDayKey = -1
-        var lastHour = -1
+        var lastSunDayKey = -1
+        var lastLocationKey = ""
+        var sunTimes: SunTimes? = null
+        var lastPhase: DayPhase? = null
         while (true) {
             val now = Date()
             val calendar = Calendar.getInstance()
@@ -106,9 +111,28 @@ fun HoracatApp(
             val dayKey = calendar.get(Calendar.DAY_OF_YEAR) +
                 calendar.get(Calendar.YEAR) * 1000
 
-            if (hour != lastHour) {
-                timePalette = paletteForHour(hour)
-                lastHour = hour
+            // La data només es refà quan canvia el dia.
+            if (dayKey != lastDayKey) {
+                currentDate = CatalanDateFormatter.todayWithYear(now)
+                lastDayKey = dayKey
+            }
+
+            // La sortida i la posta de sol es recalculen només quan canvia
+            // el dia o la ubicació; la fase, en canvi, es revisa cada segon.
+            val locationKey = settings.locationLatitude.toString() + "," +
+                settings.locationLongitude.toString()
+            if (sunTimes == null || dayKey != lastSunDayKey || locationKey != lastLocationKey) {
+                sunTimes = SolarCalculator.sunTimes(
+                    calendar, settings.locationLatitude, settings.locationLongitude,
+                )
+                lastSunDayKey = dayKey
+                lastLocationKey = locationKey
+            }
+            val minutes = hour * 60 + minute
+            val phase = phaseFor(sunTimes!!, minutes)
+            if (phase != lastPhase) {
+                timePalette = paletteForPhase(phase)
+                lastPhase = phase
             }
 
             // Els segons per escrit a l'hora tradicional i els de l'hora
@@ -120,10 +144,6 @@ fun HoracatApp(
                     hour, minute, if (writtenSeconds) seconds else 0
                 )
                 lastMinute = minuteKey
-            }
-            if (dayKey != lastDayKey) {
-                currentDate = CatalanDateFormatter.todayWithYear(now)
-                lastDayKey = dayKey
             }
 
             // L'hora digital només es formateja quan és visible.
@@ -163,12 +183,11 @@ fun HoracatApp(
     // Ombra només quan la paleta és fosca (nit); de dia, res.
     val currentTextShadow = if (timePalette.textShadow) TextShadow else NoShadow
 
-    // El vel del migdia es calcula per hora però s'anima amb transició
-    // suau (com els colors del gradient), perquè el canvi de franja no
-    // es noti de cop.
-    val hourNow = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
+    // El vel del migdia es calcula segons la fase del sol i s'anima amb
+    // transició suau (com els colors del gradient), perquè el canvi de
+    // franja no es noti de cop.
     val scrimAlpha by animateFloatAsState(
-        targetValue = if (hourNow in 12..16) MIDDAY_SCRIM_ALPHA else 0f,
+        targetValue = if (timePalette === MiddayPalette) MIDDAY_SCRIM_ALPHA else 0f,
         animationSpec = tween(durationMillis = 1500),
         label = "scrimAlpha",
     )

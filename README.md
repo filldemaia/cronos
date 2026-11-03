@@ -2,7 +2,7 @@
 
 > L'hora en català tradicional, bonica i llegible, amb un fons que canvia de color segons el moment del dia.
 
-Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per les tres de la tarda") amb una interfície moderna.
+Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per a les tres de la tarda") amb una interfície moderna.
 
 ## Característiques
 
@@ -12,7 +12,7 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 - **Data completa**: "Avui és dilluns, 10 d'agost del 2026".
 - **Salutació** segons el moment del dia ("Bona tarda!", "Bon vespre", ...).
 - **Tres widgets** de diferentes mides per a la pantalla d'inici.
-- **Segons opcionals**: es poden activar i desactivar a gust els segons ("Falten sis minuts i tres segons per tres quarts de deu de la nit").
+- **Segons opcionals**: es poden activar i desactivar a gust els segons ("Falten sis minuts i tres segons per a tres quarts de deu de la nit").
 - **Suport per temes**: compatible amb mode clar i fosc del sistema.
 - Compatible amb Android 7.0+ (API 24).
 
@@ -25,8 +25,8 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 | 20:30 | Són dos quarts de nou de la nit |
 | 22:45 | Són tres quarts d'onze de la nit |
 | 08:06 | Són les vuit i sis minuts del matí |
-| 14:53 | Falten set minuts per les tres de la tarda |
-| 21:39:03 (amb segons) | Falten sis minuts i tres segons per tres quarts de deu de la nit |
+| 14:53 | Falten set minuts per a les tres de la tarda |
+| 21:39:03 (amb segons) | Falten sis minuts i tres segons per a tres quarts de deu de la nit |
 
 ## Widgets
 

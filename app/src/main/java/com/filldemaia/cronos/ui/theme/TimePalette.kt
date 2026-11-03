@@ -1,10 +1,12 @@
 package com.filldemaia.cronos.ui.theme
 
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import com.filldemaia.cronos.R
+import com.filldemaia.cronos.SettingsRepository
+import com.filldemaia.cronos.SolarCalculator
+import com.filldemaia.cronos.SunTimes
 import java.util.Calendar
 
 /**
@@ -64,22 +66,54 @@ val NightPalette = TimePalette(
 /** CompositionLocal que exposa la paleta del moment del dia actual. */
 val LocalTimePalette = staticCompositionLocalOf { MorningPalette }
 
+/** Fase del dia que condueix la paleta de colors. */
+enum class DayPhase { MORNING, MIDDAY, AFTERNOON, EVENING, NIGHT }
+
 /**
- * Paleta per una hora concreta. Franges disjuntes i senceres:
- * 0-5 i 21-23 → nit, 6-11 → matí, 12-16 → migdia, 17-18 → tarda,
- * 19-20 → vespre.
+ * Fase del dia a partir de la sortida i la posta de sol. La llum del
+ * dia es reparteix en quatre franges iguals (matí, migdia, tarda i
+ * vespre) entre la sortida i la posta; la nit cobreix la resta. Així,
+ * els canvis segueixen el sol real i no una taula fixa d'hores: a
+ * l'hivern la nit comença cap a les 5-6 i a l'estiu cap a les 9-10.
+ *
+ * [minutesSinceMidnight] són minuts de rellotge local.
  */
-fun paletteForHour(hour: Int): TimePalette = when (hour) {
-    in 6..11 -> MorningPalette
-    in 12..16 -> MiddayPalette
-    in 17..18 -> AfternoonPalette
-    in 19..20 -> EveningPalette
-    else -> NightPalette
+fun phaseFor(sunTimes: SunTimes, minutesSinceMidnight: Int): DayPhase {
+    val sunrise = sunTimes.sunriseMinutes
+    val sunset = sunTimes.sunsetMinutes
+    val daylight = (sunset - sunrise).toDouble()
+
+    return when {
+        // Nit polar o valors invàlids: tot el dia fosc.
+        daylight <= 0 -> DayPhase.NIGHT
+        minutesSinceMidnight < sunrise || minutesSinceMidnight >= sunset -> DayPhase.NIGHT
+        minutesSinceMidnight < sunrise + daylight * 0.25 -> DayPhase.MORNING
+        minutesSinceMidnight < sunrise + daylight * 0.50 -> DayPhase.MIDDAY
+        minutesSinceMidnight < sunrise + daylight * 0.75 -> DayPhase.AFTERNOON
+        else -> DayPhase.EVENING
+    }
 }
 
-@Composable
-fun currentTimePalette(): TimePalette {
-    val hour = Calendar.getInstance().get(Calendar.HOUR_OF_DAY)
-    return paletteForHour(hour)
+/** Paleta corresponent a una fase del dia. */
+fun paletteForPhase(phase: DayPhase): TimePalette = when (phase) {
+    DayPhase.MORNING -> MorningPalette
+    DayPhase.MIDDAY -> MiddayPalette
+    DayPhase.AFTERNOON -> AfternoonPalette
+    DayPhase.EVENING -> EveningPalette
+    DayPhase.NIGHT -> NightPalette
+}
+
+/**
+ * Paleta per a l'instant actual, calculant la sortida i la posta de sol
+ * amb la ubicació desada a [settings]. És el punt d'entrada comú de
+ * l'app i dels widgets.
+ */
+fun paletteForNow(settings: SettingsRepository): TimePalette {
+    val now = Calendar.getInstance()
+    val sunTimes = SolarCalculator.sunTimes(
+        now, settings.locationLatitude, settings.locationLongitude,
+    )
+    val minutes = now.get(Calendar.HOUR_OF_DAY) * 60 + now.get(Calendar.MINUTE)
+    return paletteForPhase(phaseFor(sunTimes, minutes))
 }
 

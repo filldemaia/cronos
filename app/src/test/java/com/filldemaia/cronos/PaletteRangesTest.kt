@@ -1,51 +1,60 @@
 package com.filldemaia.cronos
 
 import com.filldemaia.cronos.ui.theme.AfternoonPalette
+import com.filldemaia.cronos.ui.theme.DayPhase
 import com.filldemaia.cronos.ui.theme.EveningPalette
 import com.filldemaia.cronos.ui.theme.MiddayPalette
 import com.filldemaia.cronos.ui.theme.MorningPalette
 import com.filldemaia.cronos.ui.theme.NightPalette
-import com.filldemaia.cronos.ui.theme.paletteForHour
+import com.filldemaia.cronos.ui.theme.paletteForPhase
+import com.filldemaia.cronos.ui.theme.phaseFor
 import org.junit.Assert.assertEquals
-import org.junit.Assert.assertTrue
 import org.junit.Test
 
 /**
- * Franges horàries de la paleta: senceres, disjuntes i sense buits.
+ * Franges de llum de la paleta a partir de la sortida i la posta de sol.
+ * Les quatre franges de llum es reparteixen per igual entre tots dos
+ * punts; la nit cobreix la resta.
  */
 class PaletteRangesTest {
 
+    // Dia de prova: sol de 8:00 (480 min) a 18:00 (1080 min), 600 min de llum.
+    private val sun = SunTimes(sunriseMinutes = 480, sunsetMinutes = 1080)
+
     @Test
-    fun `franges de mati de 6 a 11`() {
-        (6..11).forEach { h -> assertEquals("hora $h", MorningPalette, paletteForHour(h)) }
+    fun `la nit cobreix abans de la sortida i des de la posta`() {
+        assertEquals(DayPhase.NIGHT, phaseFor(sun, 0))
+        assertEquals(DayPhase.NIGHT, phaseFor(sun, 479))
+        assertEquals(DayPhase.NIGHT, phaseFor(sun, 1080))
+        assertEquals(DayPhase.NIGHT, phaseFor(sun, 1439))
     }
 
     @Test
-    fun `franges de migdia de 12 a 16`() {
-        (12..16).forEach { h -> assertEquals("hora $h", MiddayPalette, paletteForHour(h)) }
+    fun `les quatre franges de llum es reparteixen entre sortida i posta`() {
+        assertEquals(DayPhase.MORNING, phaseFor(sun, 480))
+        assertEquals(DayPhase.MORNING, phaseFor(sun, 629))
+        assertEquals(DayPhase.MIDDAY, phaseFor(sun, 630))
+        assertEquals(DayPhase.MIDDAY, phaseFor(sun, 779))
+        assertEquals(DayPhase.AFTERNOON, phaseFor(sun, 780))
+        assertEquals(DayPhase.AFTERNOON, phaseFor(sun, 929))
+        assertEquals(DayPhase.EVENING, phaseFor(sun, 930))
+        assertEquals(DayPhase.EVENING, phaseFor(sun, 1079))
     }
 
     @Test
-    fun `franges de tarda de 17 a 18`() {
-        (17..18).forEach { h -> assertEquals("hora $h", AfternoonPalette, paletteForHour(h)) }
+    fun `cada fase te la seva paleta`() {
+        assertEquals(MorningPalette, paletteForPhase(DayPhase.MORNING))
+        assertEquals(MiddayPalette, paletteForPhase(DayPhase.MIDDAY))
+        assertEquals(AfternoonPalette, paletteForPhase(DayPhase.AFTERNOON))
+        assertEquals(EveningPalette, paletteForPhase(DayPhase.EVENING))
+        assertEquals(NightPalette, paletteForPhase(DayPhase.NIGHT))
     }
 
     @Test
-    fun `franges de vespre de 19 a 20`() {
-        (19..20).forEach { h -> assertEquals("hora $h", EveningPalette, paletteForHour(h)) }
-    }
-
-    @Test
-    fun `franges de nit a 0-5 i 21-23`() {
-        (0..5).forEach { h -> assertEquals("hora $h", NightPalette, paletteForHour(h)) }
-        (21..23).forEach { h -> assertEquals("hora $h", NightPalette, paletteForHour(h)) }
-    }
-
-    @Test
-    fun `cada hora te una paleta valida`() {
-        val paletes = setOf(MorningPalette, MiddayPalette, AfternoonPalette, EveningPalette, NightPalette)
-        (0..23).forEach { h ->
-            assertTrue("hora $h fora de les paletes conegudes", paletteForHour(h) in paletes)
+    fun `sense llum diurna tot el dia es nit`() {
+        val polarNight = SunTimes(sunriseMinutes = 0, sunsetMinutes = 0)
+        (0..1439 step 7).forEach { m ->
+            assertEquals("minut $m", DayPhase.NIGHT, phaseFor(polarNight, m))
         }
     }
 }

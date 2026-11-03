@@ -38,8 +38,8 @@ class CatalanTimeFormatterTest {
     }
 
     @Test
-    fun `set minuts per les tres de la tarda`() {
-        assertEquals("Falten set minuts per les tres de la tarda", CatalanTimeFormatter.formatTime(14, 53))
+    fun `set minuts per a les tres de la tarda`() {
+        assertEquals("Falten set minuts per a les tres de la tarda", CatalanTimeFormatter.formatTime(14, 53))
     }
 
     // --- Casos límit ---
@@ -56,12 +56,12 @@ class CatalanTimeFormatterTest {
 
     @Test
     fun `un minut abans de mitjanit`() {
-        assertEquals("Falta un minut per les dotze de la nit", CatalanTimeFormatter.formatTime(23, 59))
+        assertEquals("Falta un minut per a les dotze de la nit", CatalanTimeFormatter.formatTime(23, 59))
     }
 
     @Test
     fun `dos minuts abans de mitjanit`() {
-        assertEquals("Falten dos minuts per les dotze de la nit", CatalanTimeFormatter.formatTime(23, 58))
+        assertEquals("Falten dos minuts per a les dotze de la nit", CatalanTimeFormatter.formatTime(23, 58))
     }
 
     // --- Altres casos de la graella completa ---
@@ -72,8 +72,8 @@ class CatalanTimeFormatterTest {
     }
 
     @Test
-    fun `set minuts per un quart de nou del mati`() {
-        assertEquals("Falten set minuts per un quart de nou del matí", CatalanTimeFormatter.formatTime(8, 8))
+    fun `set minuts per a un quart de nou del mati`() {
+        assertEquals("Falten set minuts per a un quart de nou del matí", CatalanTimeFormatter.formatTime(8, 8))
     }
 
     @Test
@@ -123,7 +123,7 @@ class CatalanTimeFormatterTest {
     @Test
     fun `segons amb minuts que falten`() {
         assertEquals(
-            "Falten set minuts i tres segons per les tres de la tarda",
+            "Falten set minuts i tres segons per a les tres de la tarda",
             CatalanTimeFormatter.formatTime(14, 53, 3)
         )
     }
@@ -147,7 +147,7 @@ class CatalanTimeFormatterTest {
     @Test
     fun `exemple del usuari amb sis minuts i tres segons`() {
         assertEquals(
-            "Falten sis minuts i tres segons per tres quarts de deu de la nit",
+            "Falten sis minuts i tres segons per a tres quarts de deu de la nit",
             CatalanTimeFormatter.formatTime(21, 39, 3)
         )
     }
