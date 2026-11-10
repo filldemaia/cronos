@@ -1,0 +1,232 @@
+[
+  {
+    "id": "catalunya-radio",
+    "name": "Catalunya Ràdio",
+    "tagline": "La ràdio pública de Catalunya",
+    "urls": [
+      "https://shoutcast.ccma.cat/ccma/catalunyaradioHD.mp3",
+      "https://directes-radio-int.3catdirectes.cat/live-content/catalunya-radio-hls/bitrate_1.m3u8"
+    ],
+    "logoText": "CatRàdio",
+    "logoColor": "#E30613",
+    "logoRes": "logo_catalunya_radio",
+    "bitrateKbps": 56,
+    "website": "https://www.ccma.cat/catradio/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "catalunya-informacio",
+    "name": "Catalunya Informació",
+    "tagline": "Informació 24 hores",
+    "urls": [
+      "https://shoutcast.ccma.cat/ccma/catalunyainformacioHD.mp3",
+      "https://directes-radio-int.3catdirectes.cat/live-content/catalunya-informacio-hls/bitrate_1.m3u8"
+    ],
+    "logoText": "CatInfo",
+    "logoColor": "#0B5FA5",
+    "logoRes": "logo_catalunya_informacio",
+    "bitrateKbps": 56,
+    "website": "https://www.ccma.cat/catradio/catalunya-informacio/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "catalunya-musica",
+    "name": "Catalunya Música",
+    "tagline": "Música clàssica i contemporània",
+    "urls": [
+      "https://shoutcast.ccma.cat/ccma/catalunyamusicaHD.mp3",
+      "https://directes-radio-int.3catdirectes.cat/live-content/catalunya-musica-hls/bitrate_1.m3u8"
+    ],
+    "logoText": "CatMúsica",
+    "logoColor": "#7A1F5C",
+    "logoRes": "logo_catalunya_musica",
+    "bitrateKbps": 56,
+    "website": "https://www.ccma.cat/catradio/catalunya-musica/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "icat",
+    "name": "iCat",
+    "tagline": "Cultura, música i idees",
+    "urls": [
+      "https://shoutcast.ccma.cat/ccma/icatHD.mp3",
+      "https://directes-radio-int.3catdirectes.cat/live-content/icat-hls/bitrate_1.m3u8"
+    ],
+    "logoText": "iCat",
+    "logoColor": "#00A99D",
+    "logoRes": "logo_icat",
+    "bitrateKbps": 56,
+    "website": "https://www.ccma.cat/catradio/icat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "rac1",
+    "name": "RAC1",
+    "tagline": "La ràdio líder en català",
+    "urls": [
+      "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1.mp3",
+      "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_1AAC.aac"
+    ],
+    "logoText": "RAC1",
+    "logoColor": "#E30613",
+    "logoRes": "logo_rac1",
+    "bitrateKbps": 128,
+    "website": "https://www.rac1.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "rac1-mes1",
+    "name": "RAC1 +1",
+    "tagline": "RAC1 una hora més tard",
+    "urls": [
+      "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC_MES_1.mp3"
+    ],
+    "logoText": "RAC1 +1",
+    "logoColor": "#9E0B14",
+    "logoRes": "logo_rac1",
+    "bitrateKbps": 96,
+    "website": "https://www.rac1.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "rac105",
+    "name": "RAC105",
+    "tagline": "La música de la teva vida",
+    "urls": [
+      "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC105.mp3",
+      "https://playerservices.streamtheworld.com/api/livestream-redirect/RAC105AAC.aac"
+    ],
+    "logoText": "RAC105",
+    "logoColor": "#F08A00",
+    "logoRes": "logo_rac105",
+    "bitrateKbps": 128,
+    "website": "https://www.rac105.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "flaixbac",
+    "name": "Flaixbac",
+    "tagline": "La ràdio dels èxits",
+    "urls": [
+      "https://stream.flaixbac.cat/icecast"
+    ],
+    "logoText": "Flaixbac",
+    "logoColor": "#E5007D",
+    "logoRes": "logo_flaixbac",
+    "bitrateKbps": 128,
+    "website": "https://www.flaixbac.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "flaixfm",
+    "name": "Flaix FM",
+    "tagline": "Dance i electrònica",
+    "urls": [
+      "https://stream.flaixfm.cat/icecast"
+    ],
+    "logoText": "Flaix FM",
+    "logoColor": "#009EE0",
+    "logoRes": "logo_flaixfm",
+    "bitrateKbps": 128,
+    "website": "https://www.flaixfm.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "radio-estel",
+    "name": "Ràdio Estel",
+    "tagline": "Ràdio cristiana de Catalunya",
+    "urls": [
+      "https://srv6021.dns-lcinternet.com:10244/stream"
+    ],
+    "logoText": "Estel",
+    "logoColor": "#1D4F91",
+    "logoRes": "logo_radio_estel",
+    "bitrateKbps": 128,
+    "website": "https://www.radioestel.cat/",
+    "verified": "2026-10-26"
+  },
+  {
+    "id": "apunt-radio",
+    "name": "À Punt Ràdio",
+    "tagline": "La ràdio pública valenciana",
+    "urls": [
+      "https://fastly.live.brightcove.com/1854461588069069227/eu-central-1/6057955885001/eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJob3N0IjoiZWFxNWh4LmVncmVzcy53YzQ3bTEiLCJhY2NvdW50X2lkIjoiNjA1Nzk1NTg4NTAwMSIsImVobiI6ImZhc3RseS5saXZlLmJyaWdodGNvdmUuY29tIiwiaXNzIjoiYmxpdmUtcGxheWJhY2stc291cmNlLWFwaSIsInN1YiI6InBhdGhtYXB0b2tlbiIsImF1ZCI6WyI2MDU3OTU1ODg1MDAxIl0sImp0aSI6IjE4NTQ0NjE1ODgwNjkwNjkyMjcifQ.RKqA-z0MRntFVph2G3tE9YzBp7vfdMXcynOKpyqvZTg/playlist-hls-dvr.m3u8"
+    ],
+    "logoText": "À Punt",
+    "logoColor": "#00A99D",
+    "logoRes": "logo_apunt_radio",
+    "bitrateKbps": 192,
+    "website": "https://www.apuntmedia.es/radio/",
+    "verified": "2026-10-27"
+  },
+  {
+    "id": "radio-klara",
+    "name": "Ràdio Klara",
+    "tagline": "Emissora lliure i llibertària de València",
+    "urls": [
+      "https://cervera.eldialdigital.com:21111/stream"
+    ],
+    "logoText": "Klara",
+    "logoColor": "#C8102E",
+    "logoRes": "logo_radio_klara",
+    "bitrateKbps": 128,
+    "website": "https://www.radioklara.org/",
+    "verified": "2026-10-27"
+  },
+  {
+    "id": "ib3-radio",
+    "name": "IB3 Ràdio",
+    "tagline": "La ràdio pública de les Illes Balears",
+    "urls": [
+      "https://icecast.ib3radio.com/ib3radio.mp3"
+    ],
+    "logoText": "IB3",
+    "logoColor": "#E4032E",
+    "logoRes": "logo_ib3_radio",
+    "bitrateKbps": 128,
+    "website": "https://ib3radio.com/",
+    "verified": "2026-10-27"
+  },
+  {
+    "id": "ona-mediterrania",
+    "name": "Ona Mediterrània",
+    "tagline": "Ràdio de referència a Mallorca",
+    "urls": [
+      "https://streaming.enacast.com/onamediterrania128.mp3"
+    ],
+    "logoText": "Ona M.",
+    "logoColor": "#0B5FA5",
+    "logoRes": "logo_ona_mediterrania",
+    "bitrateKbps": 128,
+    "website": "https://www.onamediterrania.cat/",
+    "verified": "2026-10-27"
+  },
+  {
+    "id": "radio-fraga",
+    "name": "Ràdio Fraga",
+    "tagline": "La ràdio municipal de la Franja",
+    "urls": [
+      "http://streaming.enantena.com:8000/radiofraga128.mp3"
+    ],
+    "logoText": "R. Fraga",
+    "logoColor": "#2E7D32",
+    "logoRes": "logo_radio_fraga",
+    "bitrateKbps": 128,
+    "website": "https://www.fraga.org/area-tematica/radio-fraga/",
+    "verified": "2026-10-27"
+  },
+  {
+    "id": "radio-arrels",
+    "name": "Ràdio Arrels",
+    "tagline": "La ràdio en català de la Catalunya Nord",
+    "urls": [
+      "http://stream.radios-arra.fr:8000/radioarrels"
+    ],
+    "logoText": "Arrels",
+    "logoColor": "#D62828",
+    "logoRes": "logo_radio_arrels",
+    "bitrateKbps": 128,
+    "website": "https://www.radioarrels.cat/",
+    "verified": "2026-10-27"
+  }
+]

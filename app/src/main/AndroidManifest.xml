@@ -1,90 +1,135 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools">
+    xmlns:tools="http://schemas.android.com/tools">
 
-    <!-- Permisos necessaris per al widget. Les alarmes RTC_WAKEUP no
-         necessiten WAKE_LOCK: el sistema el manté durant el receiver. -->
+    <!-- Permisos del rellotge / widgets -->
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
-
-    <!-- Alarma exacta per al tick per minut dels widgets. És un permís
-         auto-concedit (des d'API 33) pensat per a apps de temps/rellotge,
-         que és exactament el cas d'aquest widget. Sense ell, les alarmes
-         inexactes s'ajornen amb el Doze i l'hora queda endarrerida.
-         SCHEDULE_EXACT_ALARM és l'equivalent per a Android 12 (API 31-32),
-         on també es concedeix automàticament. -->
     <uses-permission android:name="android.permission.USE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
 
+    <!-- Permisos de la ràdio i les alarmes -->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE_MEDIA_PLAYBACK" />
+    <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
+    <uses-permission android:name="android.permission.REQUEST_IGNORE_BATTERY_OPTIMIZATIONS" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+
     <application
-            android:allowBackup="true"
-            android:dataExtractionRules="@xml/data_extraction_rules"
-            android:fullBackupContent="@xml/backup_rules"
-            android:icon="@mipmap/ic_launcher"
-            android:label="@string/app_name"
-            android:roundIcon="@mipmap/ic_launcher_round"
-            android:supportsRtl="true"
-            android:theme="@style/Theme.Cronos"
-            tools:targetApi="31">
+        android:name=".radio.RadioApp"
+        android:allowBackup="true"
+        android:dataExtractionRules="@xml/data_extraction_rules"
+        android:fullBackupContent="@xml/backup_rules"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/Theme.Cronos"
+        android:usesCleartextTraffic="true"
+        tools:targetApi="31">
 
         <!-- Activitat principal -->
         <activity
-                android:name="com.filldemaia.cronos.MainActivity"
-                android:exported="true"
-                android:theme="@style/Theme.Cronos">
+            android:name="com.filldemaia.cronos.MainActivity"
+            android:exported="true"
+            android:theme="@style/Theme.Cronos">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
+        <!-- Servei de reproducció de la ràdio -->
+        <service
+            android:name="com.filldemaia.cronos.radio.playback.PlaybackService"
+            android:directBootAware="true"
+            android:exported="true"
+            android:foregroundServiceType="mediaPlayback"
+            tools:ignore="ExportedService">
+            <intent-filter>
+                <action android:name="android.media.browse.MediaBrowserService" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.media.action.MEDIA_PLAY_FROM_SEARCH" />
+                <category android:name="android.intent.category.DEFAULT" />
+            </intent-filter>
+        </service>
+
+        <!-- Receptor de l'alarma programada -->
+        <receiver
+            android:name="com.filldemaia.cronos.radio.alarm.ScheduleAlarmReceiver"
+            android:directBootAware="true"
+            android:exported="false" />
+
+        <!-- Rearma les alarmes després d'un reinici o canvi d'hora -->
+        <receiver
+            android:name="com.filldemaia.cronos.radio.alarm.RescheduleReceiver"
+            android:directBootAware="true"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIME_SET" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.DATE_CHANGED" />
+            </intent-filter>
+        </receiver>
+
+        <!-- Botons multimèdia (auriculars, bluetooth) -->
+        <receiver
+            android:name="androidx.media.session.MediaButtonReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.intent.action.MEDIA_BUTTON" />
+            </intent-filter>
+        </receiver>
+
         <!-- Widget petit -->
         <receiver
-                android:name="com.filldemaia.cronos.CronosWidget"
-                android:label="@string/widget_name"
-                android:exported="true">
+            android:name="com.filldemaia.cronos.CronosWidget"
+            android:label="@string/widget_name"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/widget_info" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info" />
         </receiver>
 
         <!-- Widget gran -->
         <receiver
-                android:name="com.filldemaia.cronos.CronosWidgetLarge"
-                android:label="@string/widget_name_large"
-                android:exported="true">
+            android:name="com.filldemaia.cronos.CronosWidgetLarge"
+            android:label="@string/widget_name_large"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/widget_info_large" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_large" />
         </receiver>
 
         <!-- Widget estil Apple (canvia de color segons l'hora) -->
         <receiver
-                android:name="com.filldemaia.cronos.CronosWidgetApple"
-                android:label="@string/widget_name_apple"
-                android:exported="true">
+            android:name="com.filldemaia.cronos.CronosWidgetApple"
+            android:label="@string/widget_name_apple"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
             </intent-filter>
             <meta-data
-                    android:name="android.appwidget.provider"
-                    android:resource="@xml/widget_info_apple" />
+                android:name="android.appwidget.provider"
+                android:resource="@xml/widget_info_apple" />
         </receiver>
 
-        <!-- Tick per minut: una sola alarma que actualitza tots els widgets.
-             exported=false: només la nostra app i el sistema hi poden enviar
-             broadcasts; cap altra app pot forçar desperts del dispositiu.
-             També escolta canvis d'hora/zona horària del sistema: si l'usuari
-             ajusta el rellotge, els widgets es refresquen a l'instant en lloc
-             de quedar-se amb l'hora vella fins al tick següent. -->
+        <!-- Tick per minut dels widgets -->
         <receiver
-                android:name="com.filldemaia.cronos.CronosWidgetTickReceiver"
-                android:exported="false">
+            android:name="com.filldemaia.cronos.CronosWidgetTickReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="com.filldemaia.cronos.ACTION_WIDGET_TICK" />
                 <action android:name="android.intent.action.TIME_SET" />
@@ -94,9 +139,9 @@
 
         <!-- Receiver per reiniciar el widget després d'un reinici del dispositiu -->
         <receiver
-                android:name="com.filldemaia.cronos.BootReceiver"
-                android:enabled="true"
-                android:exported="true">
+            android:name="com.filldemaia.cronos.BootReceiver"
+            android:enabled="true"
+            android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
@@ -104,12 +149,10 @@
             </intent-filter>
         </receiver>
 
-        <!-- Refresc en encendre/desbloquejar la pantalla i amb el tick de
-             rellotge del sistema: així el widget sempre mostra l'hora
-             correcta a l'instant de mirar-lo (mai es veu el canvi). -->
+        <!-- Refresc dels widgets en encendre/desbloquejar la pantalla -->
         <receiver
-                android:name="com.filldemaia.cronos.CronosWidgetScreenReceiver"
-                android:exported="false">
+            android:name="com.filldemaia.cronos.CronosWidgetScreenReceiver"
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.SCREEN_ON" />
                 <action android:name="android.intent.action.USER_PRESENT" />

@@ -41,4 +41,11 @@
     <string name="settings_section_about">Sobre Cronos</string>
     <string name="settings_version">Versió %1$s</string>
     <string name="settings_reset">Restablir la configuració</string>
+
+    <!-- Canals de notificació de la ràdio -->
+    <string name="notification_channel_playback">Reproducció</string>
+    <string name="notification_channel_playback_desc">Controls de la ràdio en directe</string>
+    <string name="notification_channel_reliability">Fiabilitat de les alarmes</string>
+    <string name="notification_channel_reliability_desc">Avisos si una programació no es pot garantir</string>
+    <string name="notification_alarm_fallback">Àudio alternatiu</string>
 </resources>
