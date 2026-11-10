@@ -16,6 +16,7 @@ import android.os.Looper
 import android.os.PowerManager
 import android.os.SystemClock
 import android.os.UserManager
+import android.util.Log
 import android.support.v4.media.MediaBrowserCompat
 import android.support.v4.media.MediaDescriptionCompat
 import android.support.v4.media.MediaMetadataCompat
@@ -56,6 +57,7 @@ import java.util.UUID
 import java.util.concurrent.TimeUnit
 import kotlinx.coroutines.CompletableDeferred
 import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.CoroutineExceptionHandler
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.SupervisorJob
@@ -84,7 +86,14 @@ class PlaybackService : MediaBrowserServiceCompat() {
     private lateinit var notifications: NotificationHelper
     private lateinit var stateStore: PlaybackStateStore
 
-    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate)
+    private val serviceScope = CoroutineScope(SupervisorJob() + Dispatchers.Main.immediate +
+        CoroutineExceptionHandler { _, error ->
+            Log.e("PlaybackService", "Error no gestionat del servei", error)
+            activeRequest?.schedule?.let { schedule ->
+                runCatching { notifications.postAlarmFallback(schedule) }
+                    .onFailure { Log.e("PlaybackService", "No s'ha pogut publicar l'avís", it) }
+            }
+        })
     private val io = Dispatchers.IO
     private val httpClient: OkHttpClient by lazy {
         OkHttpClient.Builder()
@@ -271,9 +280,18 @@ class PlaybackService : MediaBrowserServiceCompat() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         // Sempre hem de ser en primer pla abans de fer cap feina llarga.
-        ensureForeground()
+        ForegroundStartDecision.proceed(::ensureForeground) { error ->
+            Log.e("PlaybackService", "No s'ha pogut activar el primer pla", error)
+            val schedule = intent?.getStringExtra(PlaybackCommands.EXTRA_SCHEDULE_JSON)?.let { raw ->
+                runCatching { AppJson.decodeFromString<Schedule>(raw) }.getOrNull()
+            }
+            if (schedule != null) {
+                runCatching { notifications.postAlarmFallback(schedule) }
+                    .onFailure { Log.e("PlaybackService", "No s'ha pogut publicar l'avís", it) }
+            }
+        }
 
-        when (intent?.action) {
+        try { when (intent?.action) {
             PlaybackCommands.ACTION_START_SCHEDULE -> handleScheduleStart(intent)
             PlaybackCommands.ACTION_PLAY_STATION -> {
                 val id = intent.getStringExtra(PlaybackCommands.EXTRA_STATION_ID)
@@ -299,6 +317,16 @@ class PlaybackService : MediaBrowserServiceCompat() {
             Intent.ACTION_MEDIA_BUTTON -> handleMediaButton(intent)
             null -> if (activeRequest == null) stopSelf()
             else -> Unit
+        } } catch (error: Exception) {
+            Log.e("PlaybackService", "Error processant una ordre", error)
+            val schedule = intent?.getStringExtra(PlaybackCommands.EXTRA_SCHEDULE_JSON)?.let { raw ->
+                runCatching { AppJson.decodeFromString<Schedule>(raw) }.getOrNull()
+            }
+            if (schedule != null) {
+                runCatching { notifications.postAlarmFallback(schedule) }
+                    .onFailure { Log.e("PlaybackService", "No s'ha pogut publicar l'avís", it) }
+                serviceScope.launch { playLocalAlarm("Error del servei", schedule) }
+            }
         }
         return START_NOT_STICKY
     }
