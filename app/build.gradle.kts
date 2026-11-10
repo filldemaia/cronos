@@ -28,7 +28,7 @@ android {
 
     defaultConfig {
         applicationId = "com.filldemaia.cronos"
-        minSdk = 24
+        minSdk = 26
         targetSdk = 36
         versionCode = 8
         versionName = "1.6"
