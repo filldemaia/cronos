@@ -136,8 +136,8 @@ class AlarmScheduler(
      * abans d'intentar reproduir res: si el servei no pot arrencar, demà ha de
      * tornar a sonar igualment.
      */
-    suspend fun handleAlarmFired(schedule: Schedule, isTest: Boolean) {
-        if (isTest) return
+    suspend fun handleAlarmFired(schedule: Schedule, isTest: Boolean): Boolean {
+        if (isTest) return true
         // En direct boot DataStore encara no és llegible: fem servir la còpia
         // que ha arribat dins de l'Intent.
         val current = if (userUnlocked()) {
@@ -146,19 +146,20 @@ class AlarmScheduler(
             null
         } ?: deviceProtectedStore.loadSchedules().firstOrNull { it.id == schedule.id }
             ?: schedule
-        if (!current.enabled) return
+        if (!current.enabled) return true
         if (current.isOneShot) {
             val disabled = current.copy(enabled = false)
-            if (userUnlocked()) runCatching { scheduleRepository.save(disabled) }
-            runCatching { deviceProtectedStore.updateSchedule(disabled) }
-            return
+            if (userUnlocked()) scheduleRepository.save(disabled)
+            deviceProtectedStore.updateSchedule(disabled)
+            return true
         }
         val next = NextOccurrenceCalculator.next(current, Instant.now().plusMillis(500))
         if (next != null) {
-            arm(current, next)
+            return RearmRetry.run { arm(current, next) }
         } else {
             // Si no hi ha pròxima execució, no deixem l'alarma armada a mitges.
             cancel(current.id)
+            return false
         }
     }
 

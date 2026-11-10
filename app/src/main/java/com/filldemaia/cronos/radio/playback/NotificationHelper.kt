@@ -198,6 +198,20 @@ class NotificationHelper(private val context: Context) {
         runCatching { manager.notify(ALARM_SAFETY_ID, notification) }
     }
 
+    fun postRearmFailure(schedule: Schedule) {
+        if (!canNotify()) return
+        val notification = NotificationCompat.Builder(context, CHANNEL_RELIABILITY)
+            .setSmallIcon(R.drawable.ic_stat_radio)
+            .setContentTitle("No s'ha pogut rearmar l'alarma")
+            .setContentText("Revisa la programació de ${schedule.timeLabel()}.")
+            .setContentIntent(openAppIntent())
+            .setCategory(NotificationCompat.CATEGORY_ERROR)
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setAutoCancel(true)
+            .build()
+        manager.notify(REARM_FAILURE_ID, notification)
+    }
+
     fun updateReliability(
         report: ReliabilityReport,
         activeSchedules: Int
@@ -266,5 +280,6 @@ class NotificationHelper(private val context: Context) {
         const val CHANNEL_ALARM_SAFETY = "alarm_safety"
         const val RELIABILITY_ID = 4101
         const val ALARM_SAFETY_ID = 4102
+        private const val REARM_FAILURE_ID = 4103
     }
 }

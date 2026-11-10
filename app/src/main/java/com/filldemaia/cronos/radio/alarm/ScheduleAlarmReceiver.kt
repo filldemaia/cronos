@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.PowerManager
 import android.os.UserManager
+import android.util.Log
 import androidx.core.content.ContextCompat
 import com.filldemaia.cronos.radio.RadioApp
 import com.filldemaia.cronos.radio.data.local.AppJson
@@ -54,7 +55,18 @@ class ScheduleAlarmReceiver : BroadcastReceiver() {
         CoroutineScope(SupervisorJob() + Dispatchers.IO).launch {
             try {
                 // 1. Rearmar SEMPRE primer. Si el servei falla, demà ha de sonar.
-                runCatching { app.container.alarmScheduler.handleAlarmFired(schedule, isTest) }
+                val rearmed = try {
+                    app.container.alarmScheduler.handleAlarmFired(schedule, isTest)
+                } catch (error: Exception) {
+                    if (error is kotlinx.coroutines.CancellationException) throw error
+                    Log.e("ScheduleAlarmReceiver", "Error en rearmar", error)
+                    false
+                }
+                if (!rearmed) {
+                    Log.e("ScheduleAlarmReceiver", "No s'ha pogut rearmar ${schedule.id}")
+                    runCatching { app.container.notificationHelper.postRearmFailure(schedule) }
+                        .onFailure { Log.e("ScheduleAlarmReceiver", "No s'ha pogut publicar l'avís", it) }
+                }
 
                 // 2. Arrencar la reproducció.
                 try {
