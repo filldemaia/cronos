@@ -174,8 +174,23 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
 
     fun skipTomorrow(schedule: Schedule) {
         if (schedule.isOneShot || !schedule.enabled) return
-        saveSchedule(schedule.copy(skipDate = java.time.LocalDate.now().plusDays(1).toString()))
-        emit("L'alarma no sonarà demà; després continuarà segons els dies programats.")
+        viewModelScope.launch {
+            val success = runCatching {
+                com.filldemaia.cronos.radio.domain.schedule.SkipTomorrowOperation.execute(
+                    current = container.scheduleRepository.find(schedule.id),
+                    now = Instant.now(),
+                    zone = java.time.ZoneId.systemDefault(),
+                    save = { container.scheduleRepository.save(it) },
+                    arm = { updated, next -> container.alarmScheduler.arm(updated, next) }
+                )
+            }.getOrElse {
+                if (it is kotlinx.coroutines.CancellationException) throw it
+                false
+            }
+            emit(if (success) "L'alarma no sonarà demà; després continuarà segons els dies programats."
+                else "No s'ha pogut desar i rearmar l'alarma. Revisa la programació.")
+            refreshReliability()
+        }
     }
 
     fun deleteSchedule(schedule: Schedule) {
