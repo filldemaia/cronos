@@ -439,7 +439,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
                 // Cap error de preparació no pot deixar l'alarma en silenci.
                 playLocalAlarm(
                     "No s'ha pogut preparar la reproducció (${error.message ?: "error"}). " +
-                        "To d'alarma local actiu."
+                    "To d'alarma local actiu.", schedule
                 )
             }
         }
@@ -866,7 +866,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
         }
     }
 
-    private suspend fun playLocalAlarm(reason: String) {
+    private suspend fun playLocalAlarm(reason: String, emergencySchedule: Schedule? = activeRequest?.schedule) {
         // Si ens crida la mateixa xarxa de seguretat, no ens hem de cancel·lar.
         val currentJob = coroutineContext[Job]
         if (alarmSafetyJob !== currentJob) alarmSafetyJob?.cancel()
@@ -883,28 +883,30 @@ class PlaybackService : MediaBrowserServiceCompat() {
             player?.clearMediaItems()
         }
 
-        val toneFile = withContext(io) { AlarmToneGenerator.ensureFile(this@PlaybackService) }
-        var started = false
-        val generated = runCatching {
+        val started = LocalAlarmFallback.start(generated = {
+            val toneFile = withContext(io) { AlarmToneGenerator.ensureFile(this@PlaybackService) }
             val mp = MediaPlayer()
-            mp.setAudioAttributes(
-                AudioAttributes.Builder()
-                    .setUsage(AudioAttributes.USAGE_ALARM)
-                    .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
-                    .build()
-            )
-            mp.setDataSource(toneFile.absolutePath)
-            mp.isLooping = true
-            mp.prepare()
-            mp.start()
-            localPlayer = mp
-            started = true
-        }
-        if (!started || generated.isFailure) {
-            val system = runCatching {
-                val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
-                    ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
-                val mp = MediaPlayer()
+            try {
+                mp.setAudioAttributes(
+                    AudioAttributes.Builder()
+                        .setUsage(AudioAttributes.USAGE_ALARM)
+                        .setContentType(AudioAttributes.CONTENT_TYPE_SONIFICATION)
+                        .build()
+                )
+                mp.setDataSource(toneFile.absolutePath)
+                mp.isLooping = true
+                mp.prepare()
+                mp.start()
+                localPlayer = mp
+            } catch (error: Exception) {
+                runCatching { mp.release() }
+                throw error
+            }
+        }, system = {
+            val uri = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_ALARM)
+                ?: RingtoneManager.getDefaultUri(RingtoneManager.TYPE_RINGTONE)
+            val mp = MediaPlayer()
+            try {
                 mp.setAudioAttributes(
                     AudioAttributes.Builder()
                         .setUsage(AudioAttributes.USAGE_ALARM)
@@ -916,10 +918,15 @@ class PlaybackService : MediaBrowserServiceCompat() {
                 mp.prepare()
                 mp.start()
                 localPlayer = mp
-                started = true
+            } catch (error: Exception) {
+                runCatching { mp.release() }
+                throw error
             }
-            if (system.isFailure) started = false
-        }
+        }, emergency = {
+            emergencySchedule?.let { schedule ->
+                runCatching { notifications.postAlarmFallback(schedule) }
+            }
+        })
 
         currentMode = PlaybackMode.LOCAL_ALARM
         acquireLocks()
