@@ -134,12 +134,14 @@ object PermissionManager {
      * fan servir el flux d'alarma (USAGE_ALARM), que normalment hi passa per
      * sobre, però el mode "silenci total" també les pot mutar.
      */
-    fun dndBlocksAlarms(context: Context): Boolean = runCatching {
-        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) return false
+    fun dndBlocksAlarms(context: Context): Boolean? = runCatching {
         val manager = context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        manager.isNotificationPolicyAccessGranted &&
-            manager.currentInterruptionFilter == NotificationManager.INTERRUPTION_FILTER_NONE
-    }.getOrDefault(false)
+        when (manager.currentInterruptionFilter) {
+            NotificationManager.INTERRUPTION_FILTER_NONE -> true
+            NotificationManager.INTERRUPTION_FILTER_ALL -> false
+            else -> null
+        }
+    }.getOrNull()
 
     fun openAutoStartSettings(context: Context): Boolean {
         val manufacturer = manufacturer().lowercase()

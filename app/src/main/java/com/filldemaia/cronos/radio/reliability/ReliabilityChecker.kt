@@ -77,14 +77,14 @@ class ReliabilityChecker(
         checks += ReliabilityCheck(
             id = "dnd",
             title = "No molestar",
-            detail = if (dndBlocks) {
-                "El mode de silenci total pot mutar l'alarma. Permet les alarmes o desactiva'l."
-            } else {
-                "El mode No molestar no bloqueja el flux d'alarma."
+            detail = when (dndBlocks) {
+                true -> "El mode de silenci total pot mutar l'alarma. Permet les alarmes o desactiva'l."
+                false -> "El mode No molestar no bloqueja el flux d'alarma."
+                null -> "No es pot confirmar si No molestar permet les alarmes."
             },
-            level = if (dndBlocks) CheckLevel.WARNING else CheckLevel.OK,
-            actionLabel = if (dndBlocks) "Revisa" else null,
-            action = if (dndBlocks) ReliabilityAction.DND_SETTINGS else null
+            level = if (dndBlocks == false) CheckLevel.OK else CheckLevel.WARNING,
+            actionLabel = if (dndBlocks == false) null else "Revisa",
+            action = if (dndBlocks == false) null else ReliabilityAction.DND_SETTINGS
         )
 
         checks += ReliabilityCheck(
@@ -168,18 +168,18 @@ class ReliabilityChecker(
                     action = ReliabilityAction.ARM_ALARMS
                 )
             } else {
-                val armed = alarmScheduler.isArmed(schedule.id)
+                val evidence = alarmEvidence(alarmScheduler.isArmed(schedule.id))
                 checks += ReliabilityCheck(
                     id = "armed_${schedule.id}",
                     title = "Alarma ${schedule.timeLabel()} · ${station?.name ?: ""}",
                     detail = buildString {
                         append(NextOccurrenceCalculator.label(next.nextAt, now))
                         append(" · ")
-                        append(if (armed) "armada al sistema" else "PENDENT D'ARMAR")
+                        append(if (evidence == AlarmEvidence.UNKNOWN) "registre al sistema no verificable" else "PENDENT D'ARMAR")
                     },
-                    level = if (armed && permissions.exactAlarms) CheckLevel.OK else CheckLevel.ERROR,
-                    actionLabel = if (armed) null else "Rearma",
-                    action = if (armed) null else ReliabilityAction.ARM_ALARMS
+                    level = if (evidence == AlarmEvidence.UNKNOWN && permissions.exactAlarms) CheckLevel.WARNING else CheckLevel.ERROR,
+                    actionLabel = "Rearma",
+                    action = ReliabilityAction.ARM_ALARMS
                 )
             }
         }
