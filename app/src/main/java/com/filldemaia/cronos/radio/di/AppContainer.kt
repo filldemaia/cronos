@@ -36,7 +36,8 @@ class AppContainer(context: Context) {
         scheduleRepository = scheduleRepository,
         stationRepository = stationRepository,
         reliabilityRepository = reliabilityRepository,
-        alarmScheduler = alarmScheduler
+        alarmScheduler = alarmScheduler,
+        deviceProtectedStore = deviceProtectedStore
     )
 
     suspend fun refreshReliabilityNotification() {

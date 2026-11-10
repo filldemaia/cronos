@@ -2,6 +2,7 @@ package com.filldemaia.cronos.radio.data.local
 
 import android.content.Context
 import android.os.Build
+import android.util.Log
 import com.filldemaia.cronos.radio.data.model.AppSettings
 import com.filldemaia.cronos.radio.data.model.Schedule
 import com.filldemaia.cronos.radio.data.model.Station
@@ -22,6 +23,12 @@ import kotlinx.serialization.builtins.ListSerializer
  */
 class DeviceProtectedStore(context: Context) {
 
+    private val writes = SerializedProtectedWrites { name, error ->
+        Log.e("DeviceProtectedStore", "Error escrivint $name", error)
+    }
+
+    fun writeErrors(): Map<String, String> = writes.errors()
+
     private val storage: Context =
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             context.createDeviceProtectedStorageContext()
@@ -35,7 +42,7 @@ class DeviceProtectedStore(context: Context) {
     val cacheDir: File
         get() = storage.cacheDir.also { runCatching { it.mkdirs() } }
 
-    fun saveSchedules(schedules: List<Schedule>) {
+    suspend fun saveSchedules(schedules: List<Schedule>) {
         write(SCHEDULES_FILE, AppJson.encodeToString(ListSerializer(Schedule.serializer()), schedules))
     }
 
@@ -45,18 +52,23 @@ class DeviceProtectedStore(context: Context) {
         }.getOrNull()
     } ?: emptyList()
 
-    fun updateSchedule(schedule: Schedule) {
-        val all = loadSchedules().toMutableList()
-        val index = all.indexOfFirst { it.id == schedule.id }
-        if (index >= 0) all[index] = schedule else all.add(schedule)
-        saveSchedules(all)
+    suspend fun updateSchedule(schedule: Schedule) {
+        writes.write(SCHEDULES_FILE) {
+            val all = loadSchedules().toMutableList()
+            val index = all.indexOfFirst { it.id == schedule.id }
+            if (index >= 0) all[index] = schedule else all.add(schedule)
+            writeFile(SCHEDULES_FILE, AppJson.encodeToString(ListSerializer(Schedule.serializer()), all))
+        }
     }
 
-    fun removeSchedule(id: String) {
-        saveSchedules(loadSchedules().filterNot { it.id == id })
+    suspend fun removeSchedule(id: String) {
+        writes.write(SCHEDULES_FILE) {
+            val all = loadSchedules().filterNot { it.id == id }
+            writeFile(SCHEDULES_FILE, AppJson.encodeToString(ListSerializer(Schedule.serializer()), all))
+        }
     }
 
-    fun saveStations(stations: List<Station>) {
+    suspend fun saveStations(stations: List<Station>) {
         write(STATIONS_FILE, AppJson.encodeToString(ListSerializer(Station.serializer()), stations))
     }
 
@@ -66,7 +78,7 @@ class DeviceProtectedStore(context: Context) {
         }.getOrNull()
     } ?: emptyList()
 
-    fun saveSettings(settings: AppSettings) {
+    suspend fun saveSettings(settings: AppSettings) {
         write(SETTINGS_FILE, AppJson.encodeToString(AppSettings.serializer(), settings))
     }
 
@@ -74,19 +86,9 @@ class DeviceProtectedStore(context: Context) {
         runCatching { AppJson.decodeFromString<AppSettings>(raw) }.getOrNull()
     }
 
-    @Synchronized
-    private fun write(name: String, value: String) {
-        runCatching {
-            val dir = filesDir
-            val target = File(dir, name)
-            val temporary = File(dir, "$name.tmp")
-            temporary.writeText(value)
-            if (!temporary.renameTo(target)) {
-                target.writeText(value)
-                temporary.delete()
-            }
-        }
-    }
+    private suspend fun write(name: String, value: String) = writes.write(name) { writeFile(name, value) }
+
+    private fun writeFile(name: String, value: String) = AtomicProtectedFile.write(File(filesDir, name), value)
 
     private fun read(name: String): String? = runCatching {
         File(filesDir, name).takeIf { it.exists() }?.readText()

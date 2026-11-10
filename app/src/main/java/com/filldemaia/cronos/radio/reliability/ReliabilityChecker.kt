@@ -4,6 +4,7 @@ import android.content.Context
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import com.filldemaia.cronos.radio.alarm.AlarmScheduler
+import com.filldemaia.cronos.radio.data.local.DeviceProtectedStore
 import com.filldemaia.cronos.radio.data.model.CheckLevel
 import com.filldemaia.cronos.radio.data.model.ReliabilityAction
 import com.filldemaia.cronos.radio.data.model.ReliabilityCheck
@@ -23,7 +24,8 @@ class ReliabilityChecker(
     private val scheduleRepository: ScheduleRepository,
     private val stationRepository: StationRepository,
     private val reliabilityRepository: ReliabilityRepository,
-    private val alarmScheduler: AlarmScheduler
+    private val alarmScheduler: AlarmScheduler,
+    private val deviceProtectedStore: DeviceProtectedStore
 ) {
 
     suspend fun check(now: Instant = Instant.now()): ReliabilityReport {
@@ -32,6 +34,8 @@ class ReliabilityChecker(
         val schedules = scheduleRepository.active()
         val stations = stationRepository.current().associateBy { it.id }
         val checks = mutableListOf<ReliabilityCheck>()
+
+        protectedStorageCheck(deviceProtectedStore.writeErrors())?.let { checks += it }
 
         checks += ReliabilityCheck(
             id = "exact_alarm",
