@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="ca">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cronos — L'hora en català</title>
+  <meta name="description" content="Cronos: l'hora en català tradicional, amb ràdio i despertador. Disponible a Google Play.">
+  <style>
+    :root {
+      color-scheme: light dark;
+      --bg: #ffffff;
+      --fg: #1f1b16;
+      --muted: #6b6359;
+      --accent: #c40000;
+      --card: #f6f3ee;
+      --card-border: #e7e1d8;
+    }
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg: #16130f;
+        --fg: #ede7df;
+        --muted: #a99f93;
+        --accent: #ff7a5c;
+        --card: #201c17;
+        --card-border: #332d25;
+      }
+    }
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+      background: var(--bg);
+      color: var(--fg);
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+    main {
+      max-width: 760px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 3rem 1.25rem 2rem;
+      flex: 1;
+    }
+    .hero { text-align: center; margin-bottom: 2rem; }
+    .clock {
+      width: 84px; height: 84px; margin: 0 auto 1.25rem;
+    }
+    .clock circle { fill: none; stroke: var(--accent); stroke-width: 6; }
+    .clock line { stroke: var(--fg); stroke-width: 5; stroke-linecap: round; }
+    h1 { font-size: 2.4rem; margin: 0 0 0.25rem; letter-spacing: -0.02em; }
+    .tagline { font-size: 1.25rem; color: var(--muted); margin: 0 0 1.25rem; }
+    .desc { font-size: 1.05rem; color: var(--muted); max-width: 34rem; margin: 0 auto; }
+    .features {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 1rem;
+      margin: 2.5rem 0;
+    }
+    .feature {
+      background: var(--card);
+      border: 1px solid var(--card-border);
+      border-radius: 14px;
+      padding: 1.25rem 1.25rem 1.1rem;
+    }
+    .feature h2 { font-size: 1.1rem; margin: 0 0 0.5rem; }
+    .feature p { margin: 0; color: var(--muted); font-size: 0.95rem; }
+    .links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.75rem;
+      justify-content: center;
+      margin-top: 0.5rem;
+    }
+    .links a {
+      display: inline-block;
+      text-decoration: none;
+      font-weight: 600;
+      padding: 0.6rem 1.1rem;
+      border-radius: 999px;
+      border: 1px solid var(--card-border);
+      background: var(--card);
+      color: var(--fg);
+    }
+    .links a.primary { background: var(--accent); color: #fff; border-color: var(--accent); }
+    footer {
+      text-align: center;
+      font-size: 0.85rem;
+      color: var(--muted);
+      padding: 1.5rem 1.25rem;
+      border-top: 1px solid var(--card-border);
+    }
+    footer a { color: var(--muted); }
+  </style>
+</head>
+<body>
+  <main>
+    <div class="hero">
+      <svg class="clock" viewBox="0 0 100 100" aria-hidden="true">
+        <circle cx="50" cy="50" r="46"/>
+        <line x1="50" y1="50" x2="50" y2="26"/>
+        <line x1="50" y1="50" x2="70" y2="62"/>
+      </svg>
+      <h1>Cronos</h1>
+      <p class="tagline">L'hora en català, amb ràdio i despertador.</p>
+      <p class="desc">
+        Cronos et diu l'hora de la manera tradicional catalana —«És un quart
+        de set del matí», «Falten cinc minuts per a les tres de la tarda»— amb
+        un fons que canvia segons la sortida i la posta de sol. I, a més,
+        una ràdio en català i un despertador que et desperta amb l'emissora
+        que triïs.
+      </p>
+    </div>
+
+    <div class="features">
+      <div class="feature">
+        <h2>🕐 Rellotge</h2>
+        <p>L'hora tradicional en català amb quarts, minuts, segons i moment del dia. Tres widgets per a la pantalla d'inici.</p>
+      </div>
+      <div class="feature">
+        <h2>📻 Ràdio</h2>
+        <p>16 emissores en català (Catalunya Ràdio, RAC1, Flaixbac, IB3, À Punt…), reproducció en segon pla i timeshift.</p>
+      </div>
+      <div class="feature">
+        <h2>⏰ Despertador</h2>
+        <p>Desperta't amb l'emissora que triïs, amb un to local de seguretat si no hi ha xarxa.</p>
+      </div>
+    </div>
+
+    <div class="links">
+      <a class="primary" href="https://play.google.com/store/apps/details?id=com.filldemaia.cronos">Baixa'l a Google Play</a>
+      <a href="https://github.com/filldemaia/cronos">Codi font (GitHub)</a>
+      <a href="privacy.html">Política de privadesa</a>
+    </div>
+  </main>
+
+  <footer>
+    © 2026 Cronos · Èrik Lledó · Codi lliure sota <a href="https://github.com/filldemaia/cronos/blob/main/LICENSE.md">GPL v3</a>
+  </footer>
+</body>
+</html>
