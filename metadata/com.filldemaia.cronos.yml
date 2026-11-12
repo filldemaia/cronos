@@ -8,29 +8,33 @@ Builds:
       - yes
 Categories:
   - Clock
+  - Radio
 Description: |-
   Cronos mostra l'hora de la manera tradicional catalana
   ("És un quart de set del matí", "Falten cinc minuts per a les tres
-  de la tarda"), amb un degradat de fons que canvia segons el
-  moment del dia.
+  de la tarda"), amb un degradat de fons que canvia segons la
+  sortida i la posta de sol del teu lloc.
 
   * Hora catalana completa amb quarts, minuts, segons i moment del dia
   * Data completa amb el dia de la setmana
   * Salutació segons el moment del dia
   * Tres widgets per a la pantalla d'inici
   * Segons opcionals, per escrit a la frase tradicional
+  * Ràdio en català: 16 emissores (Catalunya Ràdio, RAC1, IB3, À Punt...)
+  * Despertador que sona amb l'emissora triada (amb to de seguretat sense xarxa)
+  * Fons segons la sortida i la posta de sol, calculades amb la teva ubicació
   * Mida de l'hora ajustable i configuració restableixible
-  * Molt eficient: una sola alarma per minut, sense permisos especials
 
-  Cronos no recull cap dada i funciona 100% sense connexió. Codi
-  lliure sota GPL v3 o posterior.
+  Cronos no recull cap dada personal ni té publicitat ni analítica.
+  Només es connecta a internet per reproduir l'àudio de les emissores.
+  Codi lliure sota GPL v3 o posterior.
 IssueTracker: https://github.com/filldemaia/cronos/issues
 License: GPL-3.0-or-later
 Name: Cronos
 Repo: https://github.com/filldemaia/cronos.git
 RepoType: git
 SourceCode: https://github.com/filldemaia/cronos
-Summary: L'hora en català tradicional amb widgets
+Summary: L'hora en català tradicional, amb ràdio i despertador
 UpdateCheckData: 'app/build.gradle.kts|versionCode = (\d+)|app/build.gradle.kts|versionName = "([^"]+)"'
 UpdateCheckMode: Tags
 WebSite: https://github.com/filldemaia/cronos
