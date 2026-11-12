@@ -5,12 +5,18 @@ import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
+import androidx.compose.foundation.border
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.heightIn
 import androidx.compose.foundation.layout.aspectRatio
@@ -26,19 +32,27 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.layout.onGloballyPositioned
+import androidx.compose.ui.layout.positionInWindow
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import androidx.compose.ui.unit.TextUnit
+import androidx.compose.ui.semantics.clearAndSetSemantics
 import com.filldemaia.cronos.ui.theme.DayPhase
 import com.filldemaia.cronos.ui.theme.MiddayPalette
 import com.filldemaia.cronos.ui.theme.paletteForPhase
@@ -109,10 +123,21 @@ fun ClockScreen(settings: SettingsRepository) {
 
     val fontFamily = MaterialTheme.typography.bodyLarge.fontFamily
     val greeting = greetingFor(Calendar.getInstance().get(Calendar.HOUR_OF_DAY))
+    var contentCenterY by remember { mutableStateOf(0f) }
+    var dateBottomY by remember { mutableStateOf(0f) }
+    var imageTopY by remember { mutableStateOf(0f) }
+    val hourOffset = with(LocalDensity.current) {
+        if (dateBottomY > 0f && imageTopY > dateBottomY && contentCenterY > 0f) {
+            ((dateBottomY + imageTopY) / 2f - contentCenterY).toDp()
+        } else {
+            0.dp
+        }
+    }
 
     Box(
         modifier = Modifier
             .fillMaxSize()
+            .onGloballyPositioned { contentCenterY = it.positionInWindow().y + it.size.height / 2f }
     ) {
         Column(
             modifier = Modifier
@@ -121,14 +146,33 @@ fun ClockScreen(settings: SettingsRepository) {
             horizontalAlignment = Alignment.CenterHorizontally,
         ) {
             // Títol de pàgina, a dalt de tot, amb la mateixa veu tipogràfica.
-            Box(Modifier.fillMaxWidth()) {
-                com.filldemaia.cronos.radio.ui.components.ScreenTitle(
-                    kicker = "", title = greeting
+            Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Box(Modifier.weight(1f)) {
+                    com.filldemaia.cronos.radio.ui.components.ScreenTitle(
+                        kicker = "", title = "Rellotge", subtitle = "Hora tradicional catalana"
+                    )
+                }
+                Image(
+                    painter = painterResource(R.drawable.logo_tll),
+                    contentDescription = "Logotip TLL",
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.size(52.dp)
+                        .background(Color.White, CircleShape)
+                        .border(2.dp, Color.Black, CircleShape)
+                        .padding(7.dp)
                 )
             }
 
-            Spacer(modifier = Modifier.weight(0.54f))
+            Spacer(modifier = Modifier.weight(0.25f))
 
+            Text(
+                text = greeting,
+                style = GreetingStyle.copy(shadow = currentTextShadow, fontFamily = fontFamily),
+                color = Color.White,
+                textAlign = TextAlign.Start,
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+            )
+            Spacer(modifier = Modifier.height(16.dp))
             Text(
                 text = buildAnnotatedString {
                     withStyle(DateStyle.copy(shadow = currentTextShadow, fontFamily = fontFamily).toSpanStyle()) {
@@ -139,48 +183,82 @@ fun ClockScreen(settings: SettingsRepository) {
                 },
                 color = Color.White,
                 textAlign = TextAlign.Start,
-                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+                modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp)
+                    .onGloballyPositioned { dateBottomY = it.positionInWindow().y + it.size.height },
             )
 
             // Hero: l'hora catalana, mida regulable des de Configuració.
-            Spacer(modifier = Modifier.weight(0.54f))
-            val hourFontSize = settings.hourSize.sp
-            Text(
-                text = currentTime,
-                style = TextStyle(
-                    fontFamily = fontFamily,
-                    fontSize = hourFontSize,
-                    lineHeight = hourFontSize * 1.18f,
-                    fontWeight = FontWeight.SemiBold,
-                    shadow = currentTextShadow,
-                ),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = 8.dp),
+            Spacer(modifier = Modifier.weight(0.83f))
+            // Conserva l'espai original perquè la salutació i la data no es moguin.
+            ClockTimeDisplay(
+                currentTime, digitalTime, settings.showDigital, settings.hourSize.sp,
+                fontFamily, currentTextShadow,
+                modifier = Modifier.alpha(0f).clearAndSetSemantics { }
             )
-
-            if (settings.showDigital) {
-                Spacer(modifier = Modifier.height(12.dp))
-                Text(
-                    text = digitalTime,
-                    style = DigitalStyle.copy(shadow = currentTextShadow, fontFamily = fontFamily),
-                    color = Color.White,
-                    textAlign = TextAlign.Center,
-                )
-            }
 
             Box(
                 modifier = Modifier.fillMaxWidth().weight(1f),
-                contentAlignment = Alignment.Center
+                contentAlignment = Alignment.TopCenter
             ) {
                 Image(
                     painter = painterResource(R.drawable.donec_perficiam),
-                    contentDescription = "Donec perficiam",
-                    modifier = Modifier.fillMaxWidth(0.82f).aspectRatio(1045f / 735f)
+                    contentDescription = null,
+                    modifier = Modifier.padding(top = 12.dp).fillMaxWidth(0.82f)
+                        .aspectRatio(1045f / 735f).alpha(0f)
                 )
             }
+        }
+        Box(
+            modifier = Modifier.fillMaxWidth().fillMaxHeight(0.5f).align(Alignment.BottomCenter),
+            contentAlignment = Alignment.Center
+        ) {
+            Image(
+                painter = painterResource(R.drawable.donec_perficiam),
+                contentDescription = "Donec perficiam",
+                modifier = Modifier.fillMaxWidth(0.82f).aspectRatio(1045f / 735f)
+                    .onGloballyPositioned { imageTopY = it.positionInWindow().y }
+            )
+        }
+        ClockTimeDisplay(
+            currentTime, digitalTime, settings.showDigital, settings.hourSize.sp,
+            fontFamily, currentTextShadow,
+            modifier = Modifier.align(Alignment.Center).offset(y = hourOffset).padding(horizontal = 18.dp)
+        )
+    }
+}
+
+@Composable
+private fun ClockTimeDisplay(
+    currentTime: String,
+    digitalTime: String,
+    showDigital: Boolean,
+    hourFontSize: TextUnit,
+    fontFamily: FontFamily?,
+    shadow: Shadow,
+    modifier: Modifier = Modifier
+) {
+    Column(modifier = modifier.fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally) {
+        Text(
+            text = currentTime,
+            style = TextStyle(
+                fontFamily = fontFamily,
+                fontSize = hourFontSize,
+                lineHeight = hourFontSize * 1.18f,
+                fontWeight = FontWeight.SemiBold,
+                shadow = shadow,
+            ),
+            color = Color.White,
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
+        )
+        if (showDigital) {
+            Spacer(modifier = Modifier.height(12.dp))
+            Text(
+                text = digitalTime,
+                style = DigitalStyle.copy(shadow = shadow, fontFamily = fontFamily),
+                color = Color.White,
+                textAlign = TextAlign.Center,
+            )
         }
     }
 }
