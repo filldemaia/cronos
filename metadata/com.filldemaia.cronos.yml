@@ -12,8 +12,7 @@ Categories:
 Description: |-
   Cronos mostra l'hora de la manera tradicional catalana
   ("És un quart de set del matí", "Falten cinc minuts per a les tres
-  de la tarda"), amb un degradat de fons que canvia segons la
-  sortida i la posta de sol del teu lloc.
+  de la tarda"), amb una interfície fosca i moderna.
 
   * Hora catalana completa amb quarts, minuts, segons i moment del dia
   * Data completa amb el dia de la setmana
@@ -22,7 +21,6 @@ Description: |-
   * Segons opcionals, per escrit a la frase tradicional
   * Ràdio en català: 16 emissores (Catalunya Ràdio, RAC1, IB3, À Punt...)
   * Despertador que sona amb l'emissora triada (amb to de seguretat sense xarxa)
-  * Fons segons la sortida i la posta de sol, calculades amb la teva ubicació
   * Mida de l'hora ajustable i configuració restableixible
 
   Cronos no recull cap dada personal ni té publicitat ni analítica.

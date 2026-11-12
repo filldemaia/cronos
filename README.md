@@ -1,19 +1,17 @@
 # Cronos et diu l'hora en català
 
-> L'hora en català tradicional, bonica i llegible, amb un fons que canvia de color segons la sortida i la posta de sol — i, a més, una ràdio i un despertador.
+> L'hora en català tradicional — i, a més, una ràdio en català i un despertador.
 
-Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per a les tres de la tarda"), amb una interfície moderna. A partir de la versió 2.0 també inclou una **ràdio en català** i un **despertador** que et desperta amb l'emissora que triïs (amb un to local de seguretat si no hi ha xarxa).
+Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per a les tres de la tarda"). A partir de la versió 2.0 també inclou una **ràdio en català** i un **despertador** que et desperta amb l'emissora que triïs (amb un to local de seguretat si no hi ha xarxa).
 
 ## Característiques
 
-- **Interfície renovada**: disseny modern amb Jetpack Compose.
-- **Fons segons el sol**: el degradat passa pel matí, migdia, tarda, vespre i nit seguint la sortida i la posta de sol reals del teu lloc (calculades astronòmicament a partir de la teva ciutat).
+- **Interfície moderna** amb Jetpack Compose i navegació per pestanyes: **Rellotge, Ràdio, Alarmes i Configuració**.
 - **Hora catalana tradicional** amb el format complet: quarts, minuts, segons i moment del dia.
 - **Data completa**: "Avui és dilluns, 10 d'agost del 2026".
 - **Salutació** segons el moment del dia ("Bona tarda!", "Bon vespre", ...).
 - **Tres widgets** de diferents mides per a la pantalla d'inici.
 - **Segons opcionals**: es poden activar i desactivar a gust els segons ("Falten sis minuts i tres segons per a tres quarts de deu de la nit").
-- **Suport per temes**: compatible amb mode clar i fosc del sistema.
 - Compatible amb Android 8.0+ (API 26).
 
 ## Ràdio i despertador
@@ -46,23 +44,22 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 
 ## Configuració
 
-Obre la roda dentada de la pantalla principal:
+A la pestanya **Configuració** trobaràs:
 
 - **Mostrar l'hora digital**: mostra l'hora digital sota la tradicional (desactivada per defecte).
 - **Segons a l'hora digital**: inclou els segons (HH:mm:ss) només si l'hora digital és activa.
 - **Segons a l'hora tradicional**: afegeix els segons per escrit a la frase ("… i N segons").
-- **Mida de l'hora**: regulable amb un control lliscant (18–48; per defecte 28).
-- **Ubicació**: tria la teva ciutat (o coordenades) per calcular la sortida i la posta de sol.
+- **Mida de l'hora**: regulable amb un control lliscant.
+- **Ubicació**: tria la teva ciutat (o coordenades) perquè el widget de colors s'ajusti a la llum del dia.
 - **Restablir la configuració**: torna tots els paràmetres als valors per defecte.
 
 ## Com Utilitzar l'Aplicació
 
 ### Aplicació Principal
-- Obre **Cronos** des del calaix d'aplicacions
-- Veuràs l'hora catalana destacada al centre, amb la data a sobre.
-- El fons canviarà de color segons el moment del dia
-- Per canviar els paràmetres hi ha una roda de configuració amunt a la dreta.
-- Per escoltar la ràdio o programar l'alarma, entra a la secció de ràdio.
+- Obre **Cronos** des del calaix d'aplicacions.
+- A la barra inferior navegues entre les quatre pestanyes: **Rellotge**, **Ràdio**, **Alarmes** i **Configuració**.
+- A **Rellotge** veuràs l'hora catalana destacada, amb la salutació i la data a sobre.
+- A **Ràdio** escoltes les emissores; a **Alarmes** programes el despertador.
 
 ### Afegir el Widget
 1. Mantén premuda la pantalla d'inici
@@ -94,18 +91,17 @@ Obre la roda dentada de la pantalla principal:
 
 ```
 com.filldemaia.cronos/
+├── MainActivity.kt             # Punt d'entrada
+├── CronosRoot.kt               # Navegació per pestanyes (Rellotge, Ràdio, Alarmes, Configuració)
+├── ClockScreen.kt              # Pantalla del rellotge
 ├── CatalanTimeFormatter.kt     # Lògica de l'hora (minuts i segons per escrit)
-├── CatalanDateFormatter.kt     # Formatació de la data en català (app + widget gran)
-├── SolarCalculator.kt          # Sortida i posta de sol a partir de la ubicació
-├── MainActivity.kt             # UI en Jetpack Compose
-├── SettingsRepository.kt       # Preferències (SharedPreferences)
-├── SettingsScreen.kt           # Pantalla d'ajustaments
-├── CronosBaseWidget.kt         # Base comuna dels tres widgets (cicle de vida i refresc)
+├── CatalanDateFormatter.kt     # Formatació de la data en català
+├── SettingsRepository.kt       # Preferències del rellotge (SharedPreferences)
+├── CronosBaseWidget.kt         # Base comuna dels tres widgets
 ├── CronosWidget.kt / CronosWidgetApple.kt / CronosWidgetLarge.kt
 ├── WidgetUpdateScheduler.kt    # Una sola alarma exacta per minut (fallback inexacte)
 ├── CronosWidgetTickReceiver.kt # Tick que actualitza tots els widgets
 ├── BootReceiver.kt             # Reprograma el tick després d'un reinici
-├── ui/theme/                   # Paleta unificada app + widgets
 └── radio/                      # Ràdio i despertador
     ├── alarm/                  # Programació i rearmament de les alarmes
     ├── playback/               # Servei de reproducció, ring buffer i timeshift
@@ -115,7 +111,7 @@ com.filldemaia.cronos/
     └── ui/                     # Pantalles de ràdio, alarmes i configuració
 ```
 
-Decisions tècniques destacades: paleta unificada, una única alarma exacta per a tota l'app (amb comprovació de permís i fallback), i mida d'hora estable regulable per l'usuari. La ràdio fa servir un `ring buffer` en disc per al timeshift i una cadena de fallback (URLs alternatives → emissores de reserva → to local) perquè l'alarma sigui fiable.
+La ràdio fa servir un `ring buffer` en disc per al timeshift i una cadena de fallback (URLs alternatives → emissores de reserva → to local) perquè l'alarma sigui fiable.
 
 ## Instal·lació
 
