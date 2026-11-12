@@ -52,6 +52,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filldemaia.cronos.radio.data.model.Schedule
 import com.filldemaia.cronos.radio.data.model.Station
 import com.filldemaia.cronos.radio.domain.schedule.NextAlarmPlanner
+import com.filldemaia.cronos.radio.domain.schedule.skippedOccurrence
 import com.filldemaia.cronos.radio.domain.schedule.NextOccurrenceCalculator
 import com.filldemaia.cronos.radio.ui.RadioViewModel
 import com.filldemaia.cronos.radio.ui.components.RadioCard
@@ -101,7 +102,7 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
                 ScreenTitle(
                     kicker = "Programacions",
                     title = "Alarmes",
-                    subtitle = "Engegades exactes amb el rellotge del sistema"
+                    subtitle = "Desperta escoltant la ràdio"
                 )
             }
             FilledTonalButton(
@@ -219,6 +220,10 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
                     nextLabel = NextOccurrenceCalculator.next(schedule, now)?.let {
                         NextOccurrenceCalculator.label(it, now)
                     },
+                    skippedLabel = skippedOccurrence(schedule, now, java.time.ZoneId.systemDefault())?.let {
+                        NextOccurrenceCalculator.label(it, now)
+                    },
+                    onRestoreSkipped = { viewModel.restoreSkipped(schedule) },
                     onToggle = { enabled ->
                         if (!enabled && !schedule.isOneShot) pendingDisable = schedule
                         else viewModel.setScheduleEnabled(schedule, enabled)
@@ -286,12 +291,12 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
         AlertDialog(
             onDismissRequest = { pendingDisable = null },
             title = { Text("Desactivar l'alarma") },
-            text = { Text("Vols ometre només demà o desactivar-la fins que la tornis a activar?") },
+            text = { Text("Vols ometre només la propera alarma o desactivar-la fins que la tornis a activar?") },
             confirmButton = {
                 TextButton(onClick = {
                     viewModel.skipTomorrow(schedule)
                     pendingDisable = null
-                }) { Text("Només demà") }
+                }) { Text("Només la propera") }
             },
             dismissButton = {
                 TextButton(onClick = {
@@ -309,12 +314,18 @@ private fun ScheduleCard(
     station: Station?,
     stationsById: Map<String, Station>,
     nextLabel: String?,
+    skippedLabel: String?,
+    onRestoreSkipped: () -> Unit,
     onToggle: (Boolean) -> Unit,
     onEdit: () -> Unit
 ) {
     var detailsExpanded by remember { mutableStateOf(false) }
+    val skipped = skippedLabel != null
+    val activeColor = if (skipped) RadioBlue.copy(alpha = 0.75f) else RadioOrange
     RadioCard(
-        borderColor = if (schedule.enabled) {
+        borderColor = if (skipped) {
+            RadioBlue.copy(alpha = 0.45f)
+        } else if (schedule.enabled) {
             MaterialTheme.colorScheme.outlineVariant
         } else {
             MaterialTheme.colorScheme.outlineVariant.copy(alpha = 0.5f)
@@ -330,7 +341,7 @@ private fun ScheduleCard(
                     Text(
                         schedule.timeLabel(),
                         style = MaterialTheme.typography.displaySmall,
-                        color = if (schedule.enabled) RadioText else RadioMuted
+                        color = if (skipped) activeColor else if (schedule.enabled) RadioText else RadioMuted
                     )
                     Spacer(Modifier.width(10.dp))
                     if (schedule.isOneShot) {
@@ -350,17 +361,17 @@ private fun ScheduleCard(
                         val active = schedule.repeatDays.contains(day)
                         Surface(
                             shape = RoundedCornerShape(6.dp),
-                            color = if (active) RadioOrange.copy(alpha = 0.18f) else MaterialTheme.colorScheme.surface,
+                            color = if (active) activeColor.copy(alpha = 0.18f) else MaterialTheme.colorScheme.surface,
                             border = BorderStroke(
                                 1.dp,
-                                if (active) RadioOrange.copy(alpha = 0.6f) else MaterialTheme.colorScheme.outlineVariant
+                                if (active) activeColor.copy(alpha = 0.6f) else MaterialTheme.colorScheme.outlineVariant
                             )
                         ) {
                             Text(
                                 dayLabels[day] ?: "",
                                 style = MaterialTheme.typography.labelSmall,
                                 fontWeight = if (active) FontWeight.Bold else FontWeight.Medium,
-                                color = if (active) RadioOrange else RadioMuted,
+                                color = if (active) activeColor else RadioMuted,
                                 modifier = Modifier.padding(horizontal = 6.dp, vertical = 3.dp)
                             )
                         }
@@ -371,10 +382,19 @@ private fun ScheduleCard(
                 checked = schedule.enabled,
                 onCheckedChange = onToggle,
                 colors = SwitchDefaults.colors(
-                    checkedThumbColor = RadioOrange,
-                    checkedTrackColor = RadioOrange.copy(alpha = 0.45f)
+                    checkedThumbColor = activeColor,
+                    checkedTrackColor = activeColor.copy(alpha = 0.45f)
                 )
             )
+        }
+
+        if (skippedLabel != null) {
+            Text(
+                "Desactivada una vegada: $skippedLabel · després continua activa",
+                style = MaterialTheme.typography.bodySmall,
+                color = activeColor
+            )
+            TextButton(onClick = onRestoreSkipped) { Text("Recupera aquesta alarma") }
         }
 
         if (schedule.isOneShot) {

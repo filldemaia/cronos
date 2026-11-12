@@ -13,8 +13,8 @@ import androidx.core.app.NotificationCompat
 import androidx.core.app.NotificationManagerCompat
 import androidx.media.app.NotificationCompat.MediaStyle
 import com.filldemaia.cronos.R
-import com.filldemaia.cronos.radio.data.model.ReliabilityLevel
 import com.filldemaia.cronos.radio.data.model.ReliabilityReport
+import com.filldemaia.cronos.radio.reliability.notificationIssue
 import com.filldemaia.cronos.radio.data.model.Schedule
 import com.filldemaia.cronos.MainActivity
 
@@ -216,13 +216,13 @@ class NotificationHelper(private val context: Context) {
         report: ReliabilityReport,
         activeSchedules: Int
     ) {
-        if (activeSchedules == 0 || report.level == ReliabilityLevel.GREEN) {
+        val issue = notificationIssue(report)
+        if (activeSchedules == 0 || issue == null) {
             manager.cancel(RELIABILITY_ID)
             return
         }
         if (!canNotify()) return
-        val issue = report.blockingIssues.firstOrNull() ?: report.warnings.firstOrNull()
-        val text = issue?.detail ?: report.summary
+        val text = issue.detail
         val notification = NotificationCompat.Builder(context, CHANNEL_RELIABILITY)
             .setSmallIcon(R.drawable.ic_stat_radio)
             .setContentTitle("Una alarma de Cronos no està garantida")

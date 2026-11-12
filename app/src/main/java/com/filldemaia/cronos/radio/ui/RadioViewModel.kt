@@ -14,6 +14,7 @@ import com.filldemaia.cronos.radio.data.model.ReliabilityReport
 import com.filldemaia.cronos.radio.data.model.Schedule
 import com.filldemaia.cronos.radio.data.model.Station
 import com.filldemaia.cronos.radio.domain.schedule.NextOccurrenceCalculator
+import com.filldemaia.cronos.radio.domain.schedule.withEnabledState
 import com.filldemaia.cronos.radio.playback.PlaybackCommands
 import com.filldemaia.cronos.radio.playback.PlaybackService
 import com.filldemaia.cronos.radio.playback.PlaybackSnapshot
@@ -158,7 +159,7 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
 
     fun setScheduleEnabled(schedule: Schedule, enabled: Boolean) {
         viewModelScope.launch {
-            val updated = schedule.copy(enabled = enabled)
+            val updated = (container.scheduleRepository.find(schedule.id) ?: schedule).withEnabledState(enabled)
             container.scheduleRepository.save(updated)
             if (enabled) {
                 val next = NextOccurrenceCalculator.next(updated, Instant.now())
@@ -187,8 +188,28 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                 if (it is kotlinx.coroutines.CancellationException) throw it
                 false
             }
-            emit(if (success) "L'alarma no sonarà demà; després continuarà segons els dies programats."
+            emit(if (success) "S'ha omès la propera alarma; després continuarà segons els dies programats."
                 else "No s'ha pogut desar i rearmar l'alarma. Revisa la programació.")
+            refreshReliability()
+        }
+    }
+
+    fun restoreSkipped(schedule: Schedule) {
+        viewModelScope.launch {
+            val success = runCatching {
+                com.filldemaia.cronos.radio.domain.schedule.RestoreSkippedOperation.execute(
+                    current = container.scheduleRepository.find(schedule.id),
+                    now = Instant.now(),
+                    zone = java.time.ZoneId.systemDefault(),
+                    save = { container.scheduleRepository.save(it) },
+                    arm = { updated, next -> container.alarmScheduler.arm(updated, next) }
+                )
+            }.getOrElse {
+                if (it is kotlinx.coroutines.CancellationException) throw it
+                false
+            }
+            emit(if (success) "S'ha recuperat l'alarma omesa."
+                else "No s'ha pogut recuperar l'alarma. Revisa la programació.")
             refreshReliability()
         }
     }

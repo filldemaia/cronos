@@ -47,12 +47,16 @@ class AudioFrameIndexer {
                 container = detected
             }
 
+            val headerBytes = if (container == Container.ADTS) 7 else 4
+            if (pending.size - cursor < headerBytes) break
             val sync = findSync(cursor)
             if (sync < 0) {
-                cursor = (pending.size - 2).coerceAtLeast(cursor)
+                // El final del bloc pot contenir l'inici d'una capçalera.
+                cursor = (pending.size - (headerBytes - 1)).coerceAtLeast(cursor)
                 break
             }
             cursor = sync
+            if (pending.size - cursor < headerBytes) break
 
             val header = parseHeader(cursor)
             if (header == null) {

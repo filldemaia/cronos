@@ -132,7 +132,7 @@ fun SettingsScreen(
             ScreenTitle(
                 kicker = "Configuració",
                 title = "Configuració",
-                subtitle = "Rellotge, ràdio, permisos i emissores pròpies"
+                subtitle = "Configuració de l'aplicació"
             )
         }
 

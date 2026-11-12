@@ -106,6 +106,15 @@ class FrameTimeline {
     }
 
     @Synchronized
+    fun pruneToDuration(maxDurationUs: Long) {
+        require(maxDurationUs > 0)
+        val earliest = (totalDurationUs - maxDurationUs).coerceAtLeast(0L)
+        while (frames.size > 1 && frames.first().startTimeUs < earliest) {
+            frames.removeFirst()
+        }
+    }
+
+    @Synchronized
     fun clear() {
         frames.clear()
         totalDurationUs = 0L

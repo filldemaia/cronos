@@ -73,7 +73,7 @@ fun PlayerScreen(
                 ScreenTitle(
                     kicker = "En directe",
                     title = "Ràdio",
-                    subtitle = "En directe, sense soroll."
+                subtitle = "Els Països Catalans en directe"
                 )
             }
             LayoutToggle(

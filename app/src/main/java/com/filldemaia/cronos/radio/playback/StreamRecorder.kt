@@ -22,6 +22,7 @@ class StreamRecorder(
     private val buffer: DiskRingBuffer,
     private val timeline: FrameTimeline,
     private val indexer: AudioFrameIndexer,
+    private val maxDurationUs: Long,
     private val client: OkHttpClient,
     private val onFailure: (Throwable) -> Unit,
     private val onProgress: () -> Unit
@@ -75,6 +76,7 @@ class StreamRecorder(
                                 timeline.addFrame(frame.offset, frame.durationUs)
                             }
                             timeline.pruneBefore(buffer.oldestOffset)
+                            timeline.pruneToDuration(maxDurationUs)
                         }
                         // L'offset de referència no s'usa per reproduir, però ajuda
                         // a detectar que l'índex i el buffer van sincronitzats.

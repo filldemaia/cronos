@@ -724,7 +724,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
             runCatching {
                 DiskRingBuffer(
                     file = File(bufferDirectory(), "timeshift.buffer"),
-                    capacityBytes = capacityBytes(request.station, settings)
+                    capacityBytes = capacityBytes(attempt.station ?: request.station, settings)
                 )
             }.getOrNull()
         } ?: return false
@@ -739,6 +739,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
             buffer = extent,
             timeline = newTimeline,
             indexer = newIndexer,
+            maxDurationUs = settings.bufferDurationMinutes.coerceIn(15, 12 * 60) * 60_000_000L,
             client = httpClient,
             onFailure = { error -> serviceScope.launch { failAttempt(attemptId, error) } },
             onProgress = {}
@@ -1113,7 +1114,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
         val extent = buffer ?: return
         if (frames.isEmpty()) return
         val oldest = extent.oldestOffset
-        val startUs = frames.first().startTimeUs
+        val startUs = frames.firstOrNull { it.offset >= oldest }?.startTimeUs ?: return
         val liveUs = timeline?.latestTimeUs() ?: startUs
         val target = targetUs.coerceIn(startUs, liveUs)
         val candidate = frames
@@ -1268,7 +1269,8 @@ class PlaybackService : MediaBrowserServiceCompat() {
                 if (tl != null) {
                     val frames = tl.snapshot()
                     if (frames.isNotEmpty()) {
-                        val start = frames.first().startTimeUs
+                        val oldest = buffer?.oldestOffset ?: return
+                        val start = frames.firstOrNull { it.offset >= oldest }?.startTimeUs ?: return
                         val live = tl.latestTimeUs()
                         val position = (playbackBaseTimeUs + p.currentPosition * 1_000L)
                             .coerceIn(start, live)
