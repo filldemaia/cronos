@@ -30,8 +30,8 @@ android {
         applicationId = "com.filldemaia.cronos"
         minSdk = 26
         targetSdk = 36
-        versionCode = 9
-        versionName = "2.0"
+        versionCode = 10
+        versionName = "2.0.1"
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables {
@@ -54,10 +54,9 @@ android {
 
     buildTypes {
         release {
-            // La ràdio fa servir Media3, DataStore i kotlinx-serialization:
-            // desactivem l'ofuscació per no arriscar fallades en producció.
-            isMinifyEnabled = false
-            isShrinkResources = false
+            // R8: reducció, optimització i ofuscació de la build de Play.
+            isMinifyEnabled = true
+            isShrinkResources = true
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
@@ -70,6 +69,16 @@ android {
             isMinifyEnabled = false
             applicationIdSuffix = ".debug"
             versionNameSuffix = "-debug"
+        }
+        create("releaseTest") {
+            // Mateixa optimització que release, però instal·lable al costat
+            // de l'app de Play. No comparteix dades, alarmes ni signatura.
+            initWith(getByName("release"))
+            applicationIdSuffix = ".r8test"
+            versionNameSuffix = "-r8test"
+            signingConfig = signingConfigs.getByName("debug")
+            resValue("string", "app_name", "Cronos · Prova R8")
+            matchingFallbacks += listOf("release")
         }
     }
 

@@ -1,30 +1,24 @@
-# Add project specific ProGuard rules here.
-# You can control the set of applied configuration files using the
-# proguardFiles setting in build.gradle.
-#
-# For more details, see
-#   http://developer.android.com/guide/developing/tools/proguard.html
+# WidgetUpdateScheduler instancia aquests providers per reflexió.
+# Només cal conservar-ne el constructor sense arguments; la resta del
+# codi pot continuar optimitzant-se. AGP preserva els noms del manifest.
+-keepclassmembers class com.filldemaia.cronos.CronosWidget {
+    public <init>();
+}
+-keepclassmembers class com.filldemaia.cronos.CronosWidgetApple {
+    public <init>();
+}
+-keepclassmembers class com.filldemaia.cronos.CronosWidgetLarge {
+    public <init>();
+}
 
-# Widgets i broadcast receivers: es referencien des del manifest pel nom
-# complet; els mantenim sempre sencers (AGP ja els conserva, però així
-# queda garantit fins i tot si canvien els default keep rules).
--keep class com.filldemaia.cronos.CronosWidget { *; }
--keep class com.filldemaia.cronos.CronosWidgetApple { *; }
--keep class com.filldemaia.cronos.CronosWidgetLarge { *; }
--keep class com.filldemaia.cronos.CronosWidgetTickReceiver { *; }
--keep class com.filldemaia.cronos.BootReceiver { *; }
+# Room 2.x (transitiu de WorkManager) crea la implementació de la base
+# de dades per reflexió. Amb strictFullModeForKeepRules, el -keep sense
+# membres de la biblioteca no implica conservar aquest constructor.
+-keepclassmembers class androidx.work.impl.WorkDatabase_Impl {
+    public <init>();
+}
 
-# If your project uses WebView with JS, uncomment the following
-# and specify the fully qualified class name to the JavaScript interface
-# class:
-#-keepclassmembers class fqcn.of.javascript.interface.for.webview {
-#   public *;
-#}
-
-# Uncomment this to preserve the line number information for
-# debugging stack traces.
-#-keepattributes SourceFile,LineNumberTable
-
-# If you keep the line number information, uncomment this to
-# hide the original source file name.
-#-renamesourcefileattribute SourceFile
+# Les biblioteques (Media3, WorkManager, DataStore i serialization) aporten
+# les seves consumer rules. No bloquegem paquets sencers amb -keep **.
+# Conservem les línies per desofuscar informes amb mapping.txt.
+-keepattributes SourceFile,LineNumberTable

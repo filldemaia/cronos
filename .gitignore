@@ -1,5 +1,6 @@
 # Gradle i Android Studio
 .gradle/
+.kotlin/
 .idea/
 *.iml
 local.properties
@@ -19,3 +20,4 @@ key.jks.backup
 *.apk
 *.aab
 .DS_Store
+__pycache__/
