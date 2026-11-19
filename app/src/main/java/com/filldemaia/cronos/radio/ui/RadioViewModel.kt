@@ -146,9 +146,9 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
             if (schedule.enabled) {
                 val next = NextOccurrenceCalculator.next(schedule, Instant.now())
                 if (next == null) {
-                    emit("La programació no té cap pròxima execució vàlida.")
+                    emit("Revisa la data i els dies de l'alarma.")
                 } else if (!container.alarmScheduler.arm(schedule, next)) {
-                    emit("No s'ha pogut armar l'alarma. Revisa el permís d'alarmes exactes.")
+                    emit("No s'ha pogut programar l'alarma. Revisa el permís d'alarmes exactes.")
                 }
             } else {
                 container.alarmScheduler.cancel(schedule.id)
@@ -164,7 +164,7 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
             if (enabled) {
                 val next = NextOccurrenceCalculator.next(updated, Instant.now())
                 if (next != null && !container.alarmScheduler.arm(updated, next)) {
-                    emit("No s'ha pogut armar l'alarma. Revisa el permís d'alarmes exactes.")
+                    emit("No s'ha pogut programar l'alarma. Revisa el permís d'alarmes exactes.")
                 }
             } else {
                 container.alarmScheduler.cancel(updated.id)
@@ -188,8 +188,8 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                 if (it is kotlinx.coroutines.CancellationException) throw it
                 false
             }
-            emit(if (success) "S'ha omès la propera alarma; després continuarà segons els dies programats."
-                else "No s'ha pogut desar i rearmar l'alarma. Revisa la programació.")
+            emit(if (success) "S'ometrà només la propera alarma."
+                else "No s'ha pogut ometre l'alarma. Revisa la programació.")
             refreshReliability()
         }
     }
@@ -208,8 +208,8 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                 if (it is kotlinx.coroutines.CancellationException) throw it
                 false
             }
-            emit(if (success) "S'ha recuperat l'alarma omesa."
-                else "No s'ha pogut recuperar l'alarma. Revisa la programació.")
+            emit(if (success) "Alarma reactivada."
+                else "No s'ha pogut reactivar l'alarma. Revisa la programació.")
             refreshReliability()
         }
     }
@@ -230,7 +230,7 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
         val ok = container.alarmScheduler.scheduleTestNow(schedule)
         emit(
             if (ok) {
-                "Prova real programada per d'aquí a 5 segons. Passa pel mateix receptor i servei que una alarma."
+                "L'alarma de prova sonarà d'aquí a 5 segons."
             } else {
                 "No s'ha pogut programar la prova."
             }
@@ -243,10 +243,10 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
                 container.alarmScheduler.armAll()
             }.getOrNull()
             if (summary == null) {
-                emit("No s'han pogut rearmar les alarmes.")
+                emit("No s'han pogut tornar a programar les alarmes.")
             } else {
                 emit(
-                    "Alarmes armades: ${summary.armed}" +
+                    "Alarmes programades: ${summary.armed}" +
                         if (summary.failed > 0) " · fallades: ${summary.failed}" else ""
                 )
             }
@@ -339,7 +339,7 @@ class RadioViewModel(application: Application) : AndroidViewModel(application) {
         if (capabilities.hasTransport(NetworkCapabilities.TRANSPORT_CELLULAR) &&
             !capabilities.hasTransport(NetworkCapabilities.TRANSPORT_WIFI)
         ) {
-            emit("Estàs escoltant amb dades mòbils. El buffer de disc continua funcionant.")
+            emit("Estàs escoltant amb dades mòbils.")
         }
     }
 }

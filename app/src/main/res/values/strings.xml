@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="app_name">Cronos</string>
-    <string name="widget_name">Cronos - Hora Catalana</string>
-    <string name="widget_name_apple">Cronos - Targeta de colors</string>
-    <string name="widget_name_large">Cronos - Widget gran</string>
+    <string name="widget_name">Hora</string>
+    <string name="widget_name_apple">Senyera</string>
+    <string name="widget_name_large">Data I Hora</string>
     <string name="widget_description">Mostra l\'hora actual en català tradicional</string>
     <string name="before_date">Avui és </string>
     <string name="about_text">Aquesta aplicació ajuda a preservar la llengua, indicant l\'hora tradicional catalana.</string>
@@ -24,11 +24,7 @@
     <string name="settings_title">Configuració</string>
     <string name="settings_back">Torna</string>
     <string name="settings_section_display">Visualització</string>
-    <string name="settings_show_digital">Mostrar l\'hora digital</string>
-    <string name="settings_show_digital_desc">Mostra l\'hora digital sota la tradicional (desactivada per defecte)</string>
-    <string name="settings_show_seconds">Segons a l\'hora digital</string>
-    <string name="settings_show_seconds_desc">Inclou els segons (HH:mm:ss)</string>
-    <string name="settings_show_seconds_written">Segons a l\'hora tradicional</string>
+    <string name="settings_show_seconds_written">Mostra els segons per escrit</string>
     <string name="settings_show_seconds_written_desc">Afegeix els segons per escrit a la frase de l\'hora tradicional</string>
     <string name="settings_hour_size">Mida de l\'hora</string>
     <string name="settings_section_location">Ubicació</string>

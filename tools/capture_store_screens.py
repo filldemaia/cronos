@@ -46,8 +46,11 @@ def main():
 
     def tree():
         foreground()
-        adb("shell", "uiautomator", "dump", REMOTE_DUMP)
-        root = ET.fromstring(adb("exec-out", "cat", REMOTE_DUMP))
+        try:
+            adb("shell", "uiautomator", "dump", REMOTE_DUMP)
+            root = ET.fromstring(adb("exec-out", "cat", REMOTE_DUMP))
+        finally:
+            adb("shell", "rm", "-f", REMOTE_DUMP)
         if not any(node.get("package") == PACKAGE for node in root.iter("node")):
             raise RuntimeError("The test app is covered by another screen; close it before capturing.")
         return root

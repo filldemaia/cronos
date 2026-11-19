@@ -20,19 +20,15 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Alarm
-import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material.icons.filled.ExpandMore
 import androidx.compose.material.icons.filled.ExpandLess
 import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
@@ -87,6 +83,7 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
     val next = planned.firstOrNull()
     val stationsById = remember(stations) { stations.associateBy { it.id } }
 
+    Box(modifier = Modifier.fillMaxSize()) {
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -135,7 +132,7 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
                     Spacer(Modifier.width(10.dp))
                     Column(Modifier.weight(1f)) {
                         Text(
-                            "Propera engegada",
+                            "Propera alarma",
                             style = MaterialTheme.typography.labelMedium,
                             color = RadioMuted
                         )
@@ -154,64 +151,23 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
             }
         }
 
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            Text(
-                if (schedules.isEmpty()) {
-                    "Cap alarma"
-                } else if (schedules.size == 1) {
-                    "1 alarma"
-                } else {
-                    "${schedules.size} alarmes"
-                },
-                style = MaterialTheme.typography.titleMedium,
-                color = RadioText,
-                modifier = Modifier.weight(1f)
-            )
-            TextButton(onClick = viewModel::armAllNow) {
-                Text("Rearma totes")
-            }
-        }
-
         if (schedules.isEmpty()) {
-            RadioCard {
-                Column(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Icon(
-                        Icons.Filled.Alarm,
-                        contentDescription = null,
-                        tint = RadioOrange,
-                        modifier = Modifier.size(38.dp)
-                    )
-                    Spacer(Modifier.height(10.dp))
-                    Text(
-                        "Encara no tens cap alarma",
-                        style = MaterialTheme.typography.titleMedium,
-                        color = RadioText
-                    )
-                    Text(
-                        "Crea una engegada exacta. Si el directe falla, l'app reintenta, " +
-                            "prova emissores de reserva i, si cal, activa un to local.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = RadioMuted
-                    )
-                    Spacer(Modifier.height(14.dp))
-                    Button(
-                        onClick = {
-                            editingSchedule = null
-                            editorOpen = true
-                        },
-                        colors = ButtonDefaults.buttonColors(containerColor = RadioOrange)
-                    ) {
-                        Text("Crea la primera alarma")
-                    }
+            Spacer(Modifier.height(8.dp))
+        } else {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                Text(
+                    if (schedules.size == 1) "1 alarma" else "${schedules.size} alarmes",
+                    style = MaterialTheme.typography.titleMedium,
+                    color = RadioText,
+                    modifier = Modifier.weight(1f)
+                )
+                TextButton(onClick = viewModel::armAllNow) {
+                    Text("Rearma totes")
                 }
             }
-        } else {
             schedules.forEach { schedule ->
                 ScheduleCard(
                     schedule = schedule,
@@ -235,15 +191,30 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
                 )
             }
         }
+    }
 
-        Text(
-            "Les alarmes es rearmen després de reiniciar el mòbil, actualitzar l'app o " +
-                "canviar l'hora o la zona horària. Les alarmes i els seus avisos només " +
-                "es mostren en aquesta pantalla.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+    if (schedules.isEmpty()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = 16.dp),
+            verticalArrangement = Arrangement.Center,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Icon(
+                Icons.Filled.Alarm,
+                contentDescription = null,
+                tint = RadioMuted,
+                modifier = Modifier.size(40.dp)
+            )
+            Spacer(Modifier.height(12.dp))
+            Text(
+                "Encara no hi ha cap alarma.",
+                style = MaterialTheme.typography.titleMedium,
+                color = RadioMuted
+            )
+        }
+    }
     }
 
     if (editorOpen) {
@@ -267,8 +238,7 @@ fun SchedulesScreen(viewModel: RadioViewModel) {
             title = { Text("Eliminar l'alarma?") },
             text = {
                 Text(
-                    "S'eliminarà l'alarma de les ${schedule.timeLabel()} " +
-                        "(${schedule.daysLabel().lowercase()}) i es cancel·larà al sistema."
+                    "Alarma de les ${schedule.timeLabel()} (${schedule.daysLabel().lowercase()})."
                 )
             },
             confirmButton = {
@@ -390,11 +360,11 @@ private fun ScheduleCard(
 
         if (skippedLabel != null) {
             Text(
-                "Desactivada una vegada: $skippedLabel · després continua activa",
+                "S'omet: $skippedLabel",
                 style = MaterialTheme.typography.bodySmall,
                 color = activeColor
             )
-            TextButton(onClick = onRestoreSkipped) { Text("Recupera aquesta alarma") }
+            TextButton(onClick = onRestoreSkipped) { Text("Reactiva aquesta alarma") }
         }
 
         if (schedule.isOneShot) {
@@ -459,7 +429,7 @@ private fun ScheduleCard(
             Spacer(Modifier.height(4.dp))
             SurfaceRow("Volum", "${schedule.volumePercent}%")
             SurfaceRow(
-                "Fade-in",
+                "Volum gradual",
                 if (schedule.fadeInSeconds <= 0) "Desactivat" else "${schedule.fadeInSeconds} s"
             )
             SurfaceRow("Aturada automàtica", stopAfterLabel(schedule.stopAfterMinutes))

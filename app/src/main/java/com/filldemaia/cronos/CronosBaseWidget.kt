@@ -5,6 +5,7 @@ import android.appwidget.AppWidgetManager
 import android.appwidget.AppWidgetProvider
 import android.content.Context
 import android.content.Intent
+import android.os.Bundle
 import android.util.Log
 import android.widget.RemoteViews
 
@@ -22,8 +23,25 @@ abstract class CronosBaseWidget : AppWidgetProvider() {
     /** Vista arrel, on penja el toc per refrescar el widget. */
     protected abstract val rootViewId: Int
 
+    protected abstract val widgetType: WidgetType
+
     /** Omple els textos del widget amb l'hora/data actuals. */
-    protected abstract fun fillViews(context: Context, views: RemoteViews)
+    protected abstract fun fillViews(context: Context, views: RemoteViews, widthDp: Float, heightDp: Float)
+
+    /** Same RemoteViews for the launcher and the in-app preview. */
+    internal fun createViews(context: Context, widthDp: Float, heightDp: Float): RemoteViews =
+        RemoteViews(context.packageName, layoutRes).also {
+            fillViews(context, it, widthDp, heightDp)
+        }
+
+    override fun onAppWidgetOptionsChanged(
+        context: Context,
+        appWidgetManager: AppWidgetManager,
+        appWidgetId: Int,
+        newOptions: Bundle
+    ) {
+        updateAppWidget(context, appWidgetManager, appWidgetId)
+    }
 
     override fun onUpdate(
         context: Context,
@@ -59,12 +77,26 @@ abstract class CronosBaseWidget : AppWidgetProvider() {
         appWidgetManager: AppWidgetManager,
         appWidgetId: Int
     ) {
-        val views = RemoteViews(context.packageName, layoutRes)
-        fillViews(context, views)
-
+        val options = appWidgetManager.getAppWidgetOptions(appWidgetId)
+        fun size(key: String, fallback: Float) = options.getInt(key).takeIf { it > 0 }?.toFloat() ?: fallback
+        val portrait = createViews(
+            context,
+            size(AppWidgetManager.OPTION_APPWIDGET_MIN_WIDTH, widgetType.defaultWidthDp),
+            size(AppWidgetManager.OPTION_APPWIDGET_MAX_HEIGHT, widgetType.defaultHeightDp)
+        )
+        val landscape = createViews(
+            context,
+            size(AppWidgetManager.OPTION_APPWIDGET_MAX_WIDTH, widgetType.defaultWidthDp),
+            size(AppWidgetManager.OPTION_APPWIDGET_MIN_HEIGHT, widgetType.defaultHeightDp)
+        )
         // Tocant el widget es refresca immediatament, per si l'alarma
         // s'ha endarrerit (bateria / estalvi).
-        views.setOnClickPendingIntent(rootViewId, refreshPendingIntent(context, appWidgetId))
+        // Configure each child BEFORE combining: a sized/oriented RemoteViews
+        // rejects addAction(), including setOnClickPendingIntent().
+        val refresh = refreshPendingIntent(context, appWidgetId)
+        portrait.setOnClickPendingIntent(rootViewId, refresh)
+        landscape.setOnClickPendingIntent(rootViewId, refresh)
+        val views = RemoteViews(landscape, portrait)
 
         appWidgetManager.updateAppWidget(appWidgetId, views)
     }

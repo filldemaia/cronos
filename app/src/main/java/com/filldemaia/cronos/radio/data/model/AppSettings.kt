@@ -16,7 +16,7 @@ data class AppSettings(
     val warnOnMobileData: Boolean = true,
     val keepBufferOnStationChange: Boolean = false,
     /** Mostra el selector d'emissores en mosaic (true) o en llista (false). */
-    val stationsGrid: Boolean = false,
+    val stationsGrid: Boolean = true,
     val lastStationId: String = "catalunya-radio"
 ) {
     companion object {

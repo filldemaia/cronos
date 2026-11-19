@@ -127,11 +127,6 @@ fun ReliabilityScreen(
                     style = MaterialTheme.typography.displaySmall,
                     color = RadioText
                 )
-                Text(
-                    "Podem garantir l'engegada?",
-                    style = MaterialTheme.typography.bodyMedium,
-                    color = RadioMuted
-                )
             }
             IconButton(onClick = onBack) {
                 Icon(
@@ -174,9 +169,7 @@ fun ReliabilityScreen(
                         borderColor = RadioBlue.copy(alpha = 0.35f)
                     ) {
                         Text(
-                            "Encara no hi ha cap alarma activa. La fiabilitat es comprova " +
-                                "igualment perquè els permisos actuals també afectaran les " +
-                                "properes programacions.",
+                            "No hi ha cap alarma activa.",
                             style = MaterialTheme.typography.bodySmall,
                             color = RadioText
                         )
@@ -188,8 +181,7 @@ fun ReliabilityScreen(
                 }
 
                 SectionHeader(
-                    title = "Comprovacions",
-                    subtitle = "Permisos, alarmes armades i connexió"
+                    title = "Comprovacions"
                 )
                 current.checks
                     .sortedBy { severityOrder(it.level) }
@@ -229,8 +221,7 @@ fun ReliabilityScreen(
                     Icon(Icons.Filled.Alarm, contentDescription = null, tint = RadioMuted)
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "Quan una alarma soni, aquí veuràs l'hora prevista, l'hora real i " +
-                            "si va caldre una emissora de reserva o el to local.",
+                        "L'historial és buit.",
                         style = MaterialTheme.typography.bodySmall,
                         color = RadioMuted
                     )
@@ -241,15 +232,6 @@ fun ReliabilityScreen(
                 LogCard(log)
             }
         }
-
-        Text(
-            "La comparació entre l'hora prevista i la real és la prova més directa que " +
-                "l'alarma ha passat pel camí exacte del sistema. Una desviació petita és " +
-                "normal; si supera uns quants segons, revisa bateria i permisos.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
     }
 
     if (showOemDialog) {
@@ -269,8 +251,7 @@ fun ReliabilityScreen(
             title = { Text("Esborrar l'historial?") },
             text = {
                 Text(
-                    "S'eliminaran tots els registres d'execucions. Les alarmes i els permisos " +
-                        "no es modificaran."
+                    "S'esborrarà l'historial. Les alarmes es conservaran."
                 )
             },
             confirmButton = {

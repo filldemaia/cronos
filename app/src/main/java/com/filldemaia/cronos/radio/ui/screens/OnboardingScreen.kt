@@ -14,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
@@ -22,7 +21,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
@@ -41,7 +39,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
@@ -199,7 +196,7 @@ fun OnboardingScreen(
                     onClick = onFinish,
                     colors = ButtonDefaults.buttonColors(containerColor = RadioOrange)
                 ) {
-                    Text("Activa les alarmes")
+                    Text("Acaba")
                 }
             }
         }
@@ -226,22 +223,16 @@ private fun StepDots(step: Int) {
 private fun WelcomeStep() {
     Column {
         Text(
-            "Primer, protegim l'alarma",
+            "Desperta't amb la ràdio",
             style = MaterialTheme.typography.headlineMedium,
             color = RadioText
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            "Cronos pot engegar una emissora a l'hora exacta, amb la pantalla " +
-                "bloquejada i sense dependre del despertador del mòbil.",
+            "Tria una emissora per despertar-te. Si el directe falla, sonarà un to de reserva.",
             style = MaterialTheme.typography.bodyMedium,
             color = RadioMuted
         )
-        Spacer(Modifier.height(18.dp))
-        InfoBullet("Alarma exacta", "Fem servir AlarmManager.setAlarmClock(), el mateix mecanisme que el rellotge del sistema.")
-        InfoBullet("Servei en primer pla", "El receptor arrenca immediatament un servei de reproducció amb wake lock curt.")
-        InfoBullet("Cadena de seguretat", "Reintents, URLs alternatives, emissores de reserva i, finalment, un to local sense xarxa.")
-        InfoBullet("Time-shift al disc", "Pots pausar i recuperar fins a 12 hores del directe, sense perdre la gravació.")
     }
 }
 
@@ -249,14 +240,13 @@ private fun WelcomeStep() {
 private fun ExactAlarmStep(granted: Boolean, onGrant: () -> Unit) {
     Column {
         Text(
-            "Permís d'alarmes exactes",
+            "Alarmes exactes",
             style = MaterialTheme.typography.headlineMedium,
             color = RadioText
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            "Android 12 i posteriors poden retardar les alarmes fins a diversos minuts si " +
-                "no tens aquest permís. És imprescindible per engegar la ràdio a l'hora.",
+            "Aquest permís permet programar les alarmes a l'hora prevista.",
             style = MaterialTheme.typography.bodyMedium,
             color = RadioMuted
         )
@@ -264,20 +254,13 @@ private fun ExactAlarmStep(granted: Boolean, onGrant: () -> Unit) {
         SetupStatusCard(
             title = "Alarmes i recordatoris",
             detail = if (granted) {
-                "Concedit. L'alarma no dependrà de Doze."
+                "Activades."
             } else {
-                "Cal activar 'Alarmes i recordatoris' per a Cronos."
+                "Cal activar-les per a Cronos."
             },
             ok = granted,
-            actionLabel = if (granted) null else "Concedeix el permís",
+            actionLabel = if (granted) null else "Activa",
             onAction = onGrant
-        )
-        Spacer(Modifier.height(12.dp))
-        Text(
-            "Si el fabricant amaga aquesta opció, busca \"Alarmes i recordatoris\" o " +
-                "\"Permisos especials\" a la configuració de l'app.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted
         )
     }
 }
@@ -295,17 +278,10 @@ private fun NotificationsBatteryStep(
             style = MaterialTheme.typography.headlineMedium,
             color = RadioText
         )
-        Spacer(Modifier.height(10.dp))
-        Text(
-            "La notificació és el teu botó d'emergència per aturar l'alarma. " +
-                "L'exempció de bateria evita que el sistema mati el servei mentre sona.",
-            style = MaterialTheme.typography.bodyMedium,
-            color = RadioMuted
-        )
         Spacer(Modifier.height(16.dp))
         SetupStatusCard(
             title = "Notificacions",
-            detail = if (notifications) "Activades." else "Sense notificacions no podràs aturar l'alarma des de la pantalla bloquejada.",
+            detail = if (notifications) "Activades." else "Calen per aturar l'alarma des de la pantalla bloquejada.",
             ok = notifications,
             actionLabel = if (notifications) null else "Activa",
             onAction = onNotifications
@@ -313,7 +289,7 @@ private fun NotificationsBatteryStep(
         Spacer(Modifier.height(10.dp))
         SetupStatusCard(
             title = "Optimització de bateria",
-            detail = if (battery) "Cronos està exempta." else "Exclou l'app de l'estalvi de bateria.",
+            detail = if (battery) "Sense restriccions." else "L'estalvi de bateria pot impedir que soni l'alarma.",
             ok = battery,
             actionLabel = if (battery) null else "Exclou",
             onAction = onBattery
@@ -339,11 +315,9 @@ private fun OemStep(
         Spacer(Modifier.height(10.dp))
         Text(
             if (knownOem) {
-                "El teu fabricant pot aturar aplicacions en segon pla. Revisa l'inici automàtic " +
-                    "i la llista blanca de bateria. No podem verificar-ho automàticament: confirma-ho tu."
+                "El mòbil pot aturar Cronos en segon pla. Cal revisar-ho manualment."
             } else {
-                "No hem detectat un fabricant especialment restrictiu, però alguns models " +
-                    "poden limitar l'activitat en segon pla. Si tens dubtes, consulta la guia."
+                "Si les alarmes fallen, consulta la guia del fabricant."
             },
             style = MaterialTheme.typography.bodyMedium,
             color = RadioMuted
@@ -352,31 +326,23 @@ private fun OemStep(
         SetupStatusCard(
             title = "Inici automàtic revisat",
             detail = if (acknowledged) {
-                "Confirmat. La comprovació de fiabilitat quedarà en verd si la resta és correcta."
+                "Revisat."
             } else {
-                "Obre la configuració del fabricant, revisa l'inici automàtic i confirma-ho."
+                "Comprova l'inici automàtic i l'ús de bateria."
             },
             ok = acknowledged,
-            actionLabel = if (acknowledged) null else "Obre l'inici automàtic",
+            actionLabel = if (acknowledged) null else "Revisa",
             onAction = onOpenAutoStart
         )
         Spacer(Modifier.height(10.dp))
         Row(horizontalArrangement = Arrangement.spacedBy(10.dp)) {
             OutlinedButton(onClick = onOpenGuide) {
-                Text("Guia dontkillmyapp.com")
+                Text("Guia del fabricant")
             }
             if (!acknowledged) {
                 TextButton(onClick = onAcknowledge) { Text("Ho he revisat") }
             }
         }
-        Spacer(Modifier.height(10.dp))
-        Text(
-            "Xiaomi/Redmi: inici automàtic + \"Sense restriccions\". Samsung: treu l'app de " +
-                "\"Aplicacions en repòs profund\". Huawei/Honor: inici automàtic i activitat en segon pla. " +
-                "OnePlus/Oppo/Realme/Vivo: inici automàtic i estalvi de bateria desactivat.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted
-        )
     }
 }
 
@@ -392,14 +358,13 @@ private fun FinishStep(
     val allReady = exactAlarms && notifications && battery && oemReady
     Column {
         Text(
-            "Tot a punt per programar",
+            "Resum",
             style = MaterialTheme.typography.headlineMedium,
             color = RadioText
         )
         Spacer(Modifier.height(10.dp))
         Text(
-            "Cada programació serà una alarma real del sistema. Si alguna cosa no es pot " +
-                "garantir, ho veuràs a la comprovació de fiabilitat d'Ajustos.",
+            "Pots revisar aquests permisos a Configuració.",
             style = MaterialTheme.typography.bodyMedium,
             color = RadioMuted
         )
@@ -419,8 +384,7 @@ private fun FinishStep(
                     Icon(Icons.Filled.Warning, null, tint = RadioYellow)
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "Encara hi ha punts pendents. Les alarmes podrien no engegar-se. " +
-                            "Pots continuar i arreglar-ho des d'Ajustos.",
+                        "Encara hi ha ajustos pendents. Les alarmes podrien no sonar.",
                         style = MaterialTheme.typography.bodySmall,
                         color = RadioText
                     )
@@ -482,17 +446,5 @@ private fun SummaryRow(label: String, ok: Boolean) {
             style = MaterialTheme.typography.labelMedium,
             color = if (ok) RadioGreen else RadioRed
         )
-    }
-}
-
-@Composable
-private fun InfoBullet(title: String, text: String) {
-    Row(Modifier.padding(bottom = 13.dp)) {
-        Icon(Icons.Filled.CheckCircle, null, tint = RadioGreen, modifier = Modifier.size(18.dp))
-        Spacer(Modifier.width(10.dp))
-        Column {
-            Text(title, style = MaterialTheme.typography.titleSmall, color = RadioText)
-            Text(text, style = MaterialTheme.typography.bodySmall, color = RadioMuted)
-        }
     }
 }

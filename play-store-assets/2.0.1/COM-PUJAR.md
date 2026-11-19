@@ -42,7 +42,10 @@ Després promou aquesta mateixa versió a producció; no cal tornar a generar-la
 ni tornar a pujar un altre AAB amb el mateix codi.
 
 **No pugis l'APK `releaseTest` a Play.** Té el paquet separat
-`com.filldemaia.cronos.r8test`, signatura de proves i el nom «Cronos · Prova R8».
+`com.filldemaia.cronos.r8test` i signatura de proves. La build de
+proves es anomena «Cronos Nightly».
+
+El llançament a producció és l'AAB de `release`: **2.0.1/10**.
 
 ## Notes de la versió
 

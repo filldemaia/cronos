@@ -409,14 +409,9 @@ fun FullPlayerScreen(
     if (sleepDialogOpen) {
         AlertDialog(
             onDismissRequest = { sleepDialogOpen = false },
-            title = { Text("Temporitzador") },
+            title = { Text("Atura la ràdio d'aquí a…") },
             text = {
                 Column(verticalArrangement = Arrangement.spacedBy(8.dp)) {
-                    Text(
-                        "Atura la reproducció automàticament.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = RadioMuted
-                    )
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()

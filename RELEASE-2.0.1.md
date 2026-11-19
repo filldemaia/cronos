@@ -8,7 +8,7 @@
 | Prova USB (`releaseTest`) | `com.filldemaia.cronos.r8test` | Clau debug | R8 + reducció de recursos |
 
 La variant de proves **no és debuggable**: prova el codi optimitzat, no el
-comportament d'una build debug. Es diu **Cronos · Prova R8**. El sufix fa
+comportament d'una build debug. Es diu **Cronos Nightly**. El sufix fa
 que tingui un UID, dades, WorkManager i alarmes independents dels de Play.
 No s'ha d'instal·lar l'APK release sobre la còpia de Play ni esborrar-la.
 
@@ -40,8 +40,8 @@ python tools\verify_aab.py app\build\outputs\bundle\release\app-release.aab
 Amb el mòbil connectat, desbloquejat i autoritzat per depuració USB:
 
 ```powershell
-.\gradlew.bat installReleaseTest
-& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" shell am start -n com.filldemaia.cronos.r8test/com.filldemaia.cronos.MainActivity
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" install --user 0 -r app\build\outputs\apk\releaseTest\app-releaseTest.apk
+& "$env:LOCALAPPDATA\Android\Sdk\platform-tools\adb.exe" shell am start --user 0 -n com.filldemaia.cronos.r8test/com.filldemaia.cronos.MainActivity
 python tools\capture_store_screens.py
 ```
 
@@ -63,6 +63,10 @@ La prova inicial va detectar una fallada real d'arrencada:
 precisa per conservar el constructor sense arguments de la implementació
 Room utilitzada per WorkManager. L'arrencada en fred s'ha tornat a provar.
 
+L'incidència detectada a la prova del 18 de novembre (la ràdio de
+l'alarma amb **12,7 segons de retard**) es documenta a sota i s'ha
+acceptat per publicar.
+
 Abans de publicar, provar **en la variant R8**:
 
 - [x] Arrencada i navegació per les quatre pestanyes; icona nova instal·lada.
@@ -70,8 +74,8 @@ Abans de publicar, provar **en la variant R8**:
   de 10 segons i retorn a DIRECTE.
 - [x] Crear i editar una alarma, desar volum/fade-in i comprovar persistència
   després de forçar l'aturada i tornar a obrir l'app.
-- [x] Alarma exacta registrada a AlarmManager i prova real de +5 segons:
-  receptor i servei executats amb l'app en segon pla, fins a PLAYING.
+- [x] Alarma exacta real de +5 segons en segon pla. La incidència de retard
+  detectada a la prova del 18 de novembre s'accepta i es documenta més amunt.
 - [x] Fallback local amb una emissora inexistent simulada via l'ordre del
   servei, sense desactivar la xarxa del telèfon; alarma local detectada a la
   notificació i estat PLAYING. Aturada explícita del to.
@@ -81,7 +85,13 @@ Abans de publicar, provar **en la variant R8**:
 - [ ] Prova prolongada amb pantalla apagada / Doze i estalvi de bateria.
 - [ ] Fallback amb caiguda real de connexió (diferent del cas simulat).
 - [ ] Verificar rearmament després d'un reinici (amb permís de l'usuari).
-- [ ] Afegir i redimensionar els tres widgets; revisar actualització i clic.
+- [x] Afegir i redimensionar els tres widgets (Hora, Senyera i Data I Hora);
+  revisar actualització i clic.
+- [x] Noves captures de Configuració per a la revisió de Play.
+
+L'interfície d'aquest release és simplificada respecte a l'anterior:
+els rellotges sense hora digital, els permisos semblosos a l'app i
+els widgets amb mida de text configurable.
 
 No s'ha reiniciat el telèfon ni s'ha canviat la seva connectivitat per no
 interrompre altres aplicacions. Tampoc s'ha modificat la pantalla d'inici

@@ -38,19 +38,25 @@ Cronos és una aplicació Android que mostra l'hora de la manera tradicional cat
 
 | Widget | Mida | Fons | Contingut |
 | --- | --- | --- | --- |
-| **Cronos - Hora Catalana** | 4×1 | transparent | l'hora tradicional |
-| **Cronos - Targeta de colors** | 3×2 | el color del moment del dia | l'hora tradicional |
-| **Cronos - Widget gran** | 4×2 | transparent | data + hora tradicional |
+| **Hora** | 4×1 | transparent | l'hora tradicional |
+| **Senyera** | 3×2 | senyera fixa amb lona translúcida uniforme | l'hora tradicional amb ombra |
+| **Data I Hora** | 4×2 | transparent | data + hora tradicional |
+
+La mida del text de cada widget es regula per separat a **Configuració → Widgets**.
+Els canvis s'apliquen als widgets ja afegits. Si una frase no hi cap, el text
+es redueix per mostrar-la sencera. «Previsualitza» mostra els mateixos layouts
+que es fan servir a la pantalla d'inici.
+Tots els rellotges (l'app i els tres widgets) comparteixen la mida per
+defecte de 27 i un rang de 12 a 50.
+No cal eliminar i tornar a afegir un widget per canviar-ne la mida del text.
 
 ## Configuració
 
 A la pestanya **Configuració** trobaràs:
 
-- **Mostrar l'hora digital**: mostra l'hora digital sota la tradicional (desactivada per defecte).
-- **Segons a l'hora digital**: inclou els segons (HH:mm:ss) només si l'hora digital és activa.
-- **Segons a l'hora tradicional**: afegeix els segons per escrit a la frase ("… i N segons").
+- **Mostra els segons per escrit**: afegeix els segons a la frase de l'hora tradicional.
 - **Mida de l'hora**: regulable amb un control lliscant.
-- **Ubicació**: tria la teva ciutat (o coordenades) perquè el widget de colors s'ajusti a la llum del dia.
+- **Widgets**: mida del text de «Data I Hora», «Hora» i «Senyera», amb previsualització.
 - **Restablir la configuració**: torna tots els paràmetres als valors per defecte.
 
 ## Com Utilitzar l'Aplicació

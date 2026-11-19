@@ -2,7 +2,6 @@ package com.filldemaia.cronos.radio.ui.screens
 
 import androidx.compose.foundation.horizontalScroll
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -16,14 +15,11 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.DropdownMenu
-import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.FilterChip
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
@@ -31,7 +27,6 @@ import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -55,18 +50,18 @@ import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.filldemaia.cronos.BuildConfig
-import com.filldemaia.cronos.Cities
 import com.filldemaia.cronos.SettingsRepository
 import com.filldemaia.cronos.radio.data.model.AppSettings
 import com.filldemaia.cronos.radio.data.model.Station
 import com.filldemaia.cronos.radio.ui.RadioViewModel
+import com.filldemaia.cronos.radio.ui.components.CronosSlider
 import com.filldemaia.cronos.radio.ui.components.OemGuidanceDialog
 import com.filldemaia.cronos.radio.ui.components.RadioCard
 import com.filldemaia.cronos.radio.ui.components.ScreenTitle
 import com.filldemaia.cronos.radio.ui.components.SectionHeader
 import com.filldemaia.cronos.radio.ui.components.StationLogo
 import com.filldemaia.cronos.radio.ui.components.StatusDot
-import com.filldemaia.cronos.radio.ui.components.SurfaceRow
+import com.filldemaia.cronos.radio.ui.components.WidgetSettingsCard
 import com.filldemaia.cronos.radio.ui.components.reliabilityColor
 import com.filldemaia.cronos.radio.ui.theme.RadioBlue
 import com.filldemaia.cronos.radio.ui.theme.RadioGreen
@@ -94,15 +89,8 @@ fun SettingsScreen(
     var showOemDialog by remember { mutableStateOf(false) }
     var showAddStation by remember { mutableStateOf(false) }
     var pendingRemoveStation by remember { mutableStateOf<Station?>(null) }
-    var showDigital by remember { mutableStateOf(clockSettings.showDigital) }
-    var showSeconds by remember { mutableStateOf(clockSettings.showSeconds) }
     var showSecondsWritten by remember { mutableStateOf(clockSettings.showSecondsWritten) }
     var hourSize by remember { mutableFloatStateOf(clockSettings.hourSize) }
-    var selectedCity by remember { mutableStateOf(clockSettings.locationCity) }
-    var customLat by remember { mutableStateOf(clockSettings.locationLatitude.toString()) }
-    var customLon by remember { mutableStateOf(clockSettings.locationLongitude.toString()) }
-    var locationMenuOpen by remember { mutableStateOf(false) }
-    val isCustomLocation = Cities.all.none { it.name == selectedCity }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->
@@ -120,6 +108,7 @@ fun SettingsScreen(
     val battery = remember(permissionTick) { PermissionManager.batteryOptimizationIgnored(context) }
     val oemReady = oemAcknowledged || !PermissionManager.isKnownOem()
     val customStations = stations.filter { it.isCustom }
+    val allPermissionsGranted = exactAlarms && notifications && battery && oemReady
 
     Column(
         modifier = Modifier
@@ -137,43 +126,56 @@ fun SettingsScreen(
         }
 
         RadioCard {
-            SectionHeader(
-                title = "Buffer de time-shift",
-                subtitle = "Quant directe es conserva al disc"
+            SectionHeader(title = "Rellotge")
+            Spacer(Modifier.height(10.dp))
+            ClockSwitchRow(
+                title = "Mostra els segons per escrit",
+                checked = showSecondsWritten,
+                onCheckedChange = { checked ->
+                    showSecondsWritten = checked
+                    clockSettings.showSecondsWritten = checked
+                }
             )
             Spacer(Modifier.height(10.dp))
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .horizontalScroll(rememberScrollState()),
-                horizontalArrangement = Arrangement.spacedBy(6.dp)
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                AppSettings.BUFFER_OPTIONS_MINUTES.forEach { minutes ->
-                    FilterChip(
-                        selected = settings.bufferDurationMinutes == minutes,
-                        onClick = {
-                            viewModel.updateSettings { it.copy(bufferDurationMinutes = minutes) }
-                        },
-                        label = {
-                            Text(if (minutes % 60 == 0) "${minutes / 60} h" else "$minutes min")
-                        }
-                    )
-                }
+                Text(
+                    "Mida de l'hora",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = RadioText,
+                    modifier = Modifier.weight(1f)
+                )
+                Text(
+                    "${hourSize.roundToInt()}",
+                    style = MaterialTheme.typography.titleSmall,
+                    color = RadioOrange
+                )
             }
-            Spacer(Modifier.height(6.dp))
-            Text(
-                "S'aplica la propera vegada que iniciïs el directe. El fitxer circular " +
-                    "s'ajusta a la durada i al bitrate de l'emissora.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
+            CronosSlider(
+                value = hourSize,
+                onValueChange = { hourSize = it },
+                // La preferència només es desa en acabar l'arrossegada,
+                // no a cada fotograma.
+                onValueChangeFinished = { clockSettings.hourSize = hourSize },
+                valueRange = 12f..50f
             )
+            Spacer(Modifier.height(10.dp))
+            OutlinedButton(
+                onClick = {
+                    clockSettings.reset()
+                    showSecondsWritten = clockSettings.showSecondsWritten
+                    hourSize = clockSettings.hourSize
+                },
+                modifier = Modifier.fillMaxWidth()
+            ) {
+                Text("Restableix el rellotge")
+            }
         }
 
         RadioCard {
-            SectionHeader(
-                title = "Controls del directe",
-                subtitle = "Botons de salt i entrada de so"
-            )
+            SectionHeader(title = "Reproducció")
             Spacer(Modifier.height(10.dp))
             Text("Retrocedir", style = MaterialTheme.typography.titleSmall, color = RadioText)
             Row(
@@ -206,14 +208,8 @@ fun SettingsScreen(
                     )
                 }
             }
-            Spacer(Modifier.height(6.dp))
-            Text(
-                "Els botons del reproductor i de la notificació fan servir aquests valors.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
-            )
             Spacer(Modifier.height(10.dp))
-            Text("Fade-in per defecte", style = MaterialTheme.typography.titleSmall, color = RadioText)
+            Text("Volum gradual de l'alarma", style = MaterialTheme.typography.titleSmall, color = RadioText)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -238,11 +234,6 @@ fun SettingsScreen(
                         style = MaterialTheme.typography.titleSmall,
                         color = RadioText
                     )
-                    Text(
-                        "Mostra un avís quan comences a escoltar amb dades mòbils.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = RadioMuted
-                    )
                 }
                 Switch(
                     checked = settings.warnOnMobileData,
@@ -258,240 +249,29 @@ fun SettingsScreen(
         }
 
         RadioCard {
-            SectionHeader(
-                title = "Rellotge",
-                subtitle = "Hora tradicional catalana i widgets"
-            )
+            SectionHeader(title = "Emissores")
             Spacer(Modifier.height(10.dp))
-            ClockSwitchRow(
-                title = "Mostra l'hora digital",
-                description = "Sota l'hora tradicional (desactivada per defecte)",
-                checked = showDigital,
-                onCheckedChange = { checked ->
-                    showDigital = checked
-                    clockSettings.showDigital = checked
-                }
-            )
-            ClockSwitchRow(
-                title = "Segons a l'hora digital",
-                description = "Inclou els segons (HH:mm:ss)",
-                checked = showSeconds,
-                enabled = showDigital,
-                onCheckedChange = { checked ->
-                    showSeconds = checked
-                    clockSettings.showSeconds = checked
-                }
-            )
-            ClockSwitchRow(
-                title = "Segons per escrit",
-                description = "Afegeix els segons per escrit a la frase de l'hora tradicional",
-                checked = showSecondsWritten,
-                onCheckedChange = { checked ->
-                    showSecondsWritten = checked
-                    clockSettings.showSecondsWritten = checked
-                }
-            )
-            Spacer(Modifier.height(10.dp))
+            Text("Temps per rebobinar", style = MaterialTheme.typography.titleSmall, color = RadioText)
             Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .horizontalScroll(rememberScrollState()),
+                horizontalArrangement = Arrangement.spacedBy(6.dp)
             ) {
-                Text(
-                    "Mida de l'hora",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = RadioText,
-                    modifier = Modifier.weight(1f)
-                )
-                Text(
-                    "${hourSize.roundToInt()}",
-                    style = MaterialTheme.typography.titleSmall,
-                    color = RadioOrange
-                )
-            }
-            Slider(
-                value = hourSize,
-                onValueChange = { hourSize = it },
-                // La preferència només es desa en acabar l'arrossegada,
-                // no a cada fotograma.
-                onValueChangeFinished = { clockSettings.hourSize = hourSize },
-                valueRange = 18f..48f
-            )
-            Spacer(Modifier.height(6.dp))
-            Text(
-                "Ubicació",
-                style = MaterialTheme.typography.titleSmall,
-                color = RadioText
-            )
-            Spacer(Modifier.height(6.dp))
-            Box(modifier = Modifier.fillMaxWidth()) {
-                OutlinedButton(
-                    onClick = { locationMenuOpen = true },
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    Text(
-                        if (isCustomLocation) "Personalitzada" else selectedCity,
-                        modifier = Modifier.weight(1f),
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis
-                    )
-                    Icon(Icons.Filled.ArrowDropDown, contentDescription = null)
-                }
-                DropdownMenu(
-                    expanded = locationMenuOpen,
-                    onDismissRequest = { locationMenuOpen = false }
-                ) {
-                    Cities.all.forEach { city ->
-                        DropdownMenuItem(
-                            text = { Text(city.name) },
-                            onClick = {
-                                clockSettings.setLocation(city)
-                                selectedCity = city.name
-                                customLat = city.latitude.toString()
-                                customLon = city.longitude.toString()
-                                locationMenuOpen = false
-                            }
-                        )
-                    }
-                    HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-                    DropdownMenuItem(
-                        text = { Text("Personalitzada") },
+                AppSettings.BUFFER_OPTIONS_MINUTES.forEach { minutes ->
+                    FilterChip(
+                        selected = settings.bufferDurationMinutes == minutes,
                         onClick = {
-                            clockSettings.locationCity = ""
-                            selectedCity = ""
-                            locationMenuOpen = false
+                            viewModel.updateSettings { it.copy(bufferDurationMinutes = minutes) }
+                        },
+                        label = {
+                            Text(if (minutes % 60 == 0) "${minutes / 60} h" else "$minutes min")
                         }
                     )
                 }
             }
-            Text(
-                "Es fa servir per calcular la sortida i la posta de sol i els colors del widget.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted,
-                modifier = Modifier.padding(top = 6.dp)
-            )
-            if (isCustomLocation) {
-                Text(
-                    "Coordenades en graus decimals (ex. 41,3874 / 2,1686)",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = RadioMuted,
-                    modifier = Modifier.padding(top = 10.dp)
-                )
-                OutlinedTextField(
-                    value = customLat,
-                    onValueChange = {
-                        customLat = it
-                        it.replace(',', '.').toDoubleOrNull()?.let { lat ->
-                            clockSettings.locationLatitude = lat
-                        }
-                    },
-                    label = { Text("Latitud") },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                )
-                OutlinedTextField(
-                    value = customLon,
-                    onValueChange = {
-                        customLon = it
-                        it.replace(',', '.').toDoubleOrNull()?.let { lon ->
-                            clockSettings.locationLongitude = lon
-                        }
-                    },
-                    label = { Text("Longitud") },
-                    singleLine = true,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Decimal),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 8.dp)
-                )
-            }
-            Spacer(Modifier.height(10.dp))
-            OutlinedButton(
-                onClick = {
-                    clockSettings.reset()
-                    showDigital = clockSettings.showDigital
-                    showSeconds = clockSettings.showSeconds
-                    showSecondsWritten = clockSettings.showSecondsWritten
-                    hourSize = clockSettings.hourSize
-                    selectedCity = clockSettings.locationCity
-                    customLat = clockSettings.locationLatitude.toString()
-                    customLon = clockSettings.locationLongitude.toString()
-                },
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Restableix el rellotge")
-            }
-        }
-
-        RadioCard {
-            SectionHeader(
-                title = "Permisos i protecció",
-                subtitle = "Sense aquests permisos una alarma pot no sonar"
-            )
-            Spacer(Modifier.height(10.dp))
-            PermissionRow(
-                title = "Alarmes exactes",
-                ok = exactAlarms,
-                actionLabel = "Obre",
-                onAction = { PermissionManager.openExactAlarmSettings(context) }
-            )
-            PermissionRow(
-                title = "Notificacions",
-                ok = notifications,
-                actionLabel = "Obre",
-                onAction = { PermissionManager.openNotificationSettings(context) }
-            )
-            PermissionRow(
-                title = "Bateria sense restriccions",
-                ok = battery,
-                actionLabel = "Obre",
-                onAction = { PermissionManager.openBatteryOptimizationSettings(context) }
-            )
-            PermissionRow(
-                title = "Inici automàtic revisat",
-                ok = oemReady,
-                actionLabel = if (oemReady) "Guia" else "Revisa",
-                onAction = { showOemDialog = true }
-            )
-            Spacer(Modifier.height(6.dp))
-            reliability?.let { report ->
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    StatusDot(reliabilityColor(report.level), 9.dp)
-                    Spacer(Modifier.width(9.dp))
-                    Text(
-                        report.summary,
-                        style = MaterialTheme.typography.bodySmall,
-                        color = RadioMuted,
-                        modifier = Modifier.weight(1f)
-                    )
-                }
-                Spacer(Modifier.height(8.dp))
-            }
-            OutlinedButton(
-                onClick = onOpenReliability,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                Text("Obre la comprovació de fiabilitat")
-            }
-        }
-
-        RadioCard {
-            SectionHeader(
-                title = "Emissores personalitzades",
-                subtitle = "Enganxa l'URL directe d'un stream MP3, AAC o HLS"
-            )
-            Spacer(Modifier.height(10.dp))
-            if (customStations.isEmpty()) {
-                Text(
-                    "Encara no has afegit cap emissora personalitzada. Les emissores " +
-                        "oficials ja venen incloses amb URLs verificades.",
-                    style = MaterialTheme.typography.bodySmall,
-                    color = RadioMuted
-                )
-            } else {
-                customStations.forEach { station ->
+            Spacer(Modifier.height(14.dp))
+            customStations.forEach { station ->
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
@@ -526,7 +306,6 @@ fun SettingsScreen(
                     }
                     HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 }
-            }
             Spacer(Modifier.height(8.dp))
             Button(
                 onClick = { showAddStation = true },
@@ -536,52 +315,77 @@ fun SettingsScreen(
             }
         }
 
-        RadioCard {
-            SectionHeader(
-                title = "Sobre Cronos",
-                subtitle = "Versió ${BuildConfig.VERSION_NAME}"
-            )
-            Spacer(Modifier.height(8.dp))
-            SurfaceRow("Paquet", BuildConfig.APPLICATION_ID)
-            SurfaceRow("Emmagatzematge", "DataStore local")
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "Aquesta aplicació ajuda a preservar la llengua, indicant l'hora tradicional catalana.",
-                style = MaterialTheme.typography.bodyMedium,
-                color = RadioText
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "Les programacions, els ajustos i l'historial es guarden només al " +
-                    "dispositiu. L'app no envia estadístiques ni fa servir cap compte.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
-            )
-            Spacer(Modifier.height(8.dp))
-            Text(
-                "Les alarmes es programen amb AlarmManager.setAlarmClock() i un " +
-                    "BroadcastReceiver que arrenca un servei en primer pla amb un wake lock curt.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
-            )
-            Spacer(Modifier.height(8.dp))
-            Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
-                OutlinedButton(onClick = { showOemDialog = true }) {
-                    Text("Guia del fabricant")
+        WidgetSettingsCard(clockSettings)
+
+        if (!allPermissionsGranted) {
+            RadioCard {
+                SectionHeader(
+                    title = "Permisos",
+                    subtitle = "Algunes restriccions poden impedir que soni l'alarma."
+                )
+                Spacer(Modifier.height(10.dp))
+                PermissionRow(
+                    title = "Alarmes exactes",
+                    ok = exactAlarms,
+                    actionLabel = "Obre",
+                    onAction = { PermissionManager.openExactAlarmSettings(context) }
+                )
+                PermissionRow(
+                    title = "Notificacions",
+                    ok = notifications,
+                    actionLabel = "Obre",
+                    onAction = { PermissionManager.openNotificationSettings(context) }
+                )
+                PermissionRow(
+                    title = "Bateria sense restriccions",
+                    ok = battery,
+                    actionLabel = "Obre",
+                    onAction = { PermissionManager.openBatteryOptimizationSettings(context) }
+                )
+                PermissionRow(
+                    title = "Inici automàtic revisat",
+                    ok = oemReady,
+                    actionLabel = if (oemReady) "Guia" else "Revisa",
+                    onAction = { showOemDialog = true }
+                )
+                Spacer(Modifier.height(6.dp))
+                reliability?.let { report ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        StatusDot(reliabilityColor(report.level), 9.dp)
+                        Spacer(Modifier.width(9.dp))
+                        Text(
+                            report.summary,
+                            style = MaterialTheme.typography.bodySmall,
+                            color = RadioMuted,
+                            modifier = Modifier.weight(1f)
+                        )
+                    }
+                    Spacer(Modifier.height(8.dp))
                 }
-                TextButton(onClick = { PermissionManager.openDontKillMyApp(context) }) {
-                    Text("dontkillmyapp.com", color = RadioBlue)
+                OutlinedButton(
+                    onClick = onOpenReliability,
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    Text("Comprova les alarmes")
+                }
+                Spacer(Modifier.height(8.dp))
+                Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
+                    OutlinedButton(onClick = { showOemDialog = true }) {
+                        Text("Guia del fabricant")
+                    }
+                    TextButton(onClick = { PermissionManager.openDontKillMyApp(context) }) {
+                        Text("dontkillmyapp.com", color = RadioBlue)
+                    }
                 }
             }
         }
 
-        Text(
-            "Consell: després d'actualitzar l'app o de reiniciar el mòbil, obre la " +
-                "comprovació de fiabilitat i verifica que les alarmes continuen armades.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted,
-            modifier = Modifier.padding(bottom = 8.dp)
-        )
+        RadioCard {
+            SectionHeader(
+                title = "Versió",
+                subtitle = BuildConfig.VERSION_NAME
+            )
+        }
     }
 
     if (showOemDialog) {
@@ -613,8 +417,7 @@ fun SettingsScreen(
             title = { Text("Eliminar l'emissora?") },
             text = {
                 Text(
-                    "S'eliminarà \"${station.name}\" de les teves emissores. Si alguna " +
-                        "programació la feia servir, hauràs de triar-ne una altra."
+                    "S'eliminarà \"${station.name}\". Si la fas servir en una alarma, tria una altra emissora."
                 )
             },
             confirmButton = {
@@ -637,10 +440,8 @@ fun SettingsScreen(
 @Composable
 private fun ClockSwitchRow(
     title: String,
-    description: String,
     checked: Boolean,
-    onCheckedChange: (Boolean) -> Unit,
-    enabled: Boolean = true
+    onCheckedChange: (Boolean) -> Unit
 ) {
     Row(
         modifier = Modifier
@@ -652,18 +453,12 @@ private fun ClockSwitchRow(
             Text(
                 title,
                 style = MaterialTheme.typography.titleSmall,
-                color = if (enabled) RadioText else RadioMuted
-            )
-            Text(
-                description,
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
+                color = RadioText
             )
         }
         Switch(
             checked = checked,
             onCheckedChange = onCheckedChange,
-            enabled = enabled,
             colors = SwitchDefaults.colors(
                 checkedThumbColor = RadioOrange,
                 checkedTrackColor = RadioOrange.copy(alpha = 0.45f)
@@ -714,7 +509,7 @@ private fun AddStationDialog(
         text = {
             Column(verticalArrangement = Arrangement.spacedBy(10.dp)) {
                 Text(
-                    "Enganxa l'URL directe del stream. Ha de començar per http:// o https://.",
+                    "Adreça directa de l'àudio (MP3, AAC o HLS).",
                     style = MaterialTheme.typography.bodySmall,
                     color = RadioMuted
                 )

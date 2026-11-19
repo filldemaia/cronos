@@ -7,10 +7,10 @@
     android:targetCellWidth="3"
     android:targetCellHeight="2"
     android:updatePeriodMillis="1800000"
-    android:initialLayout="@layout/widget_layout_apple"
+    android:initialLayout="@layout/widget_layout_senyera"
     android:resizeMode="horizontal|vertical"
     android:previewImage="@drawable/ic_launcher_foreground"
-    android:previewLayout="@layout/widget_layout_apple"
+    android:previewLayout="@layout/widget_layout_senyera"
     android:description="@string/widget_description"
     android:widgetCategory="home_screen">
 </appwidget-provider>

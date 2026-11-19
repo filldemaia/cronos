@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="300dp"
+    android:height="200dp"
+    android:viewportWidth="300"
+    android:viewportHeight="180">
+    <path android:fillColor="@color/widget_senyera_gold" android:pathData="M0,0H300V180H0Z" />
+    <!-- Four red stripes over five golden stripes, always horizontal. -->
+    <path android:fillColor="@color/widget_senyera_red"
+        android:pathData="M0,20H300V40H0ZM0,60H300V80H0ZM0,100H300V120H0ZM0,140H300V160H0Z" />
+</vector>

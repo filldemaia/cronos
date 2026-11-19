@@ -75,9 +75,9 @@ android {
             // de l'app de Play. No comparteix dades, alarmes ni signatura.
             initWith(getByName("release"))
             applicationIdSuffix = ".r8test"
-            versionNameSuffix = "-r8test"
+            versionNameSuffix = "-nightly"
             signingConfig = signingConfigs.getByName("debug")
-            resValue("string", "app_name", "Cronos · Prova R8")
+            resValue("string", "app_name", "Cronos Nightly")
             matchingFallbacks += listOf("release")
         }
     }

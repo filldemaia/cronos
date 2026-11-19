@@ -2,6 +2,7 @@ package com.filldemaia.cronos
 
 import android.content.Context
 import android.graphics.Color
+import android.util.TypedValue
 import android.widget.RemoteViews
 
 /**
@@ -10,13 +11,22 @@ import android.widget.RemoteViews
  */
 class CronosWidgetLarge : CronosBaseWidget() {
 
-    override val layoutRes: Int = R.layout.widget_layout_large
+    override val layoutRes: Int = R.layout.widget_layout_date_time
     override val rootViewId: Int = R.id.largeWidgetRoot
+    override val widgetType = WidgetType.DATE_AND_TIME
 
-    override fun fillViews(context: Context, views: RemoteViews) {
-        views.setTextViewText(R.id.largeWidgetDate, CatalanDateFormatter.today())
-        views.setTextViewText(R.id.largeWidgetCatalanTime, CatalanTimeFormatter.getCurrentTimeInCatalan())
+    override fun fillViews(context: Context, views: RemoteViews, widthDp: Float, heightDp: Float) {
+        val date = CatalanDateFormatter.today()
+        val time = CatalanTimeFormatter.getCurrentTimeInCatalan()
+        val (dateSize, timeSize) = WidgetTextFitter.dateAndTime(
+            context, date, time, SettingsRepository(context).widgetTextSize(widgetType),
+            widthDp - 20f, heightDp - 20f
+        )
+        views.setTextViewText(R.id.largeWidgetDate, date)
+        views.setTextViewText(R.id.largeWidgetCatalanTime, time)
         views.setTextColor(R.id.largeWidgetDate, Color.WHITE)
         views.setTextColor(R.id.largeWidgetCatalanTime, Color.WHITE)
+        views.setTextViewTextSize(R.id.largeWidgetDate, TypedValue.COMPLEX_UNIT_SP, dateSize)
+        views.setTextViewTextSize(R.id.largeWidgetCatalanTime, TypedValue.COMPLEX_UNIT_SP, timeSize)
     }
 }

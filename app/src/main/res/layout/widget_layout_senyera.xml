@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/appleWidgetRoot"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:clipToOutline="true"
+    android:background="@drawable/widget_senyera_outer">
+
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:src="@drawable/widget_senyera_stripes"
+        android:scaleType="fitXY"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no" />
+
+    <!-- Lona uniforme i translúcida sobre tota la senyera. -->
+    <ImageView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@drawable/widget_senyera_scrim"
+        android:contentDescription="@null"
+        android:importantForAccessibility="no" />
+
+    <!-- Static picker preview only; the provider replaces it with the real text. -->
+    <TextView
+        android:id="@+id/senyeraPreviewTime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:text="@string/widget_placeholder_time"
+        android:textColor="@color/widget_senyera_text"
+        android:textSize="26sp"
+        android:fontFamily="sans-serif-medium"
+        android:gravity="center"
+        android:includeFontPadding="false"
+        android:shadowColor="@color/widget_senyera_shadow"
+        android:shadowRadius="3"
+        android:shadowDy="1" />
+
+    <ImageView
+        android:id="@+id/appleWidgetTime"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:padding="16dp"
+        android:scaleType="fitCenter" />
+
+</FrameLayout>

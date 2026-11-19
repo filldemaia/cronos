@@ -92,7 +92,7 @@ fun PlayerScreen(
                     Icon(Icons.Filled.Radio, contentDescription = null, tint = RadioMuted)
                     Spacer(Modifier.width(10.dp))
                     Text(
-                        "Carregant el catàleg d'emissores…",
+                        "Carregant emissores…",
                         style = MaterialTheme.typography.bodyMedium,
                         color = RadioMuted
                     )
@@ -129,15 +129,6 @@ fun PlayerScreen(
                 }
             }
         }
-
-        Text(
-            "El directe es grava al disc fins a ${bufferLabel(settings.bufferDurationMinutes)} " +
-                "i continua gravant mentre està en pausa. Obre el reproductor per " +
-                "retrocedir, avançar o programar un temporitzador.",
-            style = MaterialTheme.typography.bodySmall,
-            color = RadioMuted,
-            modifier = Modifier.padding(bottom = 10.dp)
-        )
     }
 }
 
@@ -345,6 +336,3 @@ private fun StationGridCard(
         }
     }
 }
-
-private fun bufferLabel(minutes: Int): String =
-    if (minutes % 60 == 0) "${minutes / 60} h" else "$minutes min"

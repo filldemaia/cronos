@@ -1,26 +1,29 @@
 package com.filldemaia.cronos
 
 import android.content.Context
-import android.graphics.Color
+import android.view.View
 import android.widget.RemoteViews
-import com.filldemaia.cronos.ui.theme.paletteForNow
 
 /**
- * Widget "estil Apple": una targeta arrodonida que canvia de color
- * segons la fase del sol (calculada amb la ubicació de l'usuari),
- * igual que la pantalla principal de l'app.
+ * Senyera completa amb un vel radial fosc al centre per llegir l'hora.
+ * El nom de classe es conserva per no trencar els widgets ja afegits.
  */
 class CronosWidgetApple : CronosBaseWidget() {
 
-    override val layoutRes: Int = R.layout.widget_layout_apple
+    override val layoutRes: Int = R.layout.widget_layout_senyera
     override val rootViewId: Int = R.id.appleWidgetRoot
+    override val widgetType = WidgetType.SENYERA
 
-    override fun fillViews(context: Context, views: RemoteViews) {
+    override fun fillViews(context: Context, views: RemoteViews, widthDp: Float, heightDp: Float) {
         val timeInCatalan = CatalanTimeFormatter.getCurrentTimeInCatalan()
-        val palette = paletteForNow(SettingsRepository(context))
-
-        views.setTextViewText(R.id.appleWidgetTime, timeInCatalan)
-        views.setTextColor(R.id.appleWidgetTime, Color.WHITE)
-        views.setInt(R.id.appleWidgetRoot, "setBackgroundResource", palette.widgetBackgroundRes)
+        views.setViewVisibility(R.id.senyeraPreviewTime, View.GONE)
+        views.setImageViewBitmap(
+            R.id.appleWidgetTime,
+            WidgetTextBitmap.render(
+                context, timeInCatalan, SettingsRepository(context).widgetTextSize(widgetType),
+                widthDp - 32f, heightDp - 32f
+            )
+        )
+        views.setContentDescription(R.id.appleWidgetTime, timeInCatalan)
     }
 }

@@ -31,7 +31,6 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Slider
 import androidx.compose.material3.Switch
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
@@ -50,6 +49,7 @@ import androidx.compose.ui.unit.dp
 import com.filldemaia.cronos.radio.data.model.AppSettings
 import com.filldemaia.cronos.radio.data.model.Schedule
 import com.filldemaia.cronos.radio.data.model.Station
+import com.filldemaia.cronos.radio.ui.components.CronosSlider
 import com.filldemaia.cronos.radio.ui.components.MiniLabel
 import com.filldemaia.cronos.radio.ui.theme.RadioMuted
 import com.filldemaia.cronos.radio.ui.theme.RadioOrange
@@ -198,15 +198,7 @@ fun ScheduleEditorSheet(
             }
             HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
 
-            Text(
-                "L'hora es programa amb AlarmManager.setAlarmClock(): el sistema " +
-                    "engegarà el receptor exactament a l'hora indicada.",
-                style = MaterialTheme.typography.bodySmall,
-                color = RadioMuted
-            )
-
-            HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
-            Text("Hora d'engegada", style = MaterialTheme.typography.titleMedium, color = RadioText)
+            Text("Hora", style = MaterialTheme.typography.titleMedium, color = RadioText)
             Row(horizontalArrangement = Arrangement.spacedBy(8.dp)) {
                 ValueDropdown(
                     label = "HORA",
@@ -245,7 +237,7 @@ fun ScheduleEditorSheet(
 
             if (oneShot) {
                 Text(
-                    "Data de l'única engegada",
+                    "Data",
                     style = MaterialTheme.typography.titleSmall,
                     color = RadioText
                 )
@@ -364,19 +356,19 @@ fun ScheduleEditorSheet(
             }
 
             Text(
-                "Emissores de reserva (opcional)",
+                "Emissores de reserva",
                 style = MaterialTheme.typography.titleSmall,
                 color = RadioText
             )
             Text(
-                "Si la principal falla, l'app les provarà abans d'activar el to local.",
+                "Si falla l'emissora principal.",
                 style = MaterialTheme.typography.bodySmall,
                 color = RadioMuted
             )
             val candidates = stations.filter { it.id != stationId }
             if (candidates.isEmpty()) {
                 Text(
-                    "No hi ha altres emissores per fer servir de reserva.",
+                    "Cap altra emissora disponible.",
                     style = MaterialTheme.typography.bodySmall,
                     color = RadioMuted
                 )
@@ -417,14 +409,14 @@ fun ScheduleEditorSheet(
                 )
                 Text("$volumePercent%", style = MaterialTheme.typography.titleSmall, color = RadioOrange)
             }
-            Slider(
+            CronosSlider(
                 value = volumePercent.toFloat(),
                 onValueChange = { volumePercent = it.roundToInt().coerceIn(0, 100) },
                 valueRange = 0f..100f,
                 steps = 19
             )
 
-            Text("Fade-in", style = MaterialTheme.typography.titleSmall, color = RadioText)
+            Text("Volum gradual", style = MaterialTheme.typography.titleSmall, color = RadioText)
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -459,11 +451,6 @@ fun ScheduleEditorSheet(
             Row(verticalAlignment = Alignment.CenterVertically) {
                 Column(Modifier.weight(1f)) {
                     Text("Alarma activada", style = MaterialTheme.typography.titleSmall, color = RadioText)
-                    Text(
-                        "Si la desactives, es cancel·larà al sistema.",
-                        style = MaterialTheme.typography.bodySmall,
-                        color = RadioMuted
-                    )
                 }
                 Switch(
                     checked = enabled,
@@ -486,10 +473,10 @@ fun ScheduleEditorSheet(
             if (initial != null) {
                 HorizontalDivider(color = MaterialTheme.colorScheme.outlineVariant)
                 OutlinedButton(onClick = onTest, modifier = Modifier.fillMaxWidth()) {
-                    Text("Prova-ho ara")
+                    Text("Prova l'alarma")
                 }
                 Text(
-                    "La prova sona d'aquí a 5 segons i fa servir la configuració desada de l'alarma.",
+                    "Sonarà d'aquí a 5 segons amb els ajustos desats.",
                     style = MaterialTheme.typography.bodySmall,
                     color = RadioMuted
                 )

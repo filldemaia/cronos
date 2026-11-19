@@ -113,7 +113,7 @@
                 android:resource="@xml/widget_info_large" />
         </receiver>
 
-        <!-- Widget estil Apple (canvia de color segons l'hora) -->
+        <!-- Widget Senyera (fons fix) -->
         <receiver
             android:name="com.filldemaia.cronos.CronosWidgetApple"
             android:label="@string/widget_name_apple"

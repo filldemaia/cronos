@@ -57,10 +57,8 @@ import com.filldemaia.cronos.ui.theme.DayPhase
 import com.filldemaia.cronos.ui.theme.MiddayPalette
 import com.filldemaia.cronos.ui.theme.paletteForPhase
 import com.filldemaia.cronos.ui.theme.phaseFor
-import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
-import java.util.Locale
 import kotlinx.coroutines.delay
 
 /**
@@ -72,7 +70,6 @@ import kotlinx.coroutines.delay
 @Composable
 fun ClockScreen(settings: SettingsRepository) {
     var currentTime by remember { mutableStateOf(CatalanTimeFormatter.getCurrentTimeInCatalan()) }
-    var digitalTime by remember { mutableStateOf("") }
     var currentDate by remember { mutableStateOf(CatalanDateFormatter.todayWithYear()) }
 
     // Paleta del moment del dia com a estat: quan es creua una franja de
@@ -80,8 +77,6 @@ fun ClockScreen(settings: SettingsRepository) {
 
     // Loop de segon a segon. Només es refà la feina que ha canviat.
     LaunchedEffect(settings) {
-        var lastPattern: String? = null
-        var digitalFormatter: SimpleDateFormat? = null
         var lastMinute = -1L
         var lastDayKey = -1
         while (true) {
@@ -107,14 +102,6 @@ fun ClockScreen(settings: SettingsRepository) {
                 lastMinute = minuteKey
             }
 
-            if (settings.showDigital) {
-                val pattern = if (settings.showSeconds) "HH:mm:ss" else "HH:mm"
-                if (pattern != lastPattern) {
-                    digitalFormatter = SimpleDateFormat(pattern, Locale.getDefault())
-                    lastPattern = pattern
-                }
-                digitalTime = digitalFormatter!!.format(now)
-            }
             delay(1000)
         }
     }
@@ -191,7 +178,7 @@ fun ClockScreen(settings: SettingsRepository) {
             Spacer(modifier = Modifier.weight(0.83f))
             // Conserva l'espai original perquè la salutació i la data no es moguin.
             ClockTimeDisplay(
-                currentTime, digitalTime, settings.showDigital, settings.hourSize.sp,
+                currentTime, settings.hourSize.sp,
                 fontFamily, currentTextShadow,
                 modifier = Modifier.alpha(0f).clearAndSetSemantics { }
             )
@@ -203,7 +190,7 @@ fun ClockScreen(settings: SettingsRepository) {
                 Image(
                     painter = painterResource(R.drawable.donec_perficiam),
                     contentDescription = null,
-                    modifier = Modifier.padding(top = 12.dp).fillMaxWidth(0.82f)
+                    modifier = Modifier.padding(top = 12.dp).fillMaxWidth(0.6f)
                         .aspectRatio(1045f / 735f).alpha(0f)
                 )
             }
@@ -215,12 +202,13 @@ fun ClockScreen(settings: SettingsRepository) {
             Image(
                 painter = painterResource(R.drawable.donec_perficiam),
                 contentDescription = "Donec perficiam",
-                modifier = Modifier.fillMaxWidth(0.82f).aspectRatio(1045f / 735f)
+                modifier = Modifier.fillMaxWidth(0.6f).aspectRatio(1045f / 735f)
+                    .alpha(0.45f)
                     .onGloballyPositioned { imageTopY = it.positionInWindow().y }
             )
         }
         ClockTimeDisplay(
-            currentTime, digitalTime, settings.showDigital, settings.hourSize.sp,
+            currentTime, settings.hourSize.sp,
             fontFamily, currentTextShadow,
             modifier = Modifier.align(Alignment.Center).offset(y = hourOffset).padding(horizontal = 18.dp)
         )
@@ -230,8 +218,6 @@ fun ClockScreen(settings: SettingsRepository) {
 @Composable
 private fun ClockTimeDisplay(
     currentTime: String,
-    digitalTime: String,
-    showDigital: Boolean,
     hourFontSize: TextUnit,
     fontFamily: FontFamily?,
     shadow: Shadow,
@@ -251,15 +237,6 @@ private fun ClockTimeDisplay(
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth().padding(horizontal = 8.dp),
         )
-        if (showDigital) {
-            Spacer(modifier = Modifier.height(12.dp))
-            Text(
-                text = digitalTime,
-                style = DigitalStyle.copy(shadow = shadow, fontFamily = fontFamily),
-                color = Color.White,
-                textAlign = TextAlign.Center,
-            )
-        }
     }
 }
 
@@ -279,12 +256,6 @@ private val DateStyle = TextStyle(
 private val GreetingStyle = TextStyle(
     fontSize = 20.sp,
     fontWeight = FontWeight.Medium,
-)
-
-private val DigitalStyle = TextStyle(
-    fontSize = 40.sp,
-    fontWeight = FontWeight.Bold,
-    letterSpacing = 2.sp,
 )
 
 private const val MIDDAY_SCRIM_ALPHA = 0.12f

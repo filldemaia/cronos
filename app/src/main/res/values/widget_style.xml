@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="widget_senyera_gold">#F4C542</color>
+    <color name="widget_senyera_red">#C92F37</color>
+    <color name="widget_senyera_text">#F7F4EC</color>
+    <color name="widget_senyera_shadow">#66000000</color>
+    <dimen name="widget_senyera_radius">24dp</dimen>
+</resources>
