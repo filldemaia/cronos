@@ -4,7 +4,7 @@ Vaig fer Cronos per tenir a mà la manera tradicional de dir l’hora en català
 
 <p>
   <a href="https://play.google.com/store/apps/details?id=com.filldemaia.cronos"><img src="branding/google-play-ca.png" alt="Baixa Cronos a Google Play" width="180"></a>
-  <a href="https://gitlab.com/fdroid/fdroiddata/-/merge_requests/58198"><img src="branding/f-droid-en-revisio.svg" alt="F-Droid: consulta la proposta d’inclusió, encara en revisió" width="180"></a>
+  <a href="https://gitlab.com/fdroid/fdroiddata/-/merge_requests/58198"><img src="branding/f-droid-en-revisio.png" alt="F-Droid: consulta la proposta d’inclusió, encara en revisió" width="180"></a>
 </p>
 
 Android 8.0 o superior.
@@ -27,3 +27,5 @@ Pots obrir el projecte amb Android Studio. A `docs/` hi ha les [notes sobre els 
 Codi lliure sota la [GPL v3 o posterior](LICENSE.md). Gràcies a Gabriel Mizrahi Mejias per les primeres contribucions.
 
 *Google Play i el logotip de Google Play són marques comercials de Google LLC.*
+
+*[Logotip de F-Droid](https://gitlab.com/fdroid/artwork/-/tree/master/fdroid-logo-2015) de William Theaker, Robert Martinez i Andrew Nayenko, adaptat per a aquest botó sota [CC BY-SA 3.0](https://creativecommons.org/licenses/by-sa/3.0/).*
