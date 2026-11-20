@@ -18,13 +18,13 @@ Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar
   <img src="docs/captures/pixel-8/alarmes-programades.png" alt="Tres alarmes programades amb Catalunya Ràdio, RAC1 i IB3 Ràdio" width="170">
 </p>
 
-Les mateixes pantalles en una tauleta, amb marc de Galaxy Tab S9:
+Les mateixes pantalles en una tauleta, en horitzontal i amb marc de Galaxy Tab S9:
 
 <p>
-  <img src="docs/captures/tab-s9/01_rellotge.png" alt="Rellotge de cronos en una Galaxy Tab S9" width="130">
-  <img src="docs/captures/tab-s9/02_radio.png" alt="Graella d’emissores en una Galaxy Tab S9" width="130">
-  <img src="docs/captures/tab-s9/04_reproduccio.png" alt="Catalunya Ràdio sonant en una Galaxy Tab S9" width="130">
-  <img src="docs/captures/tab-s9/03_alarmes.png" alt="Tres alarmes en una Galaxy Tab S9" width="130">
+  <img src="docs/captures/tab-s9/01_rellotge.png" alt="Rellotge de cronos en una Galaxy Tab S9" width="170">
+  <img src="docs/captures/tab-s9/02_radio.png" alt="Graella d’emissores en una Galaxy Tab S9" width="170">
+  <img src="docs/captures/tab-s9/04_reproduccio.png" alt="Catalunya Ràdio sonant en una Galaxy Tab S9" width="170">
+  <img src="docs/captures/tab-s9/03_alarmes.png" alt="Alarmes programades en una Galaxy Tab S9" width="170">
 </p>
 
 cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).

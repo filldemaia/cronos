@@ -13,13 +13,14 @@ Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, un
   Google [recomana fer servir captures sense marc](https://developer.android.com/distribute/marketing-tools/device-art-generator) per a la fitxa de Play.
 - `tablet/01_rellotge.png`, `02_radio.png`, `03_alarmes.png` i
   `04_reproduccio.png`: captures reals de cronos Nightly 2.0.1 en una Galaxy
-  Tab A (8", 2019), presentades dins d’un marc de Galaxy Tab S9 en format
-  9:16 (1080 × 1920). El marc és de presentació; la captura no s’ha estirat.
-- `tablet-sense-marc/`: les quatre captures originals de tauleta, en 800 × 1184
+  Tab A (8", 2019), girada a horitzontal i presentada dins d’un marc de Galaxy
+  Tab S9. Són PNG RGB 1920 × 1080 (16:9), sense alfa, tal com demana Play per
+  a tauleta. El marc és de presentació; la captura no s’ha estirat.
+- `tablet-sense-marc/`: les quatre captures originals de tauleta, en 1280 × 704
   i sense reenquadrar. Les originals també són a
   [`docs/captures/tablet/`](captures/tablet/).
-- `fastlane/metadata/android/en-US/images/tabletScreenshots/`: les imatges de
-  tauleta emmarcades per a la fitxa, numerades de l'1 al 4.
+- `fastlane/metadata/android/en-US/images/tabletScreenshots/`: les mateixes
+  imatges de `tablet/`, numerades de l'1 al 4 i a punt per pujar a Play.
 
 Per regenerar les imatges emmarcades del web, el README, Fastlane i Play,
 executa `python tools/frame_pixel8.py` i `python tools/frame_tab_s9.py`.
@@ -43,10 +44,10 @@ com a captures de la versió actual per a tauleta, Chromebook o XR.
 4. A **Captures de telèfon**, elimina les antigues i afegeix les quatre
    imatges de `phone/`: Rellotge, Ràdio, Reproducció i Alarmes. Ordena-les
    arrossegant-les i posa un text alternatiu breu a cada captura.
-5. A **Captures de tauleta**, afegeix les quatre imatges de `tablet/`:
-   Rellotge, Ràdio, Reproducció i Alarmes. No reutilitzis captures de telèfon
-   com si fossin de tauleta, ni al revés. Revisa també Chromebook i XR, si en
-   tens.
+5. A **Captures de tauleta**, afegeix les quatre imatges horitzontals de
+   `tablet/` (1920 × 1080): Rellotge, Ràdio, Reproducció i Alarmes. No
+   reutilitzis captures de telèfon com si fossin de tauleta, ni al revés.
+   Revisa també Chromebook i XR, si en tens.
 6. Si tens altres idiomes amb gràfics propis o fitxes personalitzades,
    actualitza'ls també perquè no continuïn mostrant imatges antigues.
 7. **Desa** → **Visió general de publicació / Publishing overview** →

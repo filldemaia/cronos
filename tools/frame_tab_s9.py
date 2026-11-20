@@ -71,7 +71,6 @@ def main():
         frame = frame_tab(capture)
         out = FRAMED / name
         frame.save(out, optimize=True)
-        (FASTLANE / f"{number}.png").write_bytes(out.read_bytes())
         copyfile(original, PLAY / "tablet-sense-marc" / name)
 
         dims = (1920, 1080) if capture.width > capture.height else (1080, 1920)
@@ -80,6 +79,7 @@ def main():
         center = ((store.width - artwork.width) // 2, (store.height - artwork.height) // 2)
         store.paste(artwork, center, artwork)
         store.save(PLAY / "tablet" / name, optimize=True)
+        store.save(FASTLANE / f"{number}.png", optimize=True)
         print(f"Galaxy Tab S9: {name}")
 
 
