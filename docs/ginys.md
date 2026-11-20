@@ -1,4 +1,4 @@
-# Ginys de Cronos
+# Ginys de cronos
 
 | Nom | Component conservat | Mida del text per defecte |
 | --- | --- | --- |
@@ -76,7 +76,7 @@ Fonts consultades:
 - `RemoteViews` dels tres widgets renderitzats al Galaxy S21 Ultra, amb
   valors per defecte i amb mides diferents; frases llargues llegibles.
 - Sense errors d'inflació als logs ni fitxers de proves deixats al telèfon.
-- Cronos de Play i el seu widget existent no s'han modificat.
+- cronos de Play i el seu widget existent no s'han modificat.
 
 La comprovació visual s'ha fet amb la previsualització dels layouts reals,
 no afegint widgets ni movent icones a la pantalla d'inici de l'usuari.

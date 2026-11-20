@@ -1,4 +1,4 @@
-# Auditoria de Cronos
+# Auditoria de cronos
 
 Arxiu de la revisió tècnica de `com.filldemaia.cronos`. La línia base i els pendents descriuen l’estat durant la revisió, no l’estat actual de l’app.
 

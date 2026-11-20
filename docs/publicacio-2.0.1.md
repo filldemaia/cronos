@@ -1,4 +1,4 @@
-# Preparació de Cronos 2.0.1
+# Preparació de cronos 2.0.1
 
 Notes internes de compilació i proves. No són les notes públiques de la versió ni indiquen que ja estigui publicada a les botigues.
 
@@ -10,7 +10,7 @@ Notes internes de compilació i proves. No són les notes públiques de la versi
 | Prova USB (`releaseTest`) | `com.filldemaia.cronos.r8test` | Clau debug | R8 + reducció de recursos |
 
 La variant de proves **no és debuggable**: prova el codi optimitzat, no el
-comportament d'una build debug. Es diu **Cronos Nightly**. El sufix fa
+comportament d'una build debug. Es diu **cronos Nightly**. El sufix fa
 que tingui un UID, dades, WorkManager i alarmes independents dels de Play.
 No s'ha d'instal·lar l'APK release sobre la còpia de Play ni esborrar-la.
 

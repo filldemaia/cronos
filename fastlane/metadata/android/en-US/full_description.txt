@@ -1,4 +1,4 @@
-At 6:15 in the morning, a traditional Catalan clock reads “És un quart de set del matí” — one quarter of the way to seven. At 2:55 in the afternoon, it reads “Falten cinc minuts per a les tres de la tarda” — five minutes to three. Cronos shows these expressions in a clear, dark interface.
+At 6:15 in the morning, a traditional Catalan clock reads “És un quart de set del matí” — one quarter of the way to seven. At 2:55 in the afternoon, it reads “Falten cinc minuts per a les tres de la tarda” — five minutes to three. cronos shows these expressions in a clear, dark interface.
 
 * Read the time in Catalan, with quarters, minutes and the time of day. You can include the seconds in words, too.
 * See the full date, including the day of the week, and a greeting that changes with the time of day.
@@ -7,4 +7,4 @@ At 6:15 in the morning, a traditional Catalan clock reads “És un quart de set
 * Wake up to your chosen station. If there’s no network connection, the alarm plays a fallback tone.
 * Adjust the size of the clock text or restore the default settings.
 
-Cronos collects no personal data and has no ads or analytics. It only connects to the internet to play the radio. Cronos is free software licensed under the GNU GPL, version 3 or later.
+cronos collects no personal data and has no ads or analytics. It only connects to the internet to play the radio. The app is free software licensed under the GNU GPL, version 3 or later.

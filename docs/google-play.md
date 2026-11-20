@@ -1,4 +1,4 @@
-# Recursos de la fitxa de Cronos 2.0.1
+# Recursos de la fitxa de cronos 2.0.1
 
 Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, una carpeta local que Git no publica. Les captures del README són a [`docs/captures/`](captures/).
 
@@ -6,13 +6,13 @@ Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, un
   amb menys marge que la icona adaptativa del mòbil.
 - `feature_graphic_1024x500.png`: gràfic de funcions nou, 1024 × 500, PNG RGB.
 - `phone/01_rellotge.png`, `02_radio.png`, `03_alarmes.png` i
-  `04_reproduccio.png`: captures reals de Cronos Nightly 2.0.1 en un Galaxy
+  `04_reproduccio.png`: captures reals de cronos Nightly 2.0.1 en un Galaxy
   S21 Ultra. Només s'han retallat les barres del sistema. Conserven les
   proporcions del mòbil, sense vores afegides. Les variants en 9:16 són
   a `play-store-assets/historics/phone-9x16/` si cal aquest format.
 
 Per generar de nou la icona i el gràfic, executa `python tools/prepare_icons.py`.
-Per fer captures bàsiques amb Cronos Nightly, executa `python tools/capture_store_screens.py`
+Per fer captures bàsiques amb cronos Nightly, executa `python tools/capture_store_screens.py`
 amb el telèfon connectat i desbloquejat. Per a la fitxa, mostra alarmes ja
 programades i el reproductor amb una emissora sonant.
 Els recursos antics són a `play-store-assets/historics/`; no els facis servir
@@ -20,7 +20,7 @@ com a captures de la versió actual per a tauleta, Chromebook o XR.
 
 ## Canviar la fitxa a Play Console
 
-1. Tria **Cronos** → **Augmenta el nombre d'usuaris / Grow users** →
+1. Tria **cronos** → **Augmenta el nombre d'usuaris / Grow users** →
    **Presència a Google Play / Store presence** → **Fitxa principal / Main
    store listing** (en algunes versions: **Fitxes de la botiga**).
 2. Selecciona l'idioma català de la fitxa.
@@ -52,7 +52,7 @@ ni tornar a pujar un altre AAB amb el mateix codi.
 
 **No pugis l'APK `releaseTest` a Play.** Té el paquet separat
 `com.filldemaia.cronos.r8test` i signatura de proves. La build de
-proves es anomena «Cronos Nightly».
+proves es anomena «cronos Nightly».
 
 El llançament a producció és l'AAB de `release`: **2.0.1/10**.
 
@@ -61,7 +61,7 @@ El llançament a producció és l'AAB de `release`: **2.0.1/10**.
 ```text
 <ca>
 Optimització del codi amb R8 per reduir la mida i millorar l'eficiència de l'aplicació.
-Icona actualitzada: el mateix símbol, sense el text «CRONOS».
+Icona actualitzada: el mateix símbol, sense el nom escrit.
 </ca>
 ```
 

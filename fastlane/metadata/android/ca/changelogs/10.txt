@@ -1,4 +1,4 @@
 Optimització del codi amb R8 per reduir la mida i millorar l'eficiència de l'aplicació.
-Icona actualitzada: el mateix símbol, sense el text «CRONOS».
+Icona actualitzada: el mateix símbol, sense el nom escrit.
 Widgets amb mida de text configurable i senyera nova.
 Interfície simplificada.
