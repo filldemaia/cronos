@@ -21,7 +21,7 @@ ROOT = Path(__file__).resolve().parents[1]
 ADB = Path(os.environ["LOCALAPPDATA"]) / "Android/Sdk/platform-tools/adb.exe"
 PACKAGE = "com.filldemaia.cronos.r8test"
 REMOTE_DUMP = "/data/local/tmp/cronos-r8test-ui.xml"
-OUT = ROOT / "play-store-assets/2.0.1/phone"
+OUT = ROOT / "play-store-assets/2.0.1/captures-basiques"
 RAW = ROOT / "app/build/release-verification/screenshots"
 
 

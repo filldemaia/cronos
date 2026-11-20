@@ -12,10 +12,10 @@ Android 8.0 o superior.
 Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar ràdio en català o posar el despertador amb l’emissora que vulguis. Si no hi ha connexió, el despertador pot fer servir un to local.
 
 <p>
-  <img src="docs/captures/rellotge.png" alt="Rellotge de cronos amb l’hora escrita en català" width="170">
-  <img src="docs/captures/radio.png" alt="Graella d’emissores de ràdio" width="170">
-  <img src="docs/captures/reproduccio.png" alt="Reproductor de cronos amb Catalunya Ràdio sonant" width="170">
-  <img src="docs/captures/alarmes-programades.png" alt="Tres alarmes programades amb Catalunya Ràdio, RAC1 i IB3 Ràdio" width="170">
+  <img src="docs/captures/pixel-8/rellotge.png" alt="Rellotge de cronos amb l’hora escrita en català" width="170">
+  <img src="docs/captures/pixel-8/radio.png" alt="Graella d’emissores de ràdio" width="170">
+  <img src="docs/captures/pixel-8/reproduccio.png" alt="Reproductor de cronos amb Catalunya Ràdio sonant" width="170">
+  <img src="docs/captures/pixel-8/alarmes-programades.png" alt="Tres alarmes programades amb Catalunya Ràdio, RAC1 i IB3 Ràdio" width="170">
 </p>
 
 cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).

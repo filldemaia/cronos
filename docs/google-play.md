@@ -1,19 +1,24 @@
 # Recursos de la fitxa de cronos 2.0.1
 
-Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, una carpeta local que Git no publica. Les captures del README són a [`docs/captures/`](captures/).
+Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, una carpeta local que Git no publica. Les imatges del web i del README són a [`docs/captures/pixel-8/`](captures/pixel-8/).
 
 - `icon_512.png`: icona de Play, 512 × 512, PNG RGBA. Símbol sense text i
   amb menys marge que la icona adaptativa del mòbil.
 - `feature_graphic_1024x500.png`: gràfic de funcions nou, 1024 × 500, PNG RGB.
 - `phone/01_rellotge.png`, `02_radio.png`, `03_alarmes.png` i
   `04_reproduccio.png`: captures reals de cronos Nightly 2.0.1 en un Galaxy
-  S21 Ultra. Només s'han retallat les barres del sistema. Conserven les
-  proporcions del mòbil, sense vores afegides. Les variants en 9:16 són
-  a `play-store-assets/historics/phone-9x16/` si cal aquest format.
+  S21 Ultra, presentades dins d’un marc de Pixel 8 en format 9:16
+  (1080 × 1920). El marc és de presentació; la captura no s’ha estirat.
+- `phone-sense-marc/`: les mateixes quatre captures sense reenquadrar.
+  Google [recomana fer servir captures sense marc](https://developer.android.com/distribute/marketing-tools/device-art-generator) per a la fitxa de Play.
+
+Per regenerar les imatges emmarcades del web, el README, Fastlane i Play,
+executa `python tools/frame_pixel8.py`.
 
 Per generar de nou la icona i el gràfic, executa `python tools/prepare_icons.py`.
 Per fer captures bàsiques amb cronos Nightly, executa `python tools/capture_store_screens.py`
-amb el telèfon connectat i desbloquejat. Per a la fitxa, mostra alarmes ja
+amb el telèfon connectat i desbloquejat. El resultat es desa a `captures-basiques/`
+sense substituir la selecció de la fitxa. Per a la fitxa, mostra alarmes ja
 programades i el reproductor amb una emissora sonant.
 Els recursos antics són a `play-store-assets/historics/`; no els facis servir
 com a captures de la versió actual per a tauleta, Chromebook o XR.
