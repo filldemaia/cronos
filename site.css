@@ -60,6 +60,8 @@ figcaption { margin-top: .6rem; }
 .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 4vw, 2rem); }
 .gallery figure { width: min(100%, 16rem); margin-inline: auto; }
 .gallery img { width: 100%; }
+.tablet-gallery { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+.tablet-gallery figure { width: 100%; }
 .site-footer {
   border-top: 1px solid var(--line);
   padding-block: 1rem 1.9rem;
