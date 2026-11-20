@@ -97,7 +97,7 @@ class ReliabilityChecker(
             detail = if (permissions.batteryOptimizationIgnored) {
                 "L'app està exempta de l'optimització de bateria."
             } else {
-                "Cal excloure Cronos de l'estalvi de bateria perquè pugui arrencar en segon pla."
+                "Cal excloure cronos de l'estalvi de bateria perquè pugui arrencar en segon pla."
             },
             level = if (permissions.batteryOptimizationIgnored) CheckLevel.OK else CheckLevel.ERROR,
             actionLabel = if (permissions.batteryOptimizationIgnored) null else "Exclou",

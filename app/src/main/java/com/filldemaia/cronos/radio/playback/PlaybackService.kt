@@ -1326,7 +1326,7 @@ class PlaybackService : MediaBrowserServiceCompat() {
             MediaMetadataCompat.Builder()
                 .putString(
                     MediaMetadataCompat.METADATA_KEY_TITLE,
-                    snapshot.station?.name ?: "Cronos"
+                    snapshot.station?.name ?: "cronos"
                 )
                 .putString(
                     MediaMetadataCompat.METADATA_KEY_ARTIST,

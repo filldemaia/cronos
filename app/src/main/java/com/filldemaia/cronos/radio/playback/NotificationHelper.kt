@@ -93,7 +93,7 @@ class NotificationHelper(private val context: Context) {
         snapshot: PlaybackSnapshot,
         mediaSessionToken: android.support.v4.media.session.MediaSessionCompat.Token?
     ): Notification {
-        val stationName = snapshot.station?.name ?: "Cronos"
+        val stationName = snapshot.station?.name ?: "cronos"
         val title = if (snapshot.isLocalAlarm) "ALARMA · $stationName" else stationName
         val subtitle = when {
             snapshot.isLocalAlarm -> "El directe ha fallat. Atura el so manualment."
@@ -186,7 +186,7 @@ class NotificationHelper(private val context: Context) {
         if (!canNotify()) return
         val notification = NotificationCompat.Builder(context, CHANNEL_ALARM_SAFETY)
             .setSmallIcon(R.drawable.ic_stat_radio)
-            .setContentTitle("ALARMA Cronos · ${schedule.timeLabel()}")
+            .setContentTitle("ALARMA cronos · ${schedule.timeLabel()}")
             .setContentText("No s'ha pogut iniciar la ràdio. Atura aquest avís.")
             .setContentIntent(openAppIntent())
             .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -225,7 +225,7 @@ class NotificationHelper(private val context: Context) {
         val text = issue.detail
         val notification = NotificationCompat.Builder(context, CHANNEL_RELIABILITY)
             .setSmallIcon(R.drawable.ic_stat_radio)
-            .setContentTitle("Una alarma de Cronos no està garantida")
+            .setContentTitle("Una alarma de cronos no està garantida")
             .setContentText(text)
             .setStyle(NotificationCompat.BigTextStyle().bigText("${report.summary}\n\n$text"))
             .setContentIntent(openAppIntent())

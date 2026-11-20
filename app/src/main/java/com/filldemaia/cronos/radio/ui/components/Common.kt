@@ -597,7 +597,7 @@ fun OemGuidanceDialog(
                     style = MaterialTheme.typography.bodySmall
                 )
                 OemBullet("Xiaomi / Redmi", "Activa l'inici automàtic i posa l'app a \"Sense restriccions\".")
-                OemBullet("Samsung", "Treu Cronos de \"Aplicacions en repòs profund\".")
+                OemBullet("Samsung", "Treu cronos de \"Aplicacions en repòs profund\".")
                 OemBullet("Huawei / Honor", "Permet l'inici automàtic i l'activitat en segon pla.")
                 OemBullet("OnePlus / Oppo / Realme", "Desactiva l'optimització agressiva i permet l'inici automàtic.")
                 OemBullet("Vivo / iQOO", "Afegeix l'app a la llista blanca d'inici automàtic.")

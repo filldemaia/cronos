@@ -124,7 +124,7 @@ fun OnboardingScreen(
             Spacer(Modifier.width(12.dp))
             Column(Modifier.weight(1f)) {
                 Text(
-                    "Cronos",
+                    "cronos",
                     style = MaterialTheme.typography.titleLarge,
                     color = RadioText
                 )
@@ -256,7 +256,7 @@ private fun ExactAlarmStep(granted: Boolean, onGrant: () -> Unit) {
             detail = if (granted) {
                 "Activades."
             } else {
-                "Cal activar-les per a Cronos."
+                "Cal activar-les per a cronos."
             },
             ok = granted,
             actionLabel = if (granted) null else "Activa",
@@ -315,7 +315,7 @@ private fun OemStep(
         Spacer(Modifier.height(10.dp))
         Text(
             if (knownOem) {
-                "El mòbil pot aturar Cronos en segon pla. Cal revisar-ho manualment."
+                "El mòbil pot aturar cronos en segon pla. Cal revisar-ho manualment."
             } else {
                 "Si les alarmes fallen, consulta la guia del fabricant."
             },

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Cronos</string>
+    <string name="app_name">cronos</string>
     <string name="widget_name">Hora</string>
     <string name="widget_name_apple">Senyera</string>
     <string name="widget_name_large">Data I Hora</string>
@@ -34,7 +34,7 @@
     <string name="settings_location_lat">Latitud</string>
     <string name="settings_location_lon">Longitud</string>
     <string name="settings_location_coords_hint">Coordenades en graus decimals (ex. 41,3874 / 2,1686)</string>
-    <string name="settings_section_about">Sobre Cronos</string>
+    <string name="settings_section_about">Sobre cronos</string>
     <string name="settings_version">Versió %1$s</string>
     <string name="settings_reset">Restablir la configuració</string>
 

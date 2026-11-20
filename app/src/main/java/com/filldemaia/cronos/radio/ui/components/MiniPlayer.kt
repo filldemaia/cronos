@@ -91,7 +91,7 @@ fun MiniPlayer(
                 Spacer(Modifier.width(11.dp))
                 Column(Modifier.weight(1f)) {
                     Text(
-                        station?.name ?: "Cronos",
+                        station?.name ?: "cronos",
                         style = MaterialTheme.typography.titleSmall,
                         color = RadioText,
                         fontWeight = FontWeight.SemiBold,

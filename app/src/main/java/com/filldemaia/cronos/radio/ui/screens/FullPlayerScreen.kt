@@ -216,7 +216,7 @@ fun FullPlayerScreen(
             Spacer(Modifier.height(22.dp))
 
             Text(
-                playback.station?.name ?: "Cronos",
+                playback.station?.name ?: "cronos",
                 style = MaterialTheme.typography.headlineMedium,
                 color = RadioText,
                 textAlign = TextAlign.Center,

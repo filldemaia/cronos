@@ -77,7 +77,7 @@ android {
             applicationIdSuffix = ".r8test"
             versionNameSuffix = "-nightly"
             signingConfig = signingConfigs.getByName("debug")
-            resValue("string", "app_name", "Cronos Nightly")
+            resValue("string", "app_name", "cronos Nightly")
             matchingFallbacks += listOf("release")
         }
     }
