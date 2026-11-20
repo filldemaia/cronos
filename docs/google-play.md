@@ -6,13 +6,14 @@ Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, un
   amb menys marge que la icona adaptativa del mòbil.
 - `feature_graphic_1024x500.png`: gràfic de funcions nou, 1024 × 500, PNG RGB.
 - `phone/01_rellotge.png`, `02_radio.png`, `03_alarmes.png` i
-  `04_configuracio.png`: captures reals de Cronos Nightly 2.0.1 en un Galaxy
+  `04_reproduccio.png`: captures reals de Cronos Nightly 2.0.1 en un Galaxy
   S21 Ultra. S'han retallat els marges del sistema i s'han ajustat a 1440 × 2560
   sense deformar la interfície.
 
 Per generar de nou la icona i el gràfic, executa `python tools/prepare_icons.py`.
-Per fer captures noves amb Cronos Nightly, executa `python tools/capture_store_screens.py`
-amb el telèfon connectat i desbloquejat.
+Per fer captures bàsiques amb Cronos Nightly, executa `python tools/capture_store_screens.py`
+amb el telèfon connectat i desbloquejat. Per a la fitxa, mostra alarmes ja
+programades i el reproductor amb una emissora sonant.
 Els recursos antics són a `play-store-assets/historics/`; no els facis servir
 com a captures de la versió actual per a tauleta, Chromebook o XR.
 
@@ -25,7 +26,7 @@ com a captures de la versió actual per a tauleta, Chromebook o XR.
 3. A **Gràfics**, substitueix la **icona de l'aplicació** per `icon_512.png`
    i el **gràfic de funcions** per `feature_graphic_1024x500.png`.
 4. A **Captures de telèfon**, elimina les antigues i afegeix les quatre
-   imatges de `phone/`: Rellotge, Ràdio, Alarmes i Configuració. Ordena-les
+   imatges de `phone/`: Rellotge, Ràdio, Reproducció i Alarmes. Ordena-les
    arrossegant-les i posa un text alternatiu breu a cada captura.
 5. Revisa també les imatges de tauleta, Chromebook i XR, si en tens. No
    reutilitzis captures de telèfon com si fossin d'altres dispositius.
