@@ -1,12 +1,10 @@
-Gaudeix de l'hora en català amb una aplicació elegant i fàcil d'usar. "És un quart de set del matí", "Falten cinc minuts per a les tres de la tarda"... Cronos t'ho mostra amb claredat i una interfície fosca i moderna.
+At 6:15 in the morning, a traditional Catalan clock reads “És un quart de set del matí” — one quarter of the way to seven. At 2:55 in the afternoon, it reads “Falten cinc minuts per a les tres de la tarda” — five minutes to three. Cronos shows these expressions in a clear, dark interface.
 
-* Hora catalana completa amb quarts, minuts, segons i moment del dia
-* Data completa amb el dia de la setmana ("Avui és dilluns, 10 d'agost del 2026")
-* Salutació segons el moment del dia
-* Tres widgets per a la pantalla d'inici
-* Segons opcionals, per escrit a la frase tradicional
-* Ràdio en català: 16 emissores (Catalunya Ràdio, RAC1, Flaixbac, IB3, À Punt…)
-* Despertador que sona amb l'emissora que triïs (amb to de seguretat sense xarxa)
-* Mida de l'hora ajustable i configuració restableixible
+* Read the time in Catalan, with quarters, minutes and the time of day. You can include the seconds in words, too.
+* See the full date, including the day of the week, and a greeting that changes with the time of day.
+* Choose from three home screen widgets.
+* Listen to 16 Catalan-language radio stations, including Catalunya Ràdio, RAC1, Flaixbac, IB3 and À Punt.
+* Wake up to your chosen station. If there’s no network connection, the alarm plays a fallback tone.
+* Adjust the size of the clock text or restore the default settings.
 
-Cronos no recull cap dada personal i no té publicitat ni analítica. Només es connecta a internet quan decideixes escoltar la ràdio. Codi lliure sota GPL v3 o posterior.
+Cronos collects no personal data and has no ads or analytics. It only connects to the internet to play the radio. Cronos is free software licensed under the GNU GPL, version 3 or later.

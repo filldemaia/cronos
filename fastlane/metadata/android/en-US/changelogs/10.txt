@@ -1,4 +1,4 @@
-Optimització del codi amb R8 per reduir la mida i millorar l'eficiència de l'aplicació.
-Icona actualitzada: el mateix símbol, sense el text «CRONOS».
-Widgets amb mida de text configurable i senyera nova.
-Interfície simplificada.
+Optimized the code with R8 to make the app smaller and more efficient.
+Updated the app icon: the same symbol, without the word “CRONOS”.
+The widgets now have adjustable text size and a new Catalan flag design.
+Simplified the interface.
