@@ -2,9 +2,10 @@
 
 Vaig fer Cronos per tenir a mà la manera tradicional de dir l’hora en català. Si són les 6.15 del matí, hi llegiràs «És un quart de set del matí».
 
-<a href="https://play.google.com/store/apps/details?id=com.filldemaia.cronos">
-  <img src="branding/google-play-ca.png" alt="Baixa Cronos a Google Play" width="180">
-</a>
+<p>
+  <a href="https://play.google.com/store/apps/details?id=com.filldemaia.cronos"><img src="branding/google-play-ca.png" alt="Baixa Cronos a Google Play" width="180"></a>
+  <a href="https://gitlab.com/fdroid/fdroiddata/-/merge_requests/58198"><img src="branding/f-droid-en-revisio.svg" alt="F-Droid: consulta la proposta d’inclusió, encara en revisió" width="180"></a>
+</p>
 
 Android 8.0 o superior.
 
@@ -18,8 +19,6 @@ Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar
 </p>
 
 Cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).
-
-La [proposta per entrar a F-Droid](https://gitlab.com/fdroid/fdroiddata/-/merge_requests/58198) encara està en revisió.
 
 ## Codi font
 

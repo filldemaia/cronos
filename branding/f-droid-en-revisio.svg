@@ -1,0 +1,8 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="360" height="107" viewBox="0 0 360 107" role="img" aria-labelledby="title">
+  <title id="title">F-Droid · En revisió</title>
+  <rect x="1" y="1" width="358" height="105" rx="15" fill="#0c1924" stroke="#8495a4" stroke-width="2"/>
+  <g text-anchor="middle" font-family="system-ui, sans-serif">
+    <text x="180" y="49" fill="#ffffff" font-size="35" font-weight="650">F-Droid</text>
+    <text x="180" y="81" fill="#bfe2ff" font-size="24">En revisió</text>
+  </g>
+</svg>
