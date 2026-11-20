@@ -1,6 +1,6 @@
-# Auditoria de Cronos — revisió tancada
+# Auditoria de Cronos
 
-Projecte: `com.filldemaia.cronos`. Estat i pendents de la revisió.
+Arxiu de la revisió tècnica de `com.filldemaia.cronos`. La línia base i els pendents descriuen l’estat durant la revisió, no l’estat actual de l’app.
 
 ## Línia base
 

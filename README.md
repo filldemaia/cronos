@@ -1,157 +1,25 @@
-# Cronos et diu l'hora en català
+# Cronos
 
-> L'hora en català tradicional — i, a més, una ràdio en català i un despertador.
+Vaig fer Cronos per tenir a mà la manera tradicional de dir l’hora en català. Si són les 6.15 del matí, hi llegiràs «És un quart de set del matí».
 
-Cronos és una aplicació Android que mostra l'hora de la manera tradicional catalana ("És un quart de set del matí", "Falten cinc minuts per a les tres de la tarda"). A partir de la versió 2.0 també inclou una **ràdio en català** i un **despertador** que et desperta amb l'emissora que triïs (amb un to local de seguretat si no hi ha xarxa).
+<a href="https://play.google.com/store/apps/details?id=com.filldemaia.cronos">
+  <img src="branding/google-play-ca.png" alt="Baixa Cronos a Google Play" width="180">
+</a>
 
-## Característiques
+Android 8.0 o superior.
 
-- **Interfície moderna** amb Jetpack Compose i navegació per pestanyes: **Rellotge, Ràdio, Alarmes i Configuració**.
-- **Hora catalana tradicional** amb el format complet: quarts, minuts, segons i moment del dia.
-- **Data completa**: "Avui és dilluns, 10 d'agost del 2026".
-- **Salutació** segons el moment del dia ("Bona tarda!", "Bon vespre", ...).
-- **Tres widgets** de diferents mides per a la pantalla d'inici.
-- **Segons opcionals**: es poden activar i desactivar a gust els segons ("Falten sis minuts i tres segons per a tres quarts de deu de la nit").
-- Compatible amb Android 8.0+ (API 26).
+<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Pantalla del rellotge de Cronos, amb l’hora escrita en català" width="230">
 
-## Ràdio i despertador
+Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar ràdio en català o posar el despertador amb l’emissora que vulguis. Si no hi ha connexió, el despertador pot fer servir un to local.
 
-- **16 emissores en català**: Catalunya Ràdio, Catalunya Informació, Catalunya Música, iCat, RAC1, RAC1+1, RAC105, Flaixbac, Flaix FM, Ràdio Estel, À Punt Ràdio, Ràdio Klara, IB3 Ràdio, Ona Mediterrània, Ràdio Fraga i Ràdio Arrels.
-- **Reproducció en segon pla**: la ràdio continua sonant amb la pantalla apagada (servei en primer pla amb control multimèdia).
-- **Despertador amb ràdio**: programa una alarma que sona amb l'emissora que triïs.
-- **Cadena de seguretat**: URLs alternatives, emissores de reserva i, finalment, un to local sense xarxa perquè l'alarma no falli mai.
-- **Timeshift**: rebobina i torna a escoltar els últims minuts de l'emissió.
+Cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).
 
-## Exemples del format
+La [proposta per entrar a F-Droid](https://gitlab.com/fdroid/fdroiddata/-/merge_requests/58198) encara està en revisió.
 
-| Hora | Es mostra |
-| --- | --- |
-| 12:00 | Són les dotze del migdia |
-| 15:15 | És un quart de quatre de la tarda |
-| 20:30 | Són dos quarts de nou de la nit |
-| 22:45 | Són tres quarts d'onze de la nit |
-| 08:06 | Són les vuit i sis minuts del matí |
-| 14:53 | Falten set minuts per a les tres de la tarda |
-| 21:39:03 (amb segons) | Falten sis minuts i tres segons per a tres quarts de deu de la nit |
+## Codi font
 
-## Widgets
+Pots obrir el projecte amb Android Studio. A `docs/` hi ha les [notes sobre els ginys](docs/ginys.md) i les [notes de preparació de la 2.0.1](docs/publicacio-2.0.1.md). Si hi trobes cap problema, explica’l a [Incidències](https://github.com/filldemaia/cronos/issues).
 
-| Widget | Mida | Fons | Contingut |
-| --- | --- | --- | --- |
-| **Hora** | 4×1 | transparent | l'hora tradicional |
-| **Senyera** | 3×2 | senyera fixa amb lona translúcida uniforme | l'hora tradicional amb ombra |
-| **Data I Hora** | 4×2 | transparent | data + hora tradicional |
+Codi lliure sota la [GPL v3 o posterior](LICENSE.md). Gràcies a Gabriel Mizrahi Mejias per les primeres contribucions.
 
-La mida del text de cada widget es regula per separat a **Configuració → Widgets**.
-Els canvis s'apliquen als widgets ja afegits. Si una frase no hi cap, el text
-es redueix per mostrar-la sencera. «Previsualitza» mostra els mateixos layouts
-que es fan servir a la pantalla d'inici.
-Tots els rellotges (l'app i els tres widgets) comparteixen la mida per
-defecte de 27 i un rang de 12 a 50.
-No cal eliminar i tornar a afegir un widget per canviar-ne la mida del text.
-
-## Configuració
-
-A la pestanya **Configuració** trobaràs:
-
-- **Mostra els segons per escrit**: afegeix els segons a la frase de l'hora tradicional.
-- **Mida de l'hora**: regulable amb un control lliscant.
-- **Widgets**: mida del text de «Data I Hora», «Hora» i «Senyera», amb previsualització.
-- **Restablir la configuració**: torna tots els paràmetres als valors per defecte.
-
-## Com Utilitzar l'Aplicació
-
-### Aplicació Principal
-- Obre **Cronos** des del calaix d'aplicacions.
-- A la barra inferior navegues entre les quatre pestanyes: **Rellotge**, **Ràdio**, **Alarmes** i **Configuració**.
-- A **Rellotge** veuràs l'hora catalana destacada, amb la salutació i la data a sobre.
-- A **Ràdio** escoltes les emissores; a **Alarmes** programes el despertador.
-
-### Afegir el Widget
-1. Mantén premuda la pantalla d'inici
-2. Selecciona "Widgets"
-3. Busca "Cronos": hi ha tres mides/estils per triar
-4. Arrossega el widget a la pantalla d'inici
-5. Redimensiona'l segons les teves preferències
-
-## Per a Desenvolupadors
-
-### Tecnologies Utilitzades
-- **Kotlin**: Llenguatge principal
-- **Jetpack Compose**: UI moderna i reactiva
-- **Media3 (ExoPlayer)**: reproducció de la ràdio (HLS i MP3)
-- **DataStore i kotlinx-serialization**: persistència i estacions
-- **WorkManager i AlarmManager**: despertador i reprogramació
-- **Android Widget API**: per al widget de pantalla d'inici
-- **Coroutines**: Gestió asíncrona
-- **Material Design 3**: Components i estils moderns
-
-### Com Contribuir
-1. Fes un fork del projecte
-2. Crea una branca per la teva funcionalitat
-3. Commit dels teus canvis
-4. Push a la branca
-5. Obre un Pull Request
-
-## Arquitectura (resum)
-
-```
-com.filldemaia.cronos/
-├── MainActivity.kt             # Punt d'entrada
-├── CronosRoot.kt               # Navegació per pestanyes (Rellotge, Ràdio, Alarmes, Configuració)
-├── ClockScreen.kt              # Pantalla del rellotge
-├── CatalanTimeFormatter.kt     # Lògica de l'hora (minuts i segons per escrit)
-├── CatalanDateFormatter.kt     # Formatació de la data en català
-├── SettingsRepository.kt       # Preferències del rellotge (SharedPreferences)
-├── CronosBaseWidget.kt         # Base comuna dels tres widgets
-├── CronosWidget.kt / CronosWidgetApple.kt / CronosWidgetLarge.kt
-├── WidgetUpdateScheduler.kt    # Una sola alarma exacta per minut (fallback inexacte)
-├── CronosWidgetTickReceiver.kt # Tick que actualitza tots els widgets
-├── BootReceiver.kt             # Reprograma el tick després d'un reinici
-└── radio/                      # Ràdio i despertador
-    ├── alarm/                  # Programació i rearmament de les alarmes
-    ├── playback/               # Servei de reproducció, ring buffer i timeshift
-    ├── data/                   # Models, repositoris i emmagatzematge protegit
-    ├── domain/                 # Lògica de negoci (planificació, fallback…)
-    ├── reliability/            # Comprovacions de fiabilitat de l'alarma
-    └── ui/                     # Pantalles de ràdio, alarmes i configuració
-```
-
-La ràdio fa servir un `ring buffer` en disc per al timeshift i una cadena de fallback (URLs alternatives → emissores de reserva → to local) perquè l'alarma sigui fiable.
-
-## Instal·lació
-
-- **Requisits**: Android 8.0 (API 26) o superior.
-- **APK directe**: descarrega la darrera `app-release.aab` / APK des de la secció [Releases](https://github.com/filldemaia/cronos/releases) i instal·la'l amb "Fonts desconegudes" activat.
-- **Des del codi**: clona el repositori, obre'l amb Android Studio o similars i executa.
-- **A Google Play**: [Com a Cronos a Google Play](https://play.google.com/store/apps/details?id=com.filldemaia.cronos).
-
-## Bateria
-
-- Els widgets es refresquen amb **una sola alarma per minut** (exacta amb `USE_EXACT_ALARM`, amb fallback inexacte), independentment del nombre de widgets.
-- La pantalla només recalcula el que canvia: l'hora tradicional al canvi de minut, la data al canvi de dia, i els segons només quan els tens activats.
-- El despertador fa servir una alarma exacta per sonar a l'hora prevista, i el servei de ràdio s'atura quan no hi ha reproducció.
-
-## Privadesa
-
-Cronos **no recull cap dada personal**: no hi ha publicitat, ni analítica, ni comptes. L'aplicació només es connecta a internet quan tu decideixes escoltar la ràdio, i aquesta connexió es fa directament amb els servidors de l'emissora (que reben l'adreça IP del dispositiu, com en qualsevol streaming). Vegeu la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).
-
-## Llicència
-
-Projecte llicenciat sota la **GPL v3 o posterior** — vegeu [LICENSE.md](LICENSE.md).
-
-## Agraïments
-
-- A **Gabriel Mizrahi Mejias**, per les seves contribucions inicials.
-- A la **catalanitat**, per la seva bellesa, la seva història i la seva mera existència.
-- A **Catalunya**, terra de tradicions, cultura i llengua, que ens ha ensenyat que fins i tot el pas de les hores pot convertir-se en una expressió de la nostra identitat.
-- Als **catalans i catalanes** que, malgrat els contratemps, mantenen viva la nostra llengua fent-la servir cada dia.
-- I a la **tradició de dir les hores en català**, una petita part del nostre patrimoni lingüístic que mereix ser conservada i transmesa.
-
-## Contacte
-
-Èrik Lledó — lledoerik@gmail.com - [GitHub](https://github.com/filldemaia)
-
----
-
-**Fet amb amor per ajudar a preservar la llengua, la cultura i la identitat catalana.**
+*Google Play i el logotip de Google Play són marques comercials de Google LLC.*

@@ -9,6 +9,7 @@ captures/
 # Sortides de build
 build/
 app/build/
+/app/release/
 
 # Signatura i secrets — MAI al repositori
 keystore.properties

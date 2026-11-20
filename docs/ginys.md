@@ -1,4 +1,4 @@
-# Widgets
+# Ginys de Cronos
 
 | Nom | Component conservat | Mida del text per defecte |
 | --- | --- | --- |
