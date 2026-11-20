@@ -36,6 +36,7 @@ Builds:
     commit: 16d2c3819754d5834e7acf799dadfa54e35aeb5b
     gradle:
       - yes
+    output: app/build/outputs/apk/release/*.apk
 
 AutoUpdateMode: Version
 UpdateCheckMode: Tags
