@@ -14,7 +14,7 @@ Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar
   <img src="docs/captures/rellotge.png" alt="Rellotge de Cronos amb l’hora escrita en català" width="170">
   <img src="docs/captures/radio.png" alt="Graella d’emissores de ràdio" width="170">
   <img src="docs/captures/reproduccio.png" alt="Reproductor de Cronos amb Catalunya Ràdio sonant" width="170">
-  <img src="docs/captures/alarmes.png" alt="Llista d’alarmes programades amb ràdio" width="170">
+  <img src="docs/captures/alarmes-programades.png" alt="Tres alarmes programades amb Catalunya Ràdio, RAC1 i IB3 Ràdio" width="170">
 </p>
 
 Cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).

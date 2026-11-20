@@ -1,9 +1,9 @@
 """Capture the real optimized test app, never the user's Play installation.
 
 Run after installing releaseTest: python tools/capture_store_screens.py [serial]
-Requires Pillow. The raw screenshots stay under app/build; store images are
-fitted (not stretched) into a 9:16 canvas if the phone is taller. Only system
-status/navigation bars are cropped, using their reported Android insets.
+Requires Pillow. The raw screenshots stay under app/build; store images keep
+the phone's aspect ratio, without padding. Only system status/navigation bars
+are cropped, using their reported Android insets.
 """
 
 from io import BytesIO
@@ -97,10 +97,7 @@ def main():
         (RAW / f"{filename}.png").write_bytes(raw)
         image = Image.open(BytesIO(raw)).convert("RGB")
         image = without_system_bars(image)
-        image.thumbnail((1440, 2560), Image.Resampling.LANCZOS)
-        canvas = Image.new("RGB", (1440, 2560), "#071420")
-        canvas.paste(image, ((1440 - image.width) // 2, (2560 - image.height) // 2))
-        canvas.save(OUT / f"{filename}.png", optimize=True)
+        image.save(OUT / f"{filename}.png", optimize=True)
         print(f"Captured real {label}: {OUT / (filename + '.png')}")
 
 
