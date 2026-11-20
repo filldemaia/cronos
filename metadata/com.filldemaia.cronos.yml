@@ -1,14 +1,13 @@
-AuthorName: Èrik Lledó
-AutoUpdateMode: Version
-Builds:
-  - versionName: "2.0.1"
-    versionCode: 10
-    commit: 2e50f7191541b6f6be5670074ba896544b1f4fec
-    gradle:
-      - yes
 Categories:
   - Clock
   - Radio
+License: GPL-3.0-or-later
+AuthorName: Èrik Lledó
+WebSite: https://github.com/filldemaia/cronos
+SourceCode: https://github.com/filldemaia/cronos
+IssueTracker: https://github.com/filldemaia/cronos/issues
+
+Name: Cronos
 Description: |-
   Cronos mostra l'hora de la manera tradicional catalana
   ("És un quart de set del matí", "Falten cinc minuts per a les tres
@@ -26,13 +25,21 @@ Description: |-
   Cronos no recull cap dada personal ni té publicitat ni analítica.
   Només es connecta a internet per reproduir l'àudio de les emissores.
   Codi lliure sota GPL v3 o posterior.
-IssueTracker: https://github.com/filldemaia/cronos/issues
-License: GPL-3.0-or-later
-Name: Cronos
-Repo: https://github.com/filldemaia/cronos.git
+
 RepoType: git
-SourceCode: https://github.com/filldemaia/cronos
-Summary: L'hora en català tradicional, amb ràdio i despertador
-UpdateCheckData: 'app/build.gradle.kts|versionCode = (\d+)|app/build.gradle.kts|versionName = "([^"]+)"'
+Repo: https://github.com/filldemaia/cronos.git
+
+Builds:
+  - versionName: 2.0.1
+    versionCode: 10
+    commit: d55f7400660bc71f9681ef0ba9fffa6510ad1254
+    gradle:
+      - yes
+
+AutoUpdateMode: Version
 UpdateCheckMode: Tags
-WebSite: https://github.com/filldemaia/cronos
+UpdateCheckData: app/build.gradle.kts|versionCode = (\d+)|app/build.gradle.kts|versionName
+  = "([^"]+)"
+
+CurrentVersion: 2.0.1
+CurrentVersionCode: 10
