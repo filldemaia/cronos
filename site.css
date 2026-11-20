@@ -52,15 +52,43 @@ figure { margin: 0; }
   border-radius: 1rem;
   background: var(--tint);
 }
-.hero-shot img { width: min(100%, 14.75rem); }
+.hero-shot .phone { width: min(100%, 15.75rem); }
+.phone {
+  position: relative;
+  padding: .95rem .4rem .5rem;
+  border: 1px solid #50565b;
+  border-radius: 1.65rem;
+  background: #161b20;
+}
+.phone::before {
+  content: "";
+  position: absolute;
+  top: .28rem;
+  left: 50%;
+  width: .36rem;
+  height: .36rem;
+  transform: translateX(-50%);
+  border: 1px solid #4f5a64;
+  border-radius: 50%;
+  background: #0a1016;
+}
+.phone::after {
+  content: "";
+  position: absolute;
+  top: 23%;
+  right: -3px;
+  width: 2px;
+  height: 2.55rem;
+  border-radius: 0 2px 2px 0;
+  background: #50565b;
+}
+.phone img { width: 100%; border-radius: 1rem; }
 figcaption { margin-top: .6rem; }
 .showcase { border-top: 1px solid var(--line); padding-block: 2.5rem 3rem; }
 .showcase h2 { margin: 0; font: 600 clamp(2rem, 4vw, 3rem) / 1.1 Georgia, serif; letter-spacing: -.035em; }
 .showcase > p { margin-bottom: 1.8rem; }
 .gallery { display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: clamp(.75rem, 4vw, 2rem); }
-.gallery img { width: 100%; }
 .gallery figure { width: min(100%, 16rem); margin-inline: auto; }
-.hero-shot img, .gallery img { border-radius: .5rem; }
 .site-footer {
   border-top: 1px solid var(--line);
   padding-block: 1rem 1.9rem;
