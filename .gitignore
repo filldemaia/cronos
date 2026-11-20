@@ -5,11 +5,15 @@
 *.iml
 local.properties
 captures/
+!/docs/captures/
 
 # Sortides de build
 build/
 app/build/
 /app/release/
+
+# Recursos locals per a la fitxa de Google Play
+/play-store-assets/
 
 # Signatura i secrets — MAI al repositori
 keystore.properties

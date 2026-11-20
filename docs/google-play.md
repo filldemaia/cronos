@@ -1,13 +1,20 @@
 # Recursos de la fitxa de Cronos 2.0.1
 
+Els fitxers per pujar a Play Console es guarden a `play-store-assets/2.0.1/`, una carpeta local que Git no publica. Les versions reduïdes per al README són a [`docs/captures/`](captures/).
+
 - `icon_512.png`: icona de Play, 512 × 512, PNG RGBA. Símbol sense text i
   amb menys marge que la icona adaptativa del mòbil.
 - `feature_graphic_1024x500.png`: gràfic de funcions nou, 1024 × 500, PNG RGB.
 - `phone/01_rellotge.png`, `02_radio.png`, `03_alarmes.png` i
-  `04_configuracio.png`: captures reals de la variant R8 separada al Galaxy
-  S21 Ultra, sense les barres del sistema, ajustades sense deformar la
-  interfície a un llenç
-  9:16 de 1440 × 2560. No són captures generades ni de l'app antiga.
+  `04_configuracio.png`: captures reals de Cronos Nightly 2.0.1 en un Galaxy
+  S21 Ultra. S'han retallat els marges del sistema i s'han ajustat a 1440 × 2560
+  sense deformar la interfície.
+
+Per generar de nou la icona i el gràfic, executa `python tools/prepare_icons.py`.
+Per fer captures noves amb Cronos Nightly, executa `python tools/capture_store_screens.py`
+amb el telèfon connectat i desbloquejat.
+Els recursos antics són a `play-store-assets/historics/`; no els facis servir
+com a captures de la versió actual per a tauleta, Chromebook o XR.
 
 ## Canviar la fitxa a Play Console
 

@@ -41,7 +41,9 @@ def main():
     play = Image.new("RGB", (512, 512), "white")
     play.paste(symbol, ((512 - symbol.width) // 2, (512 - symbol.height) // 2))
     STORE.mkdir(parents=True, exist_ok=True)
-    play.convert("RGBA").save(STORE / "icon_512.png", optimize=True)
+    play_icon = play.convert("RGBA")
+    play_icon.save(STORE / "icon_512.png", optimize=True)
+    play_icon.save(RES.parent / "ic_launcher-playstore.png", optimize=True)
 
     # Feature graphic: original symbol, plain typography, no fabricated UI.
     feature = Image.new("RGB", (1024, 500), "#071420")

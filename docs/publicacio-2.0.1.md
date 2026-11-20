@@ -108,7 +108,7 @@ un canal de proves de Play en un dispositiu de prova abans del desplegament.
 - AAB per a Play: `app/build/outputs/bundle/release/app-release.aab`.
 - APK de prova USB: `app/build/outputs/apk/releaseTest/app-releaseTest.apk`.
 - Mapping de la build de Play: `app/build/outputs/mapping/release/mapping.txt`.
-- [Recursos de la fitxa i instruccions de Google Play](../play-store-assets/2.0.1/COM-PUJAR.md).
+- [Recursos de la fitxa i instruccions de Google Play](google-play.md).
 
 No publiquis la variant `releaseTest`. Primer prova el bundle release al
 canal intern de Play i després promou el mateix artefacte a producció.

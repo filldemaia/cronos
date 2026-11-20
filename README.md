@@ -8,9 +8,14 @@ Vaig fer Cronos per tenir a mà la manera tradicional de dir l’hora en català
 
 Android 8.0 o superior.
 
-<img src="fastlane/metadata/android/en-US/images/phoneScreenshots/1.png" alt="Pantalla del rellotge de Cronos, amb l’hora escrita en català" width="230">
-
 Pots triar entre tres ginys per veure l’hora a la pantalla d’inici, escoltar ràdio en català o posar el despertador amb l’emissora que vulguis. Si no hi ha connexió, el despertador pot fer servir un to local.
+
+<p>
+  <img src="docs/captures/rellotge.png" alt="Rellotge de Cronos amb l’hora escrita en català" width="170">
+  <img src="docs/captures/radio.png" alt="Graella d’emissores de ràdio" width="170">
+  <img src="docs/captures/alarmes.png" alt="Pantalla per programar alarmes" width="170">
+  <img src="docs/captures/configuracio.png" alt="Configuració del rellotge i de la ràdio" width="170">
+</p>
 
 Cronos no té anuncis, comptes ni analítica. Consulta la [política de privadesa](https://filldemaia.github.io/cronos/privacy.html).
 
